@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rinkun0220.github.io/animedb/sitemap.xml

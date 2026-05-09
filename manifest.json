@@ -1,0 +1,33 @@
+{
+  "name": "ANIMEDB - アニメ検索・ランキング",
+  "short_name": "ANIMEDB",
+  "description": "1990年から最新まで全シーズン対応のアニメデータベース。検索・ランキング・AIおすすめ機能付き。",
+  "start_url": "/animedb/",
+  "scope": "/animedb/",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#e8364a",
+  "orientation": "portrait-primary",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["entertainment", "lifestyle"],
+  "shortcuts": [
+    {"name":"ランキングを見る","short_name":"ランキング","url":"/animedb/?tab=rank"},
+    {"name":"検索する","short_name":"検索","url":"/animedb/?tab=search"},
+    {"name":"ランキング記事","short_name":"記事","url":"/animedb/ranking.html"}
+  ],
+  "prefer_related_applications": false
+}
