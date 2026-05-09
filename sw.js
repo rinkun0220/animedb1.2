@@ -1,12 +1,12 @@
 /* ANIMEDB Service Worker - GitHub Pages対応版 */
 const CACHE = 'animedb-v2';
 const STATIC = [
-  '/animedb/',
-  '/animedb/index.html',
-  '/animedb/ranking.html',
-  '/animedb/manifest.json',
-  '/animedb/icon-192.png',
-  '/animedb/icon-512.png',
+  '/animedb1.2/',
+  '/animedb1.2/index.html',
+  '/animedb1.2/ranking.html',
+  '/animedb1.2/manifest.json',
+  '/animedb1.2/icon-192.png',
+  '/animedb1.2/icon-512.png',
 ];
 
 self.addEventListener('install', e => {
