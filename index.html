@@ -323,6 +323,26 @@ main{padding-top:58px;min-height:100vh}
   .ma-btn{padding:10px 14px;font-size:12px}
   .chip,.show-btn{padding:7px 14px}
 }
+
+/* ══ PHASE 2: AUTH ══ */
+.auth-btn{display:flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--border2);color:var(--text2);padding:6px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.auth-btn:hover{border-color:var(--red);color:var(--red)}
+.auth-btn.logged{border-color:var(--green);color:var(--green)}
+.user-avatar{width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.user-avatar-ph{width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* comment with firebase */
+.c-login-wall{text-align:center;padding:16px;background:var(--bg4);border-radius:8px;border:1px dashed var(--border2)}
+.c-login-wall p{font-size:12px;color:var(--text3);margin-bottom:10px}
+.c-login-btn{background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer}
+.c-user-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.c-user-name{font-size:12px;color:var(--text2);font-weight:700}
+.c-item{background:var(--bg4);border-radius:8px;padding:10px 14px;border:1px solid var(--border);position:relative}
+.c-meta{font-size:10px;color:var(--text3);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.c-avatar{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.c-avatar-ph{width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;font-size:8px;font-weight:900;display:inline-flex;align-items:center;justify-content:center}
+.c-del{position:absolute;top:8px;right:8px;background:transparent;border:none;color:var(--text4);font-size:12px;cursor:pointer;padding:2px 6px;border-radius:4px;transition:color .12s}
+.c-del:hover{color:var(--red)}
+
 </style>
 </head>
 <body>
@@ -350,6 +370,9 @@ main{padding-top:58px;min-height:100vh}
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
       <span class="nav-lbl">お気に入り</span>
       <span class="fav-badge" id="fav-badge">0</span>
+    </button>
+    <button class="auth-btn" id="auth-btn" onclick="handleAuth()" style="margin-left:8px;flex-shrink:0">
+      <span id="auth-label">ログイン</span>
     </button>
   </nav>
 </header>
@@ -511,13 +534,10 @@ main{padding-top:58px;min-height:100vh}
       <h4>作品概要</h4>
       <div class="m-syn-text" id="m-syn"></div>
     </div>
-    <!-- COMMENTS -->
+    <!-- COMMENTS Phase 2 -->
     <div class="m-comments">
       <h4>コメント</h4>
-      <div class="c-form">
-        <input class="c-input" id="c-input" placeholder="コメントを入力..." maxlength="200">
-        <button class="c-send" onclick="sendComment()">送信</button>
-      </div>
+      <div id="c-auth-area"></div>
       <div class="c-list" id="c-list"></div>
     </div>
   </div>
@@ -940,28 +960,6 @@ function toggleFavModal(){const a=A.current;if(!a)return;favToggle(a.mal_id);upd
 function closeModal(){document.getElementById('modal-ov').classList.remove('open');A.trailerOn=false}
 function closeModalOut(e){if(e.target===document.getElementById('modal-ov'))closeModal()}
 
-/* ══ COMMENTS ══ */
-function renderComments(id){
-  const key='c'+id;const list=(A.comments[key]||[]).slice(-30).reverse();
-  document.getElementById('c-input').value='';
-  document.getElementById('c-list').innerHTML=!list.length
-    ?`<div style="font-size:12px;color:var(--text3);padding:4px 0">コメントがまだありません。最初の一言を！</div>`
-    :list.map((c,i)=>{const liked=A.commentLikes['c'+id+'_'+i]||false;return`<div class="c-item"><div class="c-meta">${c.time}</div><div class="c-text">${esc(c.text)}</div><button class="c-like ${liked?'liked':''}" onclick="likeComment('${id}',${i},this)">${liked?'❤️':'🤍'} <span>${c.likes||0}</span></button></div>`}).join('');
-}
-function sendComment(){
-  const a=A.current;if(!a)return;const v=document.getElementById('c-input').value.trim();if(!v)return;
-  const key='c'+a.mal_id;if(!A.comments[key])A.comments[key]=[];
-  A.comments[key].push({text:v,time:new Date().toLocaleString('ja-JP'),likes:0});
-  save('adb_comments',A.comments);renderComments(a.mal_id);showToast('💬 コメントを投稿しました！');
-}
-function likeComment(animeId,idx,btn){
-  const key='c'+animeId+'_'+idx;const already=A.commentLikes[key];const cKey='c'+animeId;
-  if(!A.comments[cKey])return;const list=A.comments[cKey];const ri=list.length-1-idx;
-  if(already){A.commentLikes[key]=false;list[ri].likes=Math.max(0,(list[ri].likes||0)-1)}
-  else{A.commentLikes[key]=true;list[ri].likes=(list[ri].likes||0)+1}
-  save('adb_comments',A.comments);save('adb_clikes',A.commentLikes);renderComments(animeId);
-}
-
 /* ══ TOAST ══ */
 let _tt=null;
 function showToast(msg){const t=document.getElementById('toast-el');t.textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2500)}
@@ -973,7 +971,201 @@ function installPWA(){if(!_dp)return;_dp.prompt();_dp.userChoice.then(r=>{if(r.o
 function dismissPWA(){document.getElementById('pwa-banner').classList.remove('show');localStorage.setItem('pwa_dismissed','1')}
 
 /* ══ SERVICE WORKER ══ */
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{})}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/animedb1.2/sw.js').catch(()=>{})}
+</script>
+
+<!-- ════ PHASE 2: FIREBASE ════ -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getFirestore, collection, addDoc, query, where, orderBy,
+         onSnapshot, deleteDoc, doc, updateDoc, increment, getDoc, setDoc }
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+/* ── Firebase init ── */
+const firebaseConfig = {
+  apiKey: "AIzaSyBzxnOIhiWajQiKKPgm0Tu0KZ9A0wj5T6k",
+  authDomain: "animedb-final-v3.firebaseapp.com",
+  projectId: "animedb-final-v3",
+  storageBucket: "animedb-final-v3.firebasestorage.app",
+  messagingSenderId: "20380355788",
+  appId: "1:20380355788:web:f2eaca6415577ef1ec4669"
+};
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+/* ── Auth state ── */
+let currentUser = null;
+let unsubComments = null;
+
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  updateAuthUI(user);
+  // re-render comment area if modal is open
+  const animeId = window._currentAnimeId;
+  if (animeId) renderCommentArea(animeId);
+});
+
+/* ── Auth UI ── */
+function updateAuthUI(user) {
+  const btn   = document.getElementById('auth-btn');
+  const label = document.getElementById('auth-label');
+  if (!btn) return;
+  if (user) {
+    btn.className = 'auth-btn logged';
+    const avatar = user.photoURL
+      ? `<img class="user-avatar" src="${user.photoURL}" alt="">`
+      : `<div class="user-avatar-ph">${user.displayName?.[0]||'?'}</div>`;
+    btn.innerHTML = avatar + `<span id="auth-label">${user.displayName?.split(' ')[0]||'ユーザー'}</span>`;
+  } else {
+    btn.className = 'auth-btn';
+    btn.innerHTML = '<span id="auth-label">Googleでログイン</span>';
+  }
+}
+
+/* ── Login / Logout ── */
+window.handleAuth = async () => {
+  if (currentUser) {
+    await signOut(auth);
+    showToast('👋 ログアウトしました');
+  } else {
+    try {
+      await signInWithPopup(auth, provider);
+      showToast('✅ ログインしました！');
+    } catch(e) {
+      if (e.code !== 'auth/popup-closed-by-user')
+        showToast('❌ ログインに失敗しました');
+    }
+  }
+};
+
+/* ── Comment Area Renderer ── */
+window.renderCommentArea = function(animeId) {
+  window._currentAnimeId = animeId;
+  const area = document.getElementById('c-auth-area');
+  const list = document.getElementById('c-list');
+  if (!area || !list) return;
+
+  // Unsubscribe previous listener
+  if (unsubComments) { unsubComments(); unsubComments = null; }
+
+  if (!currentUser) {
+    // Not logged in → show login wall
+    area.innerHTML = `
+      <div class="c-login-wall">
+        <p>コメントするにはGoogleアカウントでログインが必要です</p>
+        <button class="c-login-btn" onclick="handleAuth()">🔑 Googleでログイン</button>
+      </div>`;
+    list.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:12px 0">ログインするとコメントが見られます</div>';
+    return;
+  }
+
+  // Logged in → show input
+  const av = currentUser.photoURL
+    ? `<img class="c-avatar" src="${currentUser.photoURL}" alt="">`
+    : `<div class="c-avatar-ph">${currentUser.displayName?.[0]||'?'}</div>`;
+
+  area.innerHTML = `
+    <div class="c-user-row">
+      ${av}
+      <span class="c-user-name">${esc(currentUser.displayName||'ユーザー')}</span>
+    </div>
+    <div class="c-form">
+      <input class="c-input" id="c-input" placeholder="コメントを入力..." maxlength="200" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();window.sendComment()}">
+      <button class="c-send" onclick="window.sendComment()">送信</button>
+    </div>`;
+
+  // Real-time comments from Firestore
+  const q = query(
+    collection(db, 'comments'),
+    where('animeId', '==', String(animeId)),
+    orderBy('createdAt', 'desc')
+  );
+  unsubComments = onSnapshot(q, snap => {
+    if (!snap.docs.length) {
+      list.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:8px 0">まだコメントがありません。最初の一言を！</div>';
+      return;
+    }
+    list.innerHTML = snap.docs.map(d => {
+      const c = d.data();
+      const mine = c.uid === currentUser?.uid;
+      const av2 = c.photoURL
+        ? `<img class="c-avatar" src="${c.photoURL}" alt="">`
+        : `<div class="c-avatar-ph">${(c.displayName||'?')[0]}</div>`;
+      const time = c.createdAt?.toDate
+        ? c.createdAt.toDate().toLocaleString('ja-JP')
+        : '---';
+      return `<div class="c-item">
+        <div class="c-meta">
+          ${av2}
+          <span style="font-weight:700;color:var(--text2)">${esc(c.displayName||'名無し')}</span>
+          <span>${time}</span>
+          ${mine?`<button class="c-del" onclick="window.deleteComment('${d.id}')">削除</button>`:''}
+        </div>
+        <div class="c-text">${esc(c.text)}</div>
+      </div>`;
+    }).join('');
+  }, err => {
+    console.error('comment listen error:', err);
+    list.innerHTML = '<div style="font-size:12px;color:var(--text3)">コメントの読み込みに失敗しました</div>';
+  });
+};
+
+/* ── Send Comment ── */
+window.sendComment = async () => {
+  if (!currentUser) { showToast('ログインしてください'); return; }
+  const inp = document.getElementById('c-input');
+  const text = inp?.value?.trim();
+  if (!text) return;
+  inp.value = '';
+  inp.disabled = true;
+  try {
+    await addDoc(collection(db, 'comments'), {
+      animeId: String(window._currentAnimeId),
+      text,
+      uid: currentUser.uid,
+      displayName: currentUser.displayName || '名無し',
+      photoURL: currentUser.photoURL || '',
+      createdAt: new Date(),
+    });
+    showToast('💬 コメントを投稿しました！');
+  } catch(e) {
+    console.error(e);
+    showToast('❌ 投稿に失敗しました。もう一度お試しください。');
+  } finally {
+    if (inp) inp.disabled = false;
+  }
+};
+
+/* ── Delete Comment ── */
+window.deleteComment = async (docId) => {
+  if (!confirm('このコメントを削除しますか？')) return;
+  try {
+    await deleteDoc(doc(db, 'comments', docId));
+    showToast('🗑️ コメントを削除しました');
+  } catch(e) {
+    showToast('❌ 削除に失敗しました');
+  }
+};
+
+/* ── Patch openModal to trigger comment area ── */
+const _origOpen = window.openModal;
+window.openModal = async function(id) {
+  await _origOpen(id);
+  window._currentAnimeId = id;
+  renderCommentArea(id);
+};
+
+/* ── Close modal: unsubscribe ── */
+const _origClose = window.closeModal;
+window.closeModal = function() {
+  _origClose();
+  if (unsubComments) { unsubComments(); unsubComments = null; }
+  window._currentAnimeId = null;
+};
 </script>
 </body>
 </html>
