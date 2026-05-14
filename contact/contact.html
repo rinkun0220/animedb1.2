@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ | ANIMEDB</title>
+  <meta name="description" content="ANIMEDBへのお問い合わせはこちらから。ご意見・ご要望・不具合報告などをお送りください。">
+  <meta name="robots" content="index,follow">
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --surface: #18181c;
+      --border: #2a2a30;
+      --accent: #e8364a;
+      --accent2: #ff6b7a;
+      --text: #e8e8ec;
+      --text-muted: #888898;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 56px;
+    }
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .logo span { color: var(--text); font-weight: 400; font-size: 0.85rem; margin-left: 8px; }
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      border-left: 4px solid var(--accent);
+      padding-left: 14px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 40px;
+      padding-left: 18px;
+    }
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.04em;
+    }
+    label .required {
+      color: var(--accent);
+      margin-left: 4px;
+    }
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+    select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888898' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .privacy-note {
+      background: rgba(232,54,74,0.08);
+      border: 1px solid rgba(232,54,74,0.25);
+      border-radius: 6px;
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .privacy-note a { color: var(--accent2); text-decoration: none; }
+    .privacy-note a:hover { text-decoration: underline; }
+    .btn-submit {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      font-family: inherit;
+    }
+    .btn-submit:hover { background: #c42d3e; }
+    .btn-submit:active { transform: scale(0.98); }
+
+    /* Success message */
+    .success-msg {
+      display: none;
+      background: rgba(40,200,100,0.1);
+      border: 1px solid rgba(40,200,100,0.3);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .success-msg .icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .success-msg h3 { color: #4cde88; font-size: 1.1rem; margin-bottom: 8px; }
+    .success-msg p { color: var(--text-muted); font-size: 0.9rem; }
+
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    footer nav { margin-bottom: 10px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+    footer nav a { color: var(--text-muted); text-decoration: none; }
+    footer nav a:hover { color: var(--accent2); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="./index.html">ANIMEDB<span>お問い合わせ</span></a>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="page-title">お問い合わせ</h1>
+    <p class="subtitle">ご意見・ご要望・不具合報告などお気軽にどうぞ。通常2〜3営業日以内にご返信いたします。</p>
+
+    <div class="form-card">
+      <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <div class="form-group">
+          <label for="name">お名前<span class="required">*</span></label>
+          <input type="text" id="name" name="name" placeholder="山田 太郎" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">メールアドレス<span class="required">*</span></label>
+          <input type="email" id="email" name="email" placeholder="example@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="category">お問い合わせ種別</label>
+          <select id="category" name="category">
+            <option value="">選択してください</option>
+            <option value="bug">不具合・バグ報告</option>
+            <option value="feature">機能リクエスト</option>
+            <option value="data">データの誤りについて</option>
+            <option value="ads">広告について</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">メッセージ<span class="required">*</span></label>
+          <textarea id="message" name="message" placeholder="お問い合わせ内容を入力してください" required></textarea>
+        </div>
+
+        <div class="privacy-note">
+          送信いただいた情報は、お問い合わせ対応のみに使用します。詳しくは<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。
+        </div>
+
+        <button type="submit" class="btn-submit">送信する</button>
+      </form>
+
+      <div class="success-msg" id="successMsg">
+        <div class="icon">✅</div>
+        <h3>送信が完了しました</h3>
+        <p>お問い合わせありがとうございます。<br>2〜3営業日以内にご返信いたします。</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <nav>
+      <a href="./index.html">ホーム</a>
+      <a href="./privacy.html">プライバシーポリシー</a>
+      <a href="./contact.html">お問い合わせ</a>
+    </nav>
+    <p>© 2026 ANIMEDB. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Formspree が設定されるまでのデモ動作（送信後に成功メッセージ表示）
+    const form = document.getElementById('contactForm');
+    const successMsg = document.getElementById('successMsg');
+    form.addEventListener('submit', function(e) {
+      // Formspree IDが未設定の場合はデモモードで動作
+      if (form.action.includes('YOUR_FORM_ID')) {
+        e.preventDefault();
+        form.style.display = 'none';
+        successMsg.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
