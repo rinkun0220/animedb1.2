@@ -54,7 +54,7 @@ body{background:var(--bg);color:var(--text);font-family:'Noto Sans JP',sans-seri
 img{display:block}
 button,select,input{font-family:'Noto Sans JP',sans-serif}
 /* ── HEADER ── */
-header{position:fixed;top:0;left:0;right:0;z-index:400;height:58px;display:flex;align-items:center;padding:0 20px;gap:4px;background:linear-gradient(180deg,rgba(8,8,8,.97) 0%,rgba(8,8,8,.8) 100%);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+header{position:fixed;top:0;left:0;right:0;z-index:400;height:62px;display:flex;align-items:center;padding:0 24px;gap:4px;background:linear-gradient(180deg,rgba(8,8,8,.98) 0%,rgba(8,8,8,.0) 100%);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);border-bottom:none;transition:background .3s,backdrop-filter .3s}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;margin-right:20px;flex-shrink:0}
 .logo-a{color:#fff}.logo-db{color:var(--red)}
 .nav-links{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none}
@@ -70,21 +70,26 @@ main{padding-top:58px;min-height:100vh}
 .panel.active{display:block;animation:pIn .2s ease}
 @keyframes pIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 /* ── HERO ── */
-.hero{position:relative;height:clamp(260px,42vw,460px);display:flex;align-items:flex-end;padding:clamp(18px,4vw,38px);overflow:hidden;cursor:pointer}
-.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 20%;transition:transform 10s ease}
-.hero:hover .hero-bg{transform:scale(1.04)}
-.hero-vignette{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.65) 35%,rgba(8,8,8,.1) 70%,transparent 100%),linear-gradient(to right,rgba(8,8,8,.55) 0%,transparent 50%)}
-.hero-content{position:relative;z-index:1;max-width:600px}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#fff;font-size:10px;font-weight:900;letter-spacing:1.5px;padding:4px 12px;border-radius:4px;margin-bottom:10px;text-transform:uppercase}
-.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,5vw,54px);letter-spacing:2px;line-height:1.05;color:#fff;margin-bottom:10px;text-shadow:0 2px 20px rgba(0,0,0,.9)}
-.hero-meta{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:rgba(255,255,255,.7);margin-bottom:16px}
-.hero-score{color:var(--green);font-weight:700;font-size:13px}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
-.hero-cta{display:flex;align-items:center;gap:7px;padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .15s;-webkit-tap-highlight-color:transparent}
-.hero-cta.pri{background:#fff;color:#000}
-.hero-cta.pri:hover{background:rgba(255,255,255,.88)}
-.hero-cta.sec{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(8px)}
-.hero-cta.sec:hover{background:rgba(255,255,255,.2)}
+.hero{position:relative;height:clamp(380px,55vw,620px);display:flex;align-items:flex-end;padding:clamp(24px,5vw,60px);overflow:hidden;cursor:pointer}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 15%;transition:transform 12s ease;filter:brightness(.9)}
+.hero:hover .hero-bg{transform:scale(1.06)}
+.hero-vignette{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.8) 25%,rgba(8,8,8,.3) 55%,transparent 100%),linear-gradient(to right,rgba(8,8,8,.8) 0%,rgba(8,8,8,.2) 60%,transparent 100%)}
+/* パーティクル風装飾 */
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(232,54,74,.08) 0%,transparent 60%);pointer-events:none}
+.hero-content{position:relative;z-index:1;max-width:680px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,var(--red),#ff6b6b);color:#fff;font-size:10px;font-weight:900;letter-spacing:2px;padding:5px 14px;border-radius:4px;margin-bottom:14px;text-transform:uppercase;box-shadow:0 4px 20px rgba(232,54,74,.5)}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,6vw,72px);letter-spacing:3px;line-height:1;color:#fff;margin-bottom:14px;text-shadow:0 4px 30px rgba(0,0,0,.95),0 0 60px rgba(0,0,0,.8)}
+.hero-meta{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:rgba(255,255,255,.75);margin-bottom:20px;align-items:center}
+.hero-score{color:var(--green);font-weight:900;font-size:15px;display:flex;align-items:center;gap:4px}
+.hero-divider{width:1px;height:14px;background:rgba(255,255,255,.3)}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero-cta{display:flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s;-webkit-tap-highlight-color:transparent;letter-spacing:.5px}
+.hero-cta.pri{background:#fff;color:#000;box-shadow:0 8px 30px rgba(255,255,255,.25)}
+.hero-cta.pri:hover{background:rgba(255,255,255,.9);transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,255,255,.3)}
+.hero-cta.sec{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(12px)}
+.hero-cta.sec:hover{background:rgba(255,255,255,.25);transform:translateY(-2px)}
+/* ヒーロー下部フェード */
+.hero-fade{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,var(--bg) 0%,transparent 100%);pointer-events:none;z-index:0}
 /* ── ROWS ── */
 .section{margin:24px 0 0}
 .section-head{display:flex;align-items:baseline;gap:10px;padding:0 20px 10px}
@@ -239,10 +244,7 @@ main{padding-top:58px;min-height:100vh}
 .trailer-wrap h4{font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
 .trailer-frame-wrap{position:relative;width:100%;aspect-ratio:16/9}
 .trailer-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:8px}
-/* synopsis */
-.m-syn-area{padding:16px 22px 20px;border-top:1px solid var(--border)}
-.m-syn-area h4{font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
-.m-syn-text{font-size:13px;color:var(--text2);line-height:1.85;white-space:pre-wrap}
+
 /* comments */
 .m-comments{padding:16px 22px 22px;border-top:1px solid var(--border)}
 .m-comments h4{font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
@@ -294,7 +296,7 @@ header{padding:0 14px}
 .nf-card{min-width:120px;max-width:120px}
 .sug-box{left:14px;right:14px}
 .anime-grid{gap:10px;padding:12px 14px}
-.m-body,.m-syn-area,.m-comments,.trailer-wrap,.stream-section{padding-left:16px;padding-right:16px}
+.m-body,.m-comments,.trailer-wrap,.stream-section{padding-left:16px;padding-right:16px}
 .m-poster,.m-poster-ph{width:88px;left:14px}
 .m-body{padding-top:28px}
 .m-hero{height:175px}
@@ -365,9 +367,7 @@ crossorigin="anonymous"></script>
 <span class="nav-lbl">お気に入り</span>
 <span class="fav-badge" id="fav-badge">0</span>
 </button>
-<button class="auth-btn" id="auth-btn" onclick="handleAuth()" style="margin-left:8px;flex-shrink:0">
-<span id="auth-label">ログイン</span>
-</button>
+<!-- ログインボタン非表示 -->
 </nav>
 </header>
 
@@ -522,11 +522,7 @@ crossorigin="anonymous"></script>
 <h4>この作品が見られる配信先</h4>
 <div class="stream-links" id="stream-links"></div>
 </div>
-<!-- SYNOPSIS -->
-<div class="m-syn-area">
-<h4>作品概要</h4>
-<div class="m-syn-text" id="m-syn"></div>
-</div>
+
 <!-- COMMENTS -->
 <div class="m-comments">
 <h4>コメント</h4>
@@ -613,7 +609,14 @@ for(let y=now;y>=1990;y--) ys.innerHTML+=`<option value="${y}"${y===A.year?' sel
 document.getElementById('season-sel').value=A.season;
 updateFavBadge();
 renderSearchHist();
-loadHome();
+/* 10秒以上かかる場合は再試行ボタンを表示 */
+const loadTimer=setTimeout(()=>{
+const slot=document.getElementById('hero-slot');
+if(slot&&slot.querySelector('.loader')){
+slot.innerHTML=`<div class="state-box"><div class="state-icon">⏱️</div><div class="state-text">接続に時間がかかっています。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button><br><small style="color:var(--text4);font-size:10px;margin-top:8px;display:block">Jikan APIが混雑しています</small></div></div>`;
+}
+},10000);
+loadHome().finally(()=>clearTimeout(loadTimer));
 initPWA();
 })();
 
@@ -628,24 +631,72 @@ if(t==='rank') renderRank();
 }
 
 /* ══ API ══ */
-async function api(url){const r=await fetch(url);if(!r.ok)throw new Error('API '+r.status);return r.json()}
+/* タイムアウト＋リトライ付きfetch */
+async function api(url,retries=2,timeout=5000){
+for(let i=0;i<retries;i++){
+const ctrl=new AbortController();
+const tid=setTimeout(()=>ctrl.abort(),timeout);
+try{
+const r=await fetch(url,{signal:ctrl.signal,headers:{'Accept':'application/json'}});
+clearTimeout(tid);
+if(r.status===429){await delay(2000);throw new Error('Rate limit');}
+if(!r.ok)throw new Error('API '+r.status);
+return await r.json();
+}catch(e){
+clearTimeout(tid);
+if(i===retries-1)throw e;
+await delay(1500);
+}
+}
+}
+/* セッションキャッシュ（メモリ＋localStorage） */
+const SCACHE={};
+const SCACHE_TTL=1000*60*20; // 20分
+function scGet(k){
+if(SCACHE[k]&&Date.now()-SCACHE[k].t<SCACHE_TTL)return SCACHE[k].d;
+try{const r=JSON.parse(sessionStorage.getItem('adb_sc_'+k));if(r&&Date.now()-r.t<SCACHE_TTL){SCACHE[k]=r;return r.d}}catch(_){}
+return null;
+}
+function scSet(k,d){
+SCACHE[k]={t:Date.now(),d};
+try{sessionStorage.setItem('adb_sc_'+k,JSON.stringify({t:Date.now(),d}))}catch(_){}
+}
 function dedup(arr){const m=new Map();arr.forEach(a=>{if(a?.mal_id&&!m.has(a.mal_id))m.set(a.mal_id,a)});return[...m.values()]}
 function clean(arr){return(arr||[]).filter(a=>a&&a.mal_id&&!a.explicit_genres?.length&&!(a.genres||[]).some(g=>g.name==='Hentai'))}
 
 /* ══ HOME ══ */
 async function loadHome(){
-document.getElementById('hero-slot').innerHTML=`<div class="state-box"><div class="loader"></div><div class="state-text">データ読み込み中...</div></div>`;
+const heroSlot=document.getElementById('hero-slot');
+const ck=`home_${A.year}_${A.season}`;
+const cached=scGet(ck);
+/* キャッシュがあれば即座に表示（ローディング画面なし） */
+if(cached){A.homeItems=cached;renderHome();loadHomeBackground(ck);return;}
+/* キャッシュなしの初回だけローディング表示 */
+heroSlot.innerHTML=`<div class="state-box"><div class="loader"></div><div class="state-text">アニメ情報を取得中...</div></div>`;
 try{
 const d=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`);
 let items=dedup(clean(d.data||[]));
 if(d.pagination?.has_next_page){
-await delay(600);
+await delay(700);
 try{const d2=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}?page=2`);items=dedup([...items,...clean(d2.data||[])])}catch(_){}
 }
-A.homeItems=items;renderHome();
+scSet(ck,items);A.homeItems=items;renderHome();
 }catch(e){
-document.getElementById('hero-slot').innerHTML=`<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">取得失敗: ${e.message}</div></div>`;
+try{
+const fb=await api('https://api.jikan.moe/v4/top/anime?filter=airing&limit=25');
+const items=dedup(clean(fb.data||[]));
+if(items.length){scSet(ck,items);A.homeItems=items;renderHome();return;}
+}catch(_){}
+document.getElementById('hero-slot').innerHTML=`<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">取得失敗。少し待ってから再試行してください。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
 }
+}
+async function loadHomeBackground(ck){
+try{
+const d=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`,2,5000);
+let items=dedup(clean(d.data||[]));
+if(d.pagination?.has_next_page){await delay(700);try{const d2=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}?page=2`,2,6000);items=dedup([...items,...clean(d2.data||[])])}catch(_){}}
+scSet(ck,items);A.homeItems=items;renderHome();
+}catch(_){}
 }
 
 function renderHome(){
@@ -660,18 +711,22 @@ document.getElementById('hero-slot').innerHTML=`
 <div class="hero" onclick="openModal(${h.mal_id})">
 <div class="hero-bg" style="background-image:url('${hImg}')"></div>
 <div class="hero-vignette"></div>
+<div class="hero-fade"></div>
 <div class="hero-content">
-<div class="hero-badge">⭐ 今期 No.1</div>
+<div class="hero-badge">🏆 今期 No.1 アニメ</div>
 <div class="hero-title">${esc(h.title_japanese||h.title||'')}</div>
 <div class="hero-meta">
-<span class="hero-score">★ ${h.score?h.score.toFixed(2):'N/A'} / 10</span>
+<span class="hero-score">★ ${h.score?h.score.toFixed(2):'N/A'}</span>
+${h.score?`<span class="hero-divider"></span>`:''}
 ${h.type?`<span>${h.type}</span>`:''}
+${h.type&&h.episodes?`<span class="hero-divider"></span>`:''}
 ${h.episodes?`<span>${h.episodes}話</span>`:(h.type==='Movie'?'<span>映画</span>':'')}
-${(h.studios||[])[0]?`<span>${h.studios[0].name}</span>`:''}
+${(h.studios||[])[0]?`<span class="hero-divider"></span><span>${h.studios[0].name}</span>`:''}
+${(h.genres||[]).slice(0,2).map(g=>`<span style="background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:11px">${g.name}</span>`).join('')}
 </div>
 <div class="hero-actions">
 <button class="hero-cta pri" onclick="event.stopPropagation();openModal(${h.mal_id})">▶ 詳細を見る</button>
-<button class="hero-cta sec" onclick="event.stopPropagation();favToggle(${h.mal_id})">${isFav(h.mal_id)?'❤️':'♡'} お気に入り</button>
+<button class="hero-cta sec" onclick="event.stopPropagation();favToggle(${h.mal_id})">${isFav(h.mal_id)?'❤️ 済み':'♡ お気に入り'}</button>
 </div>
 </div>
 </div>`;
@@ -680,7 +735,7 @@ if(histItems.length>=3) rows+=`<div class="section history-rec"><div class="sect
 document.getElementById('home-rows').innerHTML=rows;
 }
 
-function mkRow(t,items,showRank){return`<div class="section"><div class="section-head"><div class="section-title">${t}</div></div><div class="nf-row">${items.map((a,i)=>nfCard(a,showRank?i+1:0)).join('')}</div></div>`}
+function mkRow(t,items,showRank){return`<div class="section"><div class="section-head"><div class="section-title">${t}</div><span style="font-size:10px;color:var(--text3);margin-left:auto;cursor:pointer" onclick="ST('season')">すべて見る →</span></div><div class="nf-row">${items.map((a,i)=>nfCard(a,showRank?i+1:0)).join('')}</div></div>`}
 
 /* ★修正: nfCard - pointer-events:none を img/overlay/bottom に追加し、カード全体のクリックが確実に通るように */
 function nfCard(a,rank){
@@ -700,24 +755,54 @@ ${rank?`<div class="rank-bg" style="pointer-events:none">${rank}</div>`:''}
 /* ══ SEASON ══ */
 async function fetchSeason(){
 const btn=document.getElementById('show-btn');btn.disabled=true;btn.textContent='読込中...';
-document.getElementById('s-content').innerHTML=`<div class="state-box"><div class="loader"></div></div>`;
+document.getElementById('s-content').innerHTML=`<div class="state-box"><div class="loader"></div><div class="state-text">データ取得中...</div></div>`;
 document.getElementById('s-pager').style.display='none';
 document.getElementById('type-bar').style.display='none';
 document.getElementById('sort-bar').style.display='none';
 A.year=document.getElementById('year-sel').value;A.season=document.getElementById('season-sel').value;
-try{
-const all=[];let pg=1,has=true;
-while(has&&pg<=8){
-const d=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}?page=${pg}`);
-all.push(...clean(d.data||[]));has=d.pagination?.has_next_page||false;pg++;if(has)await delay(600);
-}
-A.all=dedup(all);A.type='all';A.sort='score';A.page=1;
+const ck=`season_${A.year}_${A.season}`;
+/* キャッシュ確認 */
+const cached=scGet(ck);
+if(cached){
+A.all=cached;A.type='all';A.sort='score';A.page=1;
 document.getElementById('s-sort').value='score';
 document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('on',b.dataset.t==='all'));
 applyFilter();document.getElementById('type-bar').style.display='flex';document.getElementById('sort-bar').style.display='flex';
 A.homeItems=A.all;renderHome();
-}catch(e){document.getElementById('s-content').innerHTML=`<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">失敗: ${e.message}</div></div>`}
 btn.disabled=false;btn.innerHTML=`<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> 表示`;
+/* バックグラウンドで最新データに更新 */
+fetchSeasonBackground(ck);
+return;
+}
+try{
+const all=[];let pg=1,has=true;
+while(has&&pg<=8){
+const d=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}?page=${pg}`);
+all.push(...clean(d.data||[]));has=d.pagination?.has_next_page||false;pg++;if(has)await delay(800);
+}
+const items=dedup(all);
+scSet(ck,items);
+A.all=items;A.type='all';A.sort='score';A.page=1;
+document.getElementById('s-sort').value='score';
+document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('on',b.dataset.t==='all'));
+applyFilter();document.getElementById('type-bar').style.display='flex';document.getElementById('sort-bar').style.display='flex';
+A.homeItems=A.all;renderHome();
+}catch(e){
+document.getElementById('s-content').innerHTML=`<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">通信エラーが発生しました。<br><button onclick="fetchSeason()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
+document.getElementById('type-bar').style.display='none';document.getElementById('sort-bar').style.display='none';
+}
+btn.disabled=false;btn.innerHTML=`<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> 表示`;
+}
+async function fetchSeasonBackground(ck){
+try{
+const all=[];let pg=1,has=true;
+while(has&&pg<=8){
+const d=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}?page=${pg}`,2,6000);
+all.push(...clean(d.data||[]));has=d.pagination?.has_next_page||false;pg++;if(has)await delay(800);
+}
+const items=dedup(all);
+scSet(ck,items);
+}catch(_){}
 }
 
 function setType(t){A.type=t;A.page=1;document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('on',b.dataset.t===t));applyFilter()}
@@ -903,7 +988,6 @@ document.getElementById('m-stats').innerHTML='';
 document.getElementById('m-hero-bg').style.backgroundImage='';
 document.getElementById('m-img-wrap').innerHTML='<div class="m-poster-ph" style="display:flex">🎬</div>';
 document.getElementById('stream-links').innerHTML='';
-document.getElementById('m-syn').textContent='';
 document.getElementById('c-list').innerHTML='';
 document.getElementById('trailer-wrap').style.display='none';
 
@@ -957,7 +1041,7 @@ trailerBtn.dataset.embed=embedUrl;
 A.trailerOn=false;
 document.getElementById('trailer-wrap').style.display='none';
 document.getElementById('m-trailer-btn').classList.remove('trailer-on');
-document.getElementById('m-syn').textContent=anime.synopsis||'';
+
 }
 
 function updateMFavBtn(){
@@ -1085,6 +1169,21 @@ function dismissPWA(){
 document.getElementById('pwa-banner').classList.remove('show');
 localStorage.setItem('pwa_dismissed','1');
 }
+
+/* ══ HEADER SCROLL ══ */
+window.addEventListener('scroll',()=>{
+const h=document.querySelector('header');
+if(!h)return;
+if(window.scrollY>60){
+h.style.background='linear-gradient(180deg,rgba(8,8,8,.98) 0%,rgba(8,8,8,.95) 100%)';
+h.style.backdropFilter='blur(16px)';
+h.style.borderBottom='1px solid rgba(255,255,255,.06)';
+}else{
+h.style.background='linear-gradient(180deg,rgba(8,8,8,.98) 0%,rgba(8,8,8,0) 100%)';
+h.style.backdropFilter='blur(0px)';
+h.style.borderBottom='none';
+}
+},{passive:true});
 
 /* ══ SERVICE WORKER ══ */
 if('serviceWorker' in navigator){
