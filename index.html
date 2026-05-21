@@ -1049,11 +1049,10 @@ const links=[
 {name:'▶ YouTubeで探す',url:ytSearch,cls:'yt'},
 {name:'Prime Video',url:`https://www.amazon.co.jp/s?k=${titleJa}&i=instant-video`,cls:''},
 {name:'ABEMA',url:`https://abema.tv/search?q=${titleJa}`,cls:''},
-{name:'Netflix',url:`https://www.netflix.com/search?q=${title}`,cls:''},
+{name:'dアニメストア',url:`https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${titleJa}`,cls:''},
 ];
 return links.map(l=>`<a class="stream-link ${l.cls}" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.name}</a>`).join('');
 }
-
 /* ══ MODAL ★修正: 先にモーダルを開いてからデータ取得 ══ */
 async function openModal(id){
 /* まずモーダルをローディング状態で即座に開く */
