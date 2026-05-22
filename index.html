@@ -82,9 +82,26 @@ main{padding-top:58px;min-height:100vh}
   100%{background-position:100% 50%}
 }
 /* アニメ風装飾ライン */
+.static-hero-bg{
+  position:relative;
+  overflow:hidden;
+}
+
 .static-hero-bg::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(45deg,transparent,transparent 80px,rgba(232,54,74,.03) 80px,rgba(232,54,74,.03) 82px);
+  content:'';
+  position:absolute;
+  inset:0;
+
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 80px,
+      rgba(232,54,74,.03) 80px,
+      rgba(232,54,74,.03) 82px
+    );
+
+  pointer-events:none;
 }
 .static-hero-bg::after{
   content:'';position:absolute;
