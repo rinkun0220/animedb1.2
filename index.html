@@ -792,60 +792,6 @@ async function loadHome() {
     heroSlot.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
   }
 }
-/* ══ HOME ══ */
-async function loadHome() {
-  const heroSlot = document.getElementById('hero-slot');
-  const sh = document.getElementById('static-hero');
-  const ck = `home_${A.year}_${A.season}`;
-  const cached = scGet(ck);
-
-  /* キャッシュ（2回目以降のアクセス）があれば、1秒も待たずに即座に表示 */
-  if (cached) {
-    if (sh) sh.classList.add('hidden');
-    A.homeItems = cached;
-    renderHome();
-    loadHomeBackground(ck);
-    return;
-  }
-
-  /* 【初回アクセス時】白い画面にならないよう、黒い背景を維持したまま中央にローディングを表示 */
-  heroSlot.innerHTML = `
-    <div class="state-box" style="min-height:70vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(8,8,8,0.95); z-index:10;">
-      <div class="loader"></div>
-      <div class="state-text" style="color:#fff; margin-top:16px; font-weight:bold; letter-spacing:1px;">最新のアニメ情報を読み込み中...</div>
-    </div>
-  `;
-
-  /* 複数APIを並列で試し、最初に成功したものを使う */
-  const apis = [
-    `https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`,
-    `https://api.jikan.moe/v4/top/anime?filter=airing&limit=25`,
-    `https://api.jikan.moe/v4/top/anime?limit=25`
-  ];
-  let loaded = false;
-  for (const url of apis) {
-    if (loaded) break;
-    try {
-      const d = await api(url, 1, 4000);
-      const items = dedup(clean(d.data || []));
-      if (items.length) {
-        scSet(ck, items);
-        A.homeItems = items;
-        
-        // データの準備が整ってから、黒背景(static-hero)を消してリゼロを描画
-        if (sh) sh.classList.add('hidden');
-        renderHome();
-        loaded = true;
-      }
-    } catch (_) {}
-    if (!loaded) await delay(300);
-  }
-  
-  if (!loaded) {
-    if (sh) sh.classList.remove('hidden');
-    heroSlot.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
-  }
-}
 
 async function loadHomeBackground(ck) {
   try {
