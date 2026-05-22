@@ -678,7 +678,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function delay(ms){return new Promise(r=>setTimeout(r,ms))}
 
 /* ══ CACHE ══ */
-const CACHE = newMap();
+const CACHE = new Map();
 const SCACHE = new Map();
 /* ══ STATE ══ */
 const A={
