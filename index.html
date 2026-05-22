@@ -739,35 +739,52 @@ function dedup(arr){const m=new Map();arr.forEach(a=>{if(a?.mal_id&&!m.has(a.mal
 function clean(arr){return(arr||[]).filter(a=>a&&a.mal_id&&!a.explicit_genres?.length&&!(a.genres||[]).some(g=>g.name==='Hentai'))}
 
 /* ══ HOME ══ */
-async function loadHome(){
-const heroSlot=document.getElementById('hero-slot');
-const ck=`home_${A.year}_${A.season}`;
-const cached=scGet(ck);
-/* キャッシュがあれば即座に表示（ローディング画面なし） */
-if(cached){A.homeItems=cached;renderHome();loadHomeBackground(ck);return;}
-/* キャッシュなしの初回だけローディング表示 */
-heroSlot.innerHTML=`<div class="state-box"><div class="loader"></div><div class="state-text">アニメ情報を取得中...</div></div>`;
-/* 複数APIを並列で試し、最初に成功したものを使う */
-const apis=[
-  `https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`,
-  `https://api.jikan.moe/v4/top/anime?filter=airing&limit=25`,
-  `https://api.jikan.moe/v4/top/anime?limit=25`
-];
-let loaded=false;
-for(const url of apis){
-  if(loaded)break;
-  try{
-    const d=await api(url,1,4000);
-    const items=dedup(clean(d.data||[]));
-    if(items.length){
-      scSet(ck,items);A.homeItems=items;renderHome();loaded=true;const sh=document.getElementById('static-hero');if(sh)sh.classList.add('hidden');
-    }
-  }catch(_){}
-  if(!loaded)await delay(300);
-}
-if(!loaded){
-  document.getElementById('hero-slot').innerHTML=`<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
-}
+async function loadHome() {
+  const heroSlot = document.getElementById('hero-slot');
+  const sh = document.getElementById('static-hero');
+  const ck = `home_${A.year}_${A.season}`;
+  const cached = scGet(ck);
+
+  // 【追加】ページを開いた瞬間に、真っ黒な初期画面(static-hero)を即座に非表示にする
+  if (sh) sh.classList.add('hidden');
+
+  /* キャッシュがあれば即座に表示（ローディング画面なし） */
+  if (cached) {
+    A.homeItems = cached;
+    renderHome();
+    loadHomeBackground(ck);
+    return;
+  }
+
+  /* キャッシュなしの初回だけ一時的なスケルトン（ローディング）表示 */
+  heroSlot.innerHTML = `<div class="state-box"><div class="loader"></div><div class="state-text">アニメ情報を取得中...</div></div>`;
+
+  /* 複数APIを並列で試し、最初に成功したものを使う */
+  const apis = [
+    `https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`,
+    `https://api.jikan.moe/v4/top/anime?filter=airing&limit=25`,
+    `https://api.jikan.moe/v4/top/anime?limit=25`
+  ];
+  let loaded = false;
+  for (const url of apis) {
+    if (loaded) break;
+    try {
+      const d = await api(url, 1, 4000);
+      const items = dedup(clean(d.data || []));
+      if (items.length) {
+        scSet(ck, items);
+        A.homeItems = items;
+        renderHome();
+        loaded = true;
+      }
+    } catch (_) {}
+    if (!loaded) await delay(300);
+  }
+  if (!loaded) {
+    // 万が一APIが全滅した時だけ、真っ黒画面(static-hero)を保険として復活させる
+    if (sh) sh.classList.remove('hidden');
+    document.getElementById('hero-slot').innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
+  }
 }
 async function loadHomeBackground(ck){
 try{
