@@ -678,7 +678,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 function delay(ms){return new Promise(r=>setTimeout(r,ms))}
 
 /* ══ CACHE ══ */
-const CACHE = new Map();
+const CACHE = newMap();
 const SCACHE = new Map();
 /* ══ STATE ══ */
 const A={
@@ -752,8 +752,6 @@ await delay(1500);
 }
 }
 /* セッションキャッシュ（メモリ＋localStorage） */
-const SCACHE={};
-const SCACHE_TTL=1000*60*20; // 20分
 function scGet(k){
 if(SCACHE[k]&&Date.now()-SCACHE[k].t<SCACHE_TTL)return SCACHE[k].d;
 try{const r=JSON.parse(sessionStorage.getItem('adb_sc_'+k));if(r&&Date.now()-r.t<SCACHE_TTL){SCACHE[k]=r;return r.d}}catch(_){}
