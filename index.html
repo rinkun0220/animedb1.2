@@ -786,6 +786,36 @@ async function loadHome() {
     document.getElementById('hero-slot').innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
   }
 }
+  /* キャッシュなしの初回だけ一時的なスケルトン（ローディング）表示 */
+  heroSlot.innerHTML = `<div class="state-box"><div class="loader"></div><div class="state-text">アニメ情報を取得中...</div></div>`;
+
+  /* 複数APIを並列で試し、最初に成功したものを使う */
+  const apis = [
+    `https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`,
+    `https://api.jikan.moe/v4/top/anime?filter=airing&limit=25`,
+    `https://api.jikan.moe/v4/top/anime?limit=25`
+  ];
+  let loaded = false;
+  for (const url of apis) {
+    if (loaded) break;
+    try {
+      const d = await api(url, 1, 4000);
+      const items = dedup(clean(d.data || []));
+      if (items.length) {
+        scSet(ck, items);
+        A.homeItems = items;
+        renderHome();
+        loaded = true;
+      }
+    } catch (_) {}
+    if (!loaded) await delay(300);
+  }
+  if (!loaded) {
+    // 万が一APIが全滅した時だけ、真っ黒画面(static-hero)を保険として復活させる
+    if (sh) sh.classList.remove('hidden');
+    document.getElementById('hero-slot').innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
+  }
+}
 async function loadHomeBackground(ck){
 try{
 const d=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`,2,5000);
