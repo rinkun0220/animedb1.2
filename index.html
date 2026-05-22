@@ -782,9 +782,9 @@ async function loadHome() {
     return;
   }
 
-  /* 【初回アクセス時】白い画面にならないよう、黒い背景を維持したまま中央にローディングを表示 */
+/* 【初回アクセス時】白い画面にならないよう、黒い背景を維持したまま中央にローディングを表示 */
   heroSlot.innerHTML = `
-    <div class="state-box" style="min-height:70vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background:rgba(8,8,8,0.95); z-index:10;">
+    <div class="state-box" style="min-height:60vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
       <div class="loader"></div>
       <div class="state-text" style="color:#fff; margin-top:16px; font-weight:bold; letter-spacing:1px;">最新のアニメ情報を読み込み中...</div>
     </div>
