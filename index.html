@@ -660,19 +660,30 @@ function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function delay(ms){return new Promise(r=>setTimeout(r,ms))}
 
+/* ══ CACHE ══ */
+const CACHE = new Map();
+
 /* ══ STATE ══ */
 const A={
 year:new Date().getFullYear(),
 season:(()=>{const m=new Date().getMonth()+1;return m<=3?'winter':m<=6?'spring':m<=9?'summer':'fall'})(),
-type:'all',sort:'score',page:1,PER:24,
-all:[],filtered:[],homeItems:[],
+type:'all',
+sort:'score',
+page:1,
+PER:24,
+all:[],
+filtered:[],
+homeItems:[],
 favs:load('adb_favs',[]),
 history:load('adb_history',[]),
 searchHist:load('adb_shist',[]),
 comments:load('adb_comments',{}),
 commentLikes:load('adb_clikes',{}),
-rankTab:'score',favSort:'added',
-current:null,trailerOn:false,timer:null,
+rankTab:'score',
+favSort:'added',
+current:null,
+trailerOn:false,
+timer:null,
 };
 
 /* ══ INIT ══ */
