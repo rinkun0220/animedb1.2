@@ -853,6 +853,7 @@ function renderHome() {
 function mkRow(t, items, showRank) {
   return `<div class="section"><div class="section-head"><div class="section-title">${t}</div><span style="font-size:10px;color:var(--text3);margin-left:auto;cursor:pointer" onclick="ST('season')">すべて見る →</span></div><div class="nf-row">${items.map((a, i) => nfCard(a, showRank ? i + 1 : 0)).join('')}</div></div>`;
 }
+  
 /* ★修正: nfCard - pointer-events:none を img/overlay/bottom に追加し、カード全体のクリックが確実に通るように */
 function nfCard(a,rank){
 const img=a.images?.jpg?.image_url||'';
