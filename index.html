@@ -745,9 +745,9 @@ async function loadHome() {
   const ck = `home_${A.year}_${A.season}`;
   const cached = scGet(ck);
 
-  /* キャッシュ（2回目以降のアクセス）があれば、1秒も待たずに即座に表示 */
+  /* キャッシュ（2回目以降のアクセス）があれば、即座に表示 */
   if (cached) {
-    if (sh) sh.classList.add('hidden'); // 黒背景を即座に消す
+    if (sh) sh.classList.add('hidden');
     A.homeItems = cached;
     renderHome();
     loadHomeBackground(ck);
@@ -778,7 +778,7 @@ async function loadHome() {
         scSet(ck, items);
         A.homeItems = items;
         
-        // データの準備が整ってから、黒背景(static-hero)を消してリゼロを描画する
+        // データの準備が整ってから、黒背景(static-hero)を消してリゼロを描画
         if (sh) sh.classList.add('hidden');
         renderHome();
         loaded = true;
@@ -788,7 +788,6 @@ async function loadHome() {
   }
   
   if (!loaded) {
-    // 万が一APIのエラーでデータが取れなかった場合のみ、初期の黒画面(static-hero)を保険として復活させる
     if (sh) sh.classList.remove('hidden');
     heroSlot.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
   }
@@ -810,88 +809,50 @@ async function loadHomeBackground(ck) {
     renderHome();
   } catch (_) {}
 }
-  if (!loaded) {
-    // 万が一APIが全滅した時だけ、真っ黒画面(static-hero)を保険として復活させる
-    if (sh) sh.classList.remove('hidden');
-    document.getElementById('hero-slot').innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
-  }
-}
-  /* キャッシュなしの初回だけ一時的なスケルトン（ローディング）表示 */
-  heroSlot.innerHTML = `<div class="state-box"><div class="loader"></div><div class="state-text">アニメ情報を取得中...</div></div>`;
 
-  /* 複数APIを並列で試し、最初に成功したものを使う */
-  const apis = [
-    `https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`,
-    `https://api.jikan.moe/v4/top/anime?filter=airing&limit=25`,
-    `https://api.jikan.moe/v4/top/anime?limit=25`
-  ];
-  let loaded = false;
-  for (const url of apis) {
-    if (loaded) break;
-    try {
-      const d = await api(url, 1, 4000);
-      const items = dedup(clean(d.data || []));
-      if (items.length) {
-        scSet(ck, items);
-        A.homeItems = items;
-        renderHome();
-        loaded = true;
-      }
-    } catch (_) {}
-    if (!loaded) await delay(300);
+function renderHome() {
+  const items = A.homeItems; if (!items.length) return;
+  const byScore = [...items].sort((a, b) => (b.score || 0) - (a.score || 0));
+  const byPop = [...items].sort((a, b) => (b.members || 0) - (a.members || 0));
+  const byAI = aiSort(items);
+  const histItems = historyRec(items);
+  const h = byScore[0];
+  const hImg = h?.images?.jpg?.large_image_url || h?.images?.jpg?.image_url || '';
+  
+  document.getElementById('hero-slot').innerHTML = `
+    <div class="hero" onclick="openModal(${h.mal_id})">
+      <div class="hero-bg" style="background-image:url('${hImg}')"></div>
+      <div class="hero-vignette"></div>
+      <div class="hero-fade"></div>
+      <div class="hero-content">
+        <div class="hero-badge">🏆 今期 No.1 アニメ</div>
+        <div class="hero-title">${esc(h.title_japanese || h.title || '')}</div>
+        <div class="hero-meta">
+          <span class="hero-score">★ ${h.score ? h.score.toFixed(2) : 'N/A'}</span>
+          ${h.score ? `<span class="hero-divider"></span>` : ''}
+          ${h.type ? `<span>${h.type}</span>` : ''}
+          ${h.type && h.episodes ? `<span class="hero-divider"></span>` : ''}
+          ${h.episodes ? `<span>${h.episodes}話</span>` : (h.type === 'Movie' ? '<span>映画</span>' : '')}
+          ${(h.studios || [])[0] ? `<span class="hero-divider"></span><span>${h.studios[0].name}</span>` : ''}
+          ${(h.genres || []).slice(0, 2).map(g => `<span style="background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:11px">${g.name}</span>`).join('')}
+        </div>
+        <div class="hero-actions">
+          <button class="hero-cta pri" onclick="event.stopPropagation();openModal(${h.mal_id})">▶ 詳細を見る</button>
+          <button class="hero-cta sec" onclick="event.stopPropagation();favToggle(${h.mal_id})">${isFav(h.mal_id) ? '❤️ 済み' : '♡ お気に入り'}</button>
+        </div>
+      </div>
+    </div>`;
+
+  let rows = mkRow('⭐ 今期 高評価 TOP', byScore.slice(0, 20), true) + mkRow('🔥 今期 人気 TOP', byPop.slice(0, 20), false) + mkRow('🤖 AIおすすめ', byAI.slice(0, 20), false);
+  if (histItems.length >= 3) {
+    rows += `<div class="section history-rec"><div class="section-head"><div class="section-title">🧠 あなたへのおすすめ</div><span style="font-size:10px;color:var(--text3)">閲覧履歴から</span></div><div class="nf-row">${histItems.slice(0, 20).map(a => nfCard(a, 0)).join('')}</div></div>`;
   }
-  if (!loaded) {
-    // 万が一APIが全滅した時だけ、真っ黒画面(static-hero)を保険として復活させる
-    if (sh) sh.classList.remove('hidden');
-    document.getElementById('hero-slot').innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
-  }
-}
-async function loadHomeBackground(ck){
-try{
-const d=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}`,2,5000);
-let items=dedup(clean(d.data||[]));
-if(d.pagination?.has_next_page){await delay(700);try{const d2=await api(`https://api.jikan.moe/v4/seasons/${A.year}/${A.season}?page=2`,2,6000);items=dedup([...items,...clean(d2.data||[])])}catch(_){}}
-scSet(ck,items);A.homeItems=items;renderHome();
-}catch(_){}
+  document.getElementById('home-rows').innerHTML = rows;
 }
 
-function renderHome(){
-const items=A.homeItems;if(!items.length)return;
-const byScore=[...items].sort((a,b)=>(b.score||0)-(a.score||0));
-const byPop=[...items].sort((a,b)=>(b.members||0)-(a.members||0));
-const byAI=aiSort(items);
-const histItems=historyRec(items);
-const h=byScore[0];
-const hImg=h?.images?.jpg?.large_image_url||h?.images?.jpg?.image_url||'';
-document.getElementById('hero-slot').innerHTML=`
-<div class="hero" onclick="openModal(${h.mal_id})">
-<div class="hero-bg" style="background-image:url('${hImg}')"></div>
-<div class="hero-vignette"></div>
-<div class="hero-fade"></div>
-<div class="hero-content">
-<div class="hero-badge">🏆 今期 No.1 アニメ</div>
-<div class="hero-title">${esc(h.title_japanese||h.title||'')}</div>
-<div class="hero-meta">
-<span class="hero-score">★ ${h.score?h.score.toFixed(2):'N/A'}</span>
-${h.score?`<span class="hero-divider"></span>`:''}
-${h.type?`<span>${h.type}</span>`:''}
-${h.type&&h.episodes?`<span class="hero-divider"></span>`:''}
-${h.episodes?`<span>${h.episodes}話</span>`:(h.type==='Movie'?'<span>映画</span>':'')}
-${(h.studios||[])[0]?`<span class="hero-divider"></span><span>${h.studios[0].name}</span>`:''}
-${(h.genres||[]).slice(0,2).map(g=>`<span style="background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:11px">${g.name}</span>`).join('')}
-</div>
-<div class="hero-actions">
-<button class="hero-cta pri" onclick="event.stopPropagation();openModal(${h.mal_id})">▶ 詳細を見る</button>
-<button class="hero-cta sec" onclick="event.stopPropagation();favToggle(${h.mal_id})">${isFav(h.mal_id)?'❤️ 済み':'♡ お気に入り'}</button>
-</div>
-</div>
-</div>`;
-let rows=mkRow('⭐ 今期 高評価 TOP',byScore.slice(0,20),true)+mkRow('🔥 今期 人気 TOP',byPop.slice(0,20),false)+mkRow('🤖 AIおすすめ',byAI.slice(0,20),false);
-if(histItems.length>=3) rows+=`<div class="section history-rec"><div class="section-head"><div class="section-title">🧠 あなたへのおすすめ</div><span style="font-size:10px;color:var(--text3)">閲覧履歴から</span></div><div class="nf-row">${histItems.slice(0,20).map(a=>nfCard(a,0)).join('')}</div></div>`;
-document.getElementById('home-rows').innerHTML=rows;
+function mkRow(t, items, showRank) {
+  return `<div class="section"><div class="section-head"><div class="section-title">${t}</div><span style="font-size:10px;color:var(--text3);margin-left:auto;cursor:pointer" onclick="ST('season')">すべて見る →</span></div><div class="nf-row">${items.map((a, i) => nfCard(a, showRank ? i + 1 : 0)).join('')}</div></div>`;
 }
-
-function mkRow(t,items,showRank){return`<div class="section"><div class="section-head"><div class="section-title">${t}</div><span style="font-size:10px;color:var(--text3);margin-left:auto;cursor:pointer" onclick="ST('season')">すべて見る →</span></div><div class="nf-row">${items.map((a,i)=>nfCard(a,showRank?i+1:0)).join('')}</div></div>`}
 
 /* ★修正: nfCard - pointer-events:none を img/overlay/bottom に追加し、カード全体のクリックが確実に通るように */
 function nfCard(a,rank){
