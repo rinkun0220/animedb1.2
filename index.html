@@ -1111,7 +1111,7 @@ const ytSearch=`https://www.youtube.com/results?search_query=${titleJa}+公式+t
 const links=[
 {name:'▶ YouTubeで探す',url:ytSearch,cls:'yt'},
 {name:'Prime Video',url:`https://www.amazon.co.jp/s?k=${titleJa}&i=instant-video`,cls:''},
-{name:'ABEMA',url:`https://abema.tv/search?q=${titleJa}`,cls:''},
+{name:'ABEMAプレミアム',url:`https://abema.tv/search?q=${titleJa}`,cls:''},
 {name:'dアニメストア',url:`https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${titleJa}`,cls:''},
 ];
 return links.map(l=>`<a class="stream-link ${l.cls}" href="${l.url}" target="_blank" rel="noopener noreferrer">${l.name}</a>`).join('');
