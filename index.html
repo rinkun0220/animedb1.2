@@ -930,7 +930,7 @@ document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('on',b.dataset.
 applyFilter();document.getElementById('type-bar').style.display='flex';document.getElementById('sort-bar').style.display='flex';
 A.homeItems=A.all;renderHome();
 }catch(e){
-document.getElementById('s-content').innerHTML=`<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">通信エラーが発生しました。<br><button onclick="fetchSeason()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
+document.getElementById('s-content').innerHTML=`<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="fetchSeason()" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
 document.getElementById('type-bar').style.display='none';document.getElementById('sort-bar').style.display='none';
 }
 btn.disabled=false;btn.innerHTML=`<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> 表示`;
