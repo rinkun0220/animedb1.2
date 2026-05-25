@@ -715,7 +715,7 @@ renderSearchHist();
 const loadTimer=setTimeout(()=>{
 const slot=document.getElementById('hero-slot');
 if(slot&&slot.querySelector('.loader')){
-slot.innerHTML=`<div class="state-box"><div class="state-icon">⏱️</div><div class="state-text">接続に時間がかかっています。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button><br><small style="color:var(--text4);font-size:10px;margin-top:8px;display:block">Jikan APIが混雑しています</small></div></div>`;
+slot.innerHTML=`<div class="state-box"><div class="state-icon">⏱️</div><div class="state-text">接続に時間がかかっています。<br><button onclick="window.location.reload()" style="...">数分後に再試行</button>
 }
 },5000);
 loadHome().finally(()=>clearTimeout(loadTimer));
