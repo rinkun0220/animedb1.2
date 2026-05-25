@@ -739,7 +739,9 @@ for(let i=0;i<retries;i++){
 const ctrl=new AbortController();
 const tid=setTimeout(()=>ctrl.abort(),timeout);
 try{
-const r=await fetch(url,{signal:ctrl.signal,headers:{'Accept':'application/json'}});
+// データを取る前に、あえて3000ミリ秒（3秒）じっと待つ
+await delay(2000); 
+const res = await fetch(`https://api.jikan.moe/v4/...`);
 clearTimeout(tid);
 if(r.status===429){await delay(2000);throw new Error('Rate limit');}
 if(!r.ok)throw new Error('API '+r.status);
