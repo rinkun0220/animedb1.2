@@ -1189,11 +1189,11 @@ function renderModalDetails(a){
   const streamSection = document.getElementById('mStreamSection');
   const streamLinks = document.getElementById('mStreamLinks');
   
-  let streamHtml = `
-    <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" rel="nofollow" target="_blank" class="stream-link" style="border-color:var(--red); color:#fff; background:var(--red-a)">
+ let streamHtml = `
+    <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" rel="nofollow" target="_blank" class="stream-link">
       ABEMAプレミアムで探す
     </a>
-    <a href="https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encodedKw}" target="_blank" class="stream-link" style="border-color:#ff6600; color:#ff6600">
+    <a href="https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encodedKw}" target="_blank" class="stream-link">
       dアニメストアで検索
     </a>
     <a href="https://www.amazon.co.jp/s?k=${encodedKw}&i=instant-video" target="_blank" class="stream-link">
@@ -1230,11 +1230,11 @@ function closeModal(e, force=false){
 // ── COMMENT LOGIC ──
 function renderComments(animeId){
   const wall = document.getElementById('commentWall');
-  const key = `comments_${animeId}`;
-  let comments = JSON.parse(localStorage.getItem(key) || '[]');
+  if (!wall) return; // エラー防止
   
   let formHtml = '';
   if(currentUser){
+    // ログインしている時は今まで通り投稿フォームを表示
     formHtml = `
       <div class="c-user-row">
         <div class="user-avatar-ph">${currentUser.name[0].toUpperCase()}</div>
@@ -1246,14 +1246,11 @@ function renderComments(animeId){
       </div>
     `;
   } else {
-    formHtml = `
-      <div class="c-login-wall">
-        <p>感想の投稿やいいね機能を利用するにはログインが必要です</p>
-      </div>
-    `;
+    // 💡 ログインしていない時は何も表示しない（空っぽにする）ので枠ごと消え去ります
+    formHtml = '';
   }
   
-  // 💡 コメントリストの組み立て処理をすべて無くし、ログイン枠（formHtml）だけを画面に表示します
+  // 画面に反映
   wall.innerHTML = formHtml;
 }
 // ── TOAST LOGIC ──
