@@ -715,7 +715,7 @@ renderSearchHist();
 const loadTimer=setTimeout(()=>{
 const slot=document.getElementById('hero-slot');
 if(slot&&slot.querySelector('.loader')){
-slot.innerHTML=`<div class="state-box"><div class="state-icon">⏱️</div><div class="state-text">接続に時間がかかっています。<br><button onclick="window.location.reload()" style="...">数分後に再試行</button>
+slot.innerHTML=`<div class="state-box"><div class="state-icon">⏱️</div><div class="state-text">接続に時間がかかっています。<br><button onclick="window.location.reload()" style="...">数分後に再試行</button></div></div>`;
 }
 },5000);
 loadHome().finally(()=>clearTimeout(loadTimer));
