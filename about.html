@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>ANIMEDBについて｜日本最大級のアニメデータベース</title>
-<meta name="description" content="ANIMEDBは1990年から最新作まで全シーズン対応の無料アニメデータベースです。スコアランキング・AI検索・YouTube予告・配信先検索など多彩な機能を無料で提供しています。">
+<meta name="description" content="ANIMEDB is a free anime database from 1990 to the latest season. Score rankings, AI search, YouTube trailer, streaming link etc.">
 <meta name="robots" content="index,follow">
 <meta name="author" content="ANIMEDB">
 <link rel="canonical" href="https://rinkun0220.github.io/animedb1.2/about.html">
@@ -82,7 +82,7 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
 </head>
 <body>
 <header>
-<a class="logo" href="index.html"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+<a class="logo" href="index.html" style="cursor: pointer;"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
 <a class="back-btn" href="index.html">← ホームへ戻る</a>
 </header>
 
@@ -94,7 +94,6 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
 
 <div class="about-wrap">
 
-  <!-- サービス概要 -->
   <div class="about-section">
     <div class="about-section-label">Overview</div>
     <h2 class="about-section-title">ANIMEDBとは</h2>
@@ -103,7 +102,16 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
     <p class="about-section-text">データはMyAnimeList（MAL）のAPIをもとに提供しており、スコア・話数・スタジオ・ジャンルなど詳細な情報を確認できます。YouTubeでの予告動画検索や、主要動画配信サービスへのリンクも搭載しています。</p>
   </div>
 
-  <!-- 統計 -->
+  <div class="about-section" style="padding: 24px; background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; margin-bottom: 56px;">
+    <div class="about-section-label" style="color: var(--green);">Story & Passion</div>
+    <h2 class="about-section-title" style="font-size: 20px; margin-bottom: 12px;">運営者の想い・サイトへの情熱</h2>
+    <p class="about-section-text" style="font-size: 14px; margin-bottom: 0; line-height: 1.9; color: var(--text);">
+      私はアニメが大好きで、毎シーズン数多くの素晴らしい作品に出会ってきました。しかし、作品数が増える一方で「今期のアニメはどこで見られるんだろう？」「過去の名作を配信しているプラットフォームはどこだろう？」と迷ってしまうことが多々ありました。<br><br>
+      そこで、自分と同じアニメファンの方々が、迷わず瞬時に目的の作品や公式配信先にたどり着ける「最高に使いやすくてカッコいいアニメデータベース」を作りたいと思い、このサイトを立ち上げました。<br><br>
+      1990年代の名作から最新の今期アニメまで、ファン目線で本当に欲しい情報を整理し、常に最新の公式配信情報をお届けできるよう、個人でこだわりを持って開発・運営しています。大好きなアニメの魅力を、一人でも多くの人と共有できれば幸いです。
+    </p>
+  </div>
+
   <div class="about-section">
     <div class="stats-row">
       <div class="stat-item"><div class="stat-num">35年+</div><div class="stat-label">データ収録期間</div></div>
@@ -113,7 +121,6 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
     </div>
   </div>
 
-  <!-- 主な機能 -->
   <div class="about-section">
     <div class="about-section-label">Features</div>
     <h2 class="about-section-title">主な機能</h2>
@@ -139,11 +146,11 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
         <div class="feature-title">YouTube予告</div>
         <div class="feature-desc">各作品の詳細ページからYouTubeで公式予告・トレーラー動画をすぐに検索・視聴できます。</div>
       </div>
-<div class="feature-card">
-  <div class="feature-icon">🎬</div>
-  <div class="feature-title">配信先リンク</div>
-  <div class="feature-desc">Prime Video・ABEMAプレミアム・dアニメストアなど配信サービスへのリンクを作品ごとに表示。どこで見られるかすぐに確認できます。</div>
-</div>
+      <div class="feature-card">
+        <div class="feature-icon">🎬</div>
+        <div class="feature-title">配信先リンク</div>
+        <div class="feature-desc">Prime Video・ABEMAプレミアム・dアニメストアなど配信サービスへのリンクを作品ごとに表示。どこで見られるかすぐに確認できます。</div>
+      </div>
       <div class="feature-card">
         <div class="feature-icon">❤️</div>
         <div class="feature-title">お気に入り管理</div>
@@ -162,7 +169,6 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
     </div>
   </div>
 
-  <!-- 対応データ -->
   <div class="about-section">
     <div class="about-section-label">Data</div>
     <h2 class="about-section-title">収録データについて</h2>
@@ -171,7 +177,6 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
     <p class="about-section-text">なお、一部の作品については情報が不完全な場合があります。正確な情報はMyAnimeListの公式サイトでご確認ください。</p>
   </div>
 
-  <!-- よくある質問 -->
   <div class="about-section">
     <div class="about-section-label">FAQ</div>
     <h2 class="about-section-title">よくある質問</h2>
@@ -201,7 +206,6 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
     </div>
   </div>
 
-  <!-- 運営情報 -->
   <div class="about-section">
     <div class="about-section-label">Operator</div>
     <h2 class="about-section-title">運営情報</h2>
