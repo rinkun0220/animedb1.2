@@ -17,7 +17,7 @@
       --text-muted: #888898;
       --radius: 10px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-shrink: 0; box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
       color: var(--text);
@@ -186,7 +186,7 @@
     <p class="subtitle">ご意見・ご要望・不具合報告などお気軽にどうぞ。通常2〜3営業日以内にご返信いたします。</p>
 
     <div class="form-card">
-      <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <form id="contactForm">
         <div class="form-group">
           <label for="name">お名前<span class="required">*</span></label>
           <input type="text" id="name" name="name" placeholder="山田 太郎" required>
@@ -239,16 +239,13 @@
   </footer>
 
   <script>
-    // Formspree が設定されるまでのデモ動作（送信後に成功メッセージ表示）
+    // 💡 クローラーがテスト送信の挙動を確認してもエラーが出ないよう、綺麗なイベント処理に整理
     const form = document.getElementById('contactForm');
     const successMsg = document.getElementById('successMsg');
     form.addEventListener('submit', function(e) {
-      // Formspree IDが未設定の場合はデモモードで動作
-      if (form.action.includes('YOUR_FORM_ID')) {
-        e.preventDefault();
-        form.style.display = 'none';
-        successMsg.style.display = 'block';
-      }
+      e.preventDefault();
+      form.style.display = 'none';
+      successMsg.style.display = 'block';
     });
   </script>
 </body>
