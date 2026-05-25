@@ -817,7 +817,7 @@ async function loadHome() {
   
   if (!loaded) {
     if (sh) sh.classList.remove('hidden');
-    heroSlot.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text">APIに接続できません。<br><button onclick="loadHome()" style="margin-top:12px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">再試行</button></div></div>`;
+    heroSlot.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="window.location.reload()" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
   }
 }
 
