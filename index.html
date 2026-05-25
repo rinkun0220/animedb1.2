@@ -408,7 +408,7 @@ header{padding:0 14px}
       <a href="https://animestore.docomo.ne.jp/" target="_blank" class="aff-card aff-card-danime">
         <span class="aff-title">dアニメストア</span>
         <span class="aff-desc">アニメ特化ならここ！7,200作品以上が月額660円で見放題。</span>
-        <span class="aff-cta" style="color:#ff6600">詳しく見る →</span>
+        <span class="aff-cta">詳しく見る →</span>
       </a>
 
       <a href="https://www.amazon.co.jp/gp/video/storefront" target="_blank" class="aff-card">
@@ -544,7 +544,7 @@ header{padding:0 14px}
     </div>
 
     <div class="m-comments">
-      <h4>みんなの感想・コメント</h4>
+      <h4>コメント</h4>
       <div id="commentWall"></div>
     </div>
   </div>
@@ -1249,7 +1249,6 @@ function renderComments(animeId){
     formHtml = `
       <div class="c-login-wall">
         <p>感想の投稿やいいね機能を利用するにはログインが必要です</p>
-        <button class="c-login-btn" onclick="toggleAuthModal(true)">すぐにログイン / 新規登録</button>
       </div>
     `;
   }
