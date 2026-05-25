@@ -374,6 +374,12 @@ header{padding:0 14px}
 main, .panel { 
   flex: 1;
 }
+
+/* 💡 重なり順を一番手前にして、リンクをクリックできるように強制します */
+footer {
+  position: relative;
+  z-index: 10000 !important;
+}
 </style>
 </head>
 <body>
