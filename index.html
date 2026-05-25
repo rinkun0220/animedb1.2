@@ -639,7 +639,7 @@ function renderHome(list){
   const title = getJpTitle(topAnime);
   const score = topAnime.score ? topAnime.score.toFixed(2) : '---';
   const episodes = topAnime.episodes || '?';
-  const syn = topAnime.synopsis ? topAnime.synopsis.substring(0,120)+'...' : 'ストーリー概要は現在登録されていません。';
+  const syn = ''; // 💡 ここを空っぽにすることで、英語のあらすじが一切表示されなくなります！
   
   heroSlot.innerHTML = `
     <div class="hero" onclick="openModal(${topAnime.mal_id}, 'home')">
@@ -1253,85 +1253,9 @@ function renderComments(animeId){
     `;
   }
   
-  let listHtml = '<div class="c-list">';
-  if(comments.length===0){
-    listHtml += `<div style="text-align:center; font-size:12px; color:var(--text3); padding:20px 0;">まだ感想がありません。最初のレビューを書いてみませんか？</div>`;
-  } else {
-    comments.sort((a,b)=>b.time - a.time).forEach((c,i)=>{
-      const isLiked = currentUser && c.likedBy && c.likedBy.includes(currentUser.id);
-      listHtml += `
-        <div class="c-item">
-          <div class="c-meta">${escapeHtml(c.userName)} ・ ${formatTime(c.time)}</div>
-          <div class="c-text">${escapeHtml(c.text)}</div>
-          <button class="c-like ${isLiked?'liked':''}" onclick="likeComment(${animeId}, ${c.id})">
-            ❤ <span>${c.likes || 0}</span>
-          </button>
-        </div>
-      `;
-    });
-  }
-  listHtml += '</div>';
-  
-  wall.innerHTML = formHtml + listHtml;
+  // 💡 コメントリストの組み立て処理をすべて無くし、ログイン枠（formHtml）だけを画面に表示します
+  wall.innerHTML = formHtml;
 }
-
-function submitComment(animeId){
-  const input = document.getElementById('cInput');
-  const text = input.value.trim();
-  if(!text) return;
-  
-  const key = `comments_${animeId}`;
-  let comments = JSON.parse(localStorage.getItem(key) || '[]');
-  
-  comments.push({
-    id: Date.now() + Math.floor(Math.random()*1000),
-    userId: currentUser.id,
-    userName: currentUser.name,
-    text: text,
-    time: Date.now(),
-    likes: 0,
-    likedBy: []
-  });
-  
-  localStorage.setItem(key, JSON.stringify(comments));
-  showToast('感想を投稿しました！');
-  renderComments(animeId);
-}
-
-function likeComment(animeId, commentId){
-  if(!currentUser){
-    showToast('いいねするにはログインしてください');
-    return;
-  }
-  const key = `comments_${animeId}`;
-  let comments = JSON.parse(localStorage.getItem(key) || '[]');
-  const c = comments.find(com=>com.id === commentId);
-  if(!c) return;
-  
-  if(!c.likedBy) c.likedBy = [];
-  
-  const idx = c.likedBy.indexOf(currentUser.id);
-  if(idx > -1){
-    c.likedBy.splice(idx, 1);
-    c.likes = Math.max(0, c.likes - 1);
-  } else {
-    c.likedBy.push(currentUser.id);
-    c.likes = (c.likes || 0) + 1;
-  }
-  
-  localStorage.setItem(key, JSON.stringify(comments));
-  renderComments(animeId);
-}
-
-function formatTime(ts){
-  const diff = Date.now() - ts;
-  if(diff < 60000) return '今すぐ';
-  if(diff < 3600000) return `${Math.floor(diff/60000)}分前`;
-  if(diff < 86400000) return `${Math.floor(diff/3600000)}時間前`;
-  const d = new Date(ts);
-  return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
-}
-
 // ── TOAST LOGIC ──
 let toastTimeout = null;
 function showToast(msg){
