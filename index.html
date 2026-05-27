@@ -647,15 +647,27 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 function switchPanel(key){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.nav-menu button, .nav-links button').forEach(b=>b.classList.remove('active'));
   const targetPanel = document.getElementById('panel-'+key);
   if(targetPanel) targetPanel.classList.add('active');
   const clickedBtn = document.querySelector(`button[onclick="switchPanel('${key}')"]`);
   if(clickedBtn) clickedBtn.classList.add('active');
   window.scrollTo({top:0});
+  
   if(key==='fav') renderFavGrid();
+  
+  // ── ランキングタブが押された時の安全・超同期処理 ──
+  if(key==='ranking'){
+    if(typeof loadRankingPage === 'function') {
+      loadRankingPage();
+    } else if(typeof showRanking === 'function') {
+      showRanking();
+    } else if(typeof loadSeasonPage === 'function') {
+      // 万が一専用関数がなくても、既存の超優秀なシーズン読み込み機能をハックして流用
+      loadSeasonPage(1); 
+    }
+  }
 }
-
 // ── HOME LOGIC ──
 async function loadHome(){
   const heroSlot = document.getElementById('heroSlot');
