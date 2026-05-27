@@ -659,7 +659,33 @@ function switchPanel(key){
   
   if(key==='fav') renderFavGrid();
   
-  // ── ランキングタブが押された時の安全・超同期処理 ──
+  // ── 📊 ランキングタブが押された時の強制描画ハック ──
+  if(key==='ranking'){
+    // 1. まず元々サイトにあるかもしれない「ランキング関数」を最優先で試す
+    if(typeof loadRankingPage === 'function') { loadRankingPage(); return; }
+    if(typeof showRanking === 'function') { showRanking(); return; }
+    
+    // 2. 関数がない場合、シーズン検索の「スコア順」の仕組みを完全にハイジャックしてランキング画面を奪う
+    const seasonResult = document.getElementById('seasonResult');
+    const rankingResult = document.getElementById('rankingResult') || document.getElementById('rankingGrid');
+    
+    if(typeof loadSeasonPage === 'function') {
+      // 既存の並び替え設定を「スコア順」に強制変更
+      const gridSort = document.getElementById('gridSort');
+      if(gridSort) gridSort.value = 'score';
+      
+      // シーズン機能にデータを一度作らせる
+      loadSeasonPage(1);
+      
+      // シーズン画面に出来上がったアニメ一覧を、ランキングの画面へ丸ごと「瞬間移動」させる
+      setTimeout(() => {
+        if(seasonResult && rankingResult && seasonResult.children.length > 0) {
+          rankingResult.innerHTML = seasonResult.innerHTML;
+        }
+      }, 100);
+    }
+  }
+}
   if(key==='ranking'){
     if(typeof loadRankingPage === 'function') {
       loadRankingPage();
