@@ -649,52 +649,37 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 function switchPanel(key){
+  // 1. 全画面と全ボタンの選択状態を一旦きれいに解除（フリーズの原因を完全排除）
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-menu button, .nav-links button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  
+  // 2. 押された画面とボタンをアクティブにする
   const targetPanel = document.getElementById('panel-'+key);
   if(targetPanel) targetPanel.classList.add('active');
   const clickedBtn = document.querySelector(`button[onclick="switchPanel('${key}')"]`);
   if(clickedBtn) clickedBtn.classList.add('active');
   window.scrollTo({top:0});
   
+  // 3. お気に入りタブの処理
   if(key==='fav') renderFavGrid();
   
-  // ── 📊 ランキングタブが押された時の強制描画ハック ──
-  if(key==='ranking'){
-    // 1. まず元々サイトにあるかもしれない「ランキング関数」を最優先で試す
-    if(typeof loadRankingPage === 'function') { loadRankingPage(); return; }
-    if(typeof showRanking === 'function') { showRanking(); return; }
+  // 4. ランキングタブが押された時の安全な同期処理
+  if(key==='ranking' && typeof loadSeasonPage === 'function'){
+    // 既存の並び替え設定を「スコア順」に強制セット
+    const gridSort = document.getElementById('gridSort');
+    if(gridSort) gridSort.value = 'score';
     
-    // 2. 関数がない場合、シーズン検索の「スコア順」の仕組みを完全にハイジャックしてランキング画面を奪う
-    const seasonResult = document.getElementById('seasonResult');
-    const rankingResult = document.getElementById('rankingResult') || document.getElementById('rankingGrid');
+    // すでに100%動くことが証明されているシーズン読み込み機能を安全に実行
+    loadSeasonPage(1);
     
-    if(typeof loadSeasonPage === 'function') {
-      // 既存の並び替え設定を「スコア順」に強制変更
-      const gridSort = document.getElementById('gridSort');
-      if(gridSort) gridSort.value = 'score';
-      
-      // シーズン機能にデータを一度作らせる
-      loadSeasonPage(1);
-      
-      // シーズン画面に出来上がったアニメ一覧を、ランキングの画面へ丸ごと「瞬間移動」させる
-      setTimeout(() => {
-        if(seasonResult && rankingResult && seasonResult.children.length > 0) {
-          rankingResult.innerHTML = seasonResult.innerHTML;
-        }
-      }, 100);
-    }
-  }
-}
-  if(key==='ranking'){
-    if(typeof loadRankingPage === 'function') {
-      loadRankingPage();
-    } else if(typeof showRanking === 'function') {
-      showRanking();
-    } else if(typeof loadSeasonPage === 'function') {
-      // 万が一専用関数がなくても、既存の超優秀なシーズン読み込み機能をハックして流用
-      loadSeasonPage(1); 
-    }
+    // 生成されたアニメ一覧（seasonResult）の中身を、ランキング画面（rankingResult）へ同期
+    setTimeout(() => {
+      const seasonResult = document.getElementById('seasonResult');
+      const rankingResult = document.getElementById('rankingResult');
+      if(seasonResult && rankingResult && seasonResult.children.length > 0) {
+        rankingResult.innerHTML = seasonResult.innerHTML;
+      }
+    }, 200);
   }
 }
 // ── HOME LOGIC ──
