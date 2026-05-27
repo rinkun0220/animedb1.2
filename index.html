@@ -649,7 +649,7 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 function switchPanel(key){
-  // 1. 全画面と全ボタンの選択状態を一旦きれいに解除
+  // 1. 全画面と全ボタンの選択状態を一旦きれいに解除（フリーズ原因の完全一掃）
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   
@@ -663,25 +663,7 @@ function switchPanel(key){
   // 3. お気に入りタブの処理
   if(key==='fav') renderFavGrid();
 }
-  // 4. ランキングタブが押された時の安全な同期処理
-  if(key==='ranking' && typeof loadSeasonPage === 'function'){
-    // 既存の並び替え設定を「スコア順」に強制セット
-    const gridSort = document.getElementById('gridSort');
-    if(gridSort) gridSort.value = 'score';
-    
-    // すでに100%動くことが証明されているシーズン読み込み機能を安全に実行
-    loadSeasonPage(1);
-    
-    // 生成されたアニメ一覧（seasonResult）の中身を、ランキング画面（rankingResult）へ同期
-    setTimeout(() => {
-      const seasonResult = document.getElementById('seasonResult');
-      const rankingResult = document.getElementById('rankingResult');
-      if(seasonResult && rankingResult && seasonResult.children.length > 0) {
-        rankingResult.innerHTML = seasonResult.innerHTML;
-      }
-    }, 200);
-  }
-}
+
 // ── HOME LOGIC ──
 async function loadHome(){
   const heroSlot = document.getElementById('heroSlot');
@@ -728,7 +710,286 @@ function renderHome(list){
   const title = getJpTitle(topAnime);
   const score = topAnime.score ? topAnime.score.toFixed(2) : '---';
   const episodes = topAnime.episodes || '?';
-  const syn = ''; // 💡 ここを空っぽにすることで、英語のあらすじが一切表示されなくなります！
+  const syn = ''; 
+  
+  heroSlot.innerHTML = `
+    <div class="hero" onclick="openModal(${topAnime.mal_id}, 'home')">
+      <div class="hero-bg" style="background-image:url('${bg}')"></div>
+      <div class="hero-vignette"></div>
+      <div class="hero-content">
+        <div class="hero-badge">🔥 本期最注目作品</div>
+        <h2 class="hero-title">${title}</h2>
+        <div class="hero-meta">
+          <span class="hero-score">★ ${score}</span>
+          <span class="hero-divider"></span>
+          <span>${topAnime.type || 'TV'}</span>
+          <span class="hero-divider"></span>
+          <span>全 ${episodes} 話</span>
+        </div>
+        <div class="static-hero-sub" style="margin-bottom:20px; display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical; overflow:hidden;">${syn}</div>
+        <div class="hero-actions">
+          <button class="hero-cta pri">詳細を見る</button>
+        </div>
+      </div>
+      <div class="hero-fade"></div>
+    </div>
+  `;
+  
+  let rowsHtml = '';
+  rowsHtml += makeRowHtml('総合評価ランキング (Top 10)', sorted.slice(0,10), true);
+  const pop = [...list].sort((a,b)=>b.members - a.members);
+  rowsHtml += makeRowHtml('今期のおすすめ・人気順', pop.slice(0,10));
+  
+  const actionG = list.filter(a=>a.genres?.some(g=>g.name==='Action')).slice(0,10);
+  if(actionG.length>0) rowsHtml += makeRowHtml('バトル・アクション緊迫作', actionG);
+  const fantasyG = list.filter(a=>a.genres?.some(g=>g.name==='Fantasy')).slice(0,10);
+  if(fantasyG.length>0) rowsHtml += makeRowHtml('異世界・ファンタジー', fantasyG);
+  
+  homeRows.innerHTML = rowsHtml;
+}
+
+function makeRowHtml(title, subset, showRank=false){
+  if(!subset || subset.length===0) return '';
+  let cards = '';
+  subset.forEach((a,i)=>{
+    const img = a.images?.jpg?.image_url || '';
+    const name = getJpTitle(a);
+    const score = a.score ? a.score.toFixed(1) : '---';
+    const isFav = favList.some(f=>f.id === a.mal_id);
+    const scoreClass = a.score >= 8 ? 'hi' : (a.score >= 7 ? 'md' : 'lo');
+    
+    let imgBlock = img ? `<img src="${img}" alt="${name}" loading="lazy">` : `<div class="nf-card-ph">🎬</div>`;
+    let rankBlock = showRank ? `<div class="rank-bg">${i+1}</div>` : '';
+    
+    cards += `
+      <div class="nf-card" onclick="openModal(${a.mal_id}, 'home')">
+        ${imgBlock}
+        <div class="type-pin">${a.type || 'TV'}</div>
+        <div class="score-pin ${scoreClass}">${score}</div>
+        <button class="fav-toggle ${isFav?'on':''}" onclick="toggleFav(event, ${a.mal_id}, '${escapeHtml(name)}', '${img}', ${a.score||0})">❤</button>
+        <div class="nf-overlay"></div>
+        <div class="nf-bottom">
+          <div class="nf-card-title">${name}</div>
+        </div>
+        ${rankBlock}
+      </div>
+    `;
+  });
+  return `
+    <div class="section">
+      <div class="section-head"><h3 class="section-title">${title}</h3></div>
+      <div class="nf-row">${cards}</div>
+    </div>
+  `;
+}
+
+function getJpTitle(a){
+  if(!a) return '';
+  const jp = a.titles?.find(t=>t.type==='Japanese');
+  if(jp && jp.title) return jp.title;
+  return a.title || 'Unknown Title';
+}
+
+function escapeHtml(str) {
+  if(!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+function initSeasonSelectors(){
+  const yearSel = document.getElementById('seasonYear');
+  const currentYear = new Date().getFullYear();
+  let html = '';
+  for(let y=currentYear; y>=1990; y--){
+    html += `<option value="${y}">${y} 年</option>`;
+  }
+  yearSel.innerHTML = html;
+}
+
+let currentGridType = 'all';
+
+async function loadSeasonPage(page=1){
+  const year = document.getElementById('seasonYear').value;
+  const season = document.getElementById('seasonType').value;
+  const grid = document.getElementById('seasonResult');
+  const pager = document.getElementById('seasonPager');
+  const showBtn = document.getElementById('seasonShowBtn');
+  
+  grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="loader"></div><div class="state-text">${year}年 [${season}] のデータを解析中...</div></div>`;
+  pager.style.display = 'none';
+  showBtn.disabled = true;
+  
+  let loaded = false;
+  setTimeout(() => {
+    if (!loaded) {
+      grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="loadSeasonPage(${page})" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
+      showBtn.disabled = false;
+    }
+  }, 5000);
+
+  try {
+    await delay(2000);
+    const res = await fetch(`https://api.jikan.moe/v4/seasons/${year}/${season}?page=${page}`);
+    if(!res.ok) throw new Error();
+    const json = await res.json();
+    loaded = true;
+    showBtn.disabled = false;
+    
+    if(!json.data || json.data.length===0){
+      grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">🔍</div><div class="state-text">該当するアニメが見つかりませんでした。</div></div>`;
+      return;
+    }
+    
+    currentGridData = json.data;
+    gridPage = page;
+    
+    const hasNext = json.pagination?.has_next_page || false;
+    renderGrid(hasNext);
+  } catch(e) {
+    loaded = true;
+    showBtn.disabled = false;
+    grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="loadSeasonPage(${page})" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
+  }
+}
+
+function filterGridType(btn, type){
+  btn.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  currentGridType = type;
+  sortGrid();
+}
+
+function sortGrid(){
+  const sortVal = document.getElementById('gridSort').value;
+  let filtered = [...currentGridData];
+  
+  if(currentGridType !== 'all'){
+    filtered = filtered.filter(a=>{
+      if(!a.type) return false;
+      const t = a.type.toLowerCase();
+      if(currentGridType==='tv') return t==='tv';
+      if(currentGridType==='movie') return t==='movie';
+      if(currentGridType==='ova') return t==='ova' || t==='ona' || t==='special';
+      return true;
+    });
+  }
+  
+  if(sortVal==='score'){
+    filtered.sort((a,b)=>(b.score || 0) - (a.score || 0));
+  } else if(sortVal==='pop'){
+    filtered.sort((a,b)=>(b.members || 0) - (a.members || 0));
+  } else if(sortVal==='title'){
+    filtered.sort((a,b)=>getJpTitle(a).localeCompare(getJpTitle(b), 'ja'));
+  }
+  
+  document.getElementById('gridCount').innerHTML = `該当: <strong>${filtered.length}</strong> 件`;
+  
+  const grid = document.getElementById('seasonResult');
+  if(filtered.length===0){
+    grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">🍃</div><div class="state-text">条件に合う作品がこのページ内にありません。</div></div>`;
+    return;
+  }
+  
+  let html = '';
+  filtered.forEach(a=>{
+    const img = a.images?.jpg?.image_url || '';
+    const name = getJpTitle(a);
+    const score = a.score ? a.score.toFixed(1) : '---';
+    const typeStr = a.type || 'TV';
+    const eps = a.episodes ? `${a.episodes}話` : '?話';
+    
+    let imgPart = img ? `<img src="${img}" class="g-img" alt="${name}" loading="lazy">` : `<div class="g-ph">🎬</div>`;
+    
+    html += `
+      <div class="g-card" onclick="openModal(${a.mal_id}, 'season')">
+        <div class="g-img-wrap">
+          ${imgPart}
+          <div class="score-pin hi" style="background:rgba(0,0,0,.75)">★ ${score}</div>
+        </div>
+        <div class="g-info">
+          <div class="g-title">${name}</div>
+          <div class="g-meta">
+            <span>${typeStr}</span>
+            <span>${eps}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+}
+
+function renderGrid(hasNext){
+  sortGrid();
+  const pager = document.getElementById('seasonPager');
+  pager.style.display = 'flex';
+  document.getElementById('prevBtn').disabled = (gridPage === 1);
+  document.getElementById('nextBtn').disabled = !hasNext;
+  document.getElementById('pageInfo').innerText = `ページ ${gridPage}`;
+}
+
+function switchPanel(key){
+  // 1. 全画面と全ボタンの選択状態を一旦きれいに解除（フリーズ原因の完全一掃）
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  
+  // 2. 押された画面とボタンをアクティブにする
+  const targetPanel = document.getElementById('panel-'+key);
+  if(targetPanel) targetPanel.classList.add('active');
+  const clickedBtn = document.querySelector(`button[onclick="switchPanel('${key}')"]`);
+  if(clickedBtn) clickedBtn.classList.add('active');
+  window.scrollTo({top:0});
+  
+  // 3. お気に入りタブの処理
+  if(key==='fav') renderFavGrid();
+}
+
+// ── HOME LOGIC ──
+async function loadHome(){
+  const heroSlot = document.getElementById('heroSlot');
+  const homeRows = document.getElementById('homeRows');
+  heroSlot.innerHTML = `<div class="state-box"><div class="loader"></div><div class="state-text">最新のトレンドアニメを読み込み中...</div></div>`;
+  homeRows.innerHTML = '';
+  
+  let loaded = false;
+  setTimeout(() => {
+    if (!loaded) {
+      heroSlot.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="window.location.reload()" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
+    }
+  }, 5000);
+
+  try {
+    await delay(2000);
+    const res = await fetch('https://api.jikan.moe/v4/seasons/now?page=1');
+    if(!res.ok) throw new Error();
+    const json = await res.json();
+    loaded = true;
+    if(!json.data || json.data.length===0){
+      showHomeError();
+      return;
+    }
+    cachedHomeData = json.data;
+    renderHome(json.data);
+  } catch(e) {
+    loaded = true;
+    showHomeError();
+  }
+}
+
+function showHomeError(){
+  document.getElementById('heroSlot').innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="window.location.reload()" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
+}
+
+function renderHome(list){
+  const heroSlot = document.getElementById('heroSlot');
+  const homeRows = document.getElementById('homeRows');
+  const sorted = [...list].filter(a=>a.score).sort((a,b)=>b.score - a.score);
+  const topAnime = sorted[0] || list[0];
+  
+  const bg = topAnime.images?.jpg?.large_image_url || '';
+  const title = getJpTitle(topAnime);
+  const score = topAnime.score ? topAnime.score.toFixed(2) : '---';
+  const episodes = topAnime.episodes || '?';
+  const syn = ''; 
   
   heroSlot.innerHTML = `
     <div class="hero" onclick="openModal(${topAnime.mal_id}, 'home')">
@@ -948,7 +1209,6 @@ function renderGrid(hasNext){
 function changeGridPage(dir){
   loadSeasonPage(gridPage + dir);
 }
-
 // ── SEARCH LOGIC ──
 let searchTimeout = null;
 function onSearchInput(){
