@@ -649,7 +649,7 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 
 function switchPanel(key){
-  // 1. 全画面と全ボタンの選択状態を一旦きれいに解除（フリーズの原因を完全排除）
+  // 1. 全画面と全ボタンの選択状態を一旦きれいに解除（一番安全な初期コード）
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   
@@ -662,6 +662,7 @@ function switchPanel(key){
   
   // 3. お気に入りタブの処理
   if(key==='fav') renderFavGrid();
+}
   
   // 4. ランキングタブが押された時の安全な同期処理
   if(key==='ranking' && typeof loadSeasonPage === 'function'){
