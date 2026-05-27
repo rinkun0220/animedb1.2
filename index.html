@@ -502,7 +502,16 @@ footer {
       <button id="nextBtn" class="pg-btn" onclick="changeGridPage(1)">次へ</button>
     </div>
   </div>
-
+<div id="panel-ranking" class="panel">
+    <div class="sort-bar" style="margin-top: 10px;">
+      <span class="sort-lbl">📊 リアルタイム総合評価ランキング</span>
+      <span class="count-info">トップ 50作品</span>
+    </div>
+    <div class="type-bar">
+      <button class="chip on" onclick="alert('総合ランキングを表示中。シーズン切り替えは【シーズン】タブをご利用ください。')">全期間総合</button>
+    </div>
+    <div id="rankingResult" class="anime-grid"></div>
+  </div>
   <div id="panel-search" class="panel">
     <div class="search-wrap">
       <div class="s-field">
