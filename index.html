@@ -1687,6 +1687,97 @@ function dismissPwaBanner(){
   localStorage.setItem('pwa_dismissed', 'true');
 }
 </script>
+<div class="modal-ov" id="season-search-modal">
+  <div class="modal" style="max-width: 500px;">
+    <button class="modal-close" id="close-season-modal">&times;</button>
+    
+    <div style="padding: 20px 20px 12px; border-bottom: 1px solid var(--border);">
+      <h3 style="font-size: 16px; font-weight: 900; color: #fff; letter-spacing: 0.5px;">シーズンを選択して検索</h3>
+      <p style="font-size: 11px; color: var(--text2); margin-top: 2px;">1990年以降の全シーズン対応（ランキング表示前段階）</p>
+    </div>
 
-</body>
+    <div id="popup-year-list" style="max-height: 55vh; overflow-y: auto; padding: 16px 20px;">
+      </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const seasonModal = document.getElementById('season-search-modal');
+    const openBtn = document.getElementById('nav-season-btn');
+    const closeBtn = document.getElementById('close-season-modal');
+    const yearListContainer = document.getElementById('popup-year-list');
+
+    // 1. ポップアップの開閉処理
+    if (openBtn) {
+        openBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            seasonModal.classList.add('open');
+            document.body.style.overflow = 'hidden'; 
+        });
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            seasonModal.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+    }
+
+    seasonModal.addEventListener('click', function(e) {
+        if (e.target === seasonModal) {
+            seasonModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // 2. 2026年から1990年までのシーズンボタンを自動生成
+    const currentYear = 2026;
+    const startYear = 1990;
+    const seasonNames = ['冬', '春', '夏', '秋'];
+    const seasonKeys = ['winter', 'spring', 'summer', 'autumn'];
+
+    for (let year = currentYear; year >= startYear; year--) {
+        const row = document.createElement('div');
+        row.style.marginBottom = '16px';
+
+        const label = document.createElement('div');
+        label.style.fontSize = '13px';
+        label.style.fontWeight = '900';
+        label.style.color = 'var(--red)';
+        label.style.marginBottom = '6px';
+        label.style.borderLeft = '2.5px solid var(--red)';
+        label.style.paddingLeft = '6px';
+        label.textContent = `${year}年`;
+        row.appendChild(label);
+
+        const btnGroup = document.createElement('div');
+        btnGroup.style.display = 'grid';
+        btnGroup.style.gridTemplateColumns = 'repeat(4, 1fr)';
+        btnGroup.style.gap = '6px';
+
+        seasonNames.forEach((seasonName, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'chip'; 
+            btn.style.width = '100%';
+            btn.style.padding = '6px 0';
+            btn.style.textAlign = 'center';
+            btn.style.borderRadius = '5px';
+            btn.style.fontSize = '12px';
+            btn.textContent = seasonName;
+
+            // ボタンクリックで .html を省いたスマートなURLへジャンプ
+            btn.addEventListener('click', function() {
+                window.location.href = `/animedb1.2/search?year=${year}&season=${seasonKeys[index]}`;
+            });
+
+            btnGroup.appendChild(btn);
+        });
+
+        row.appendChild(btnGroup);
+        yearListContainer.appendChild(row);
+    }
+});
+
+</script> </body>
 </html>
