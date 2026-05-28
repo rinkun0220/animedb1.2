@@ -364,6 +364,23 @@ header{padding:0 14px}
 .c-user-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .c-user-name{font-size:12px;color:var(--text2);font-weight:700}
 .c-meta{font-size:10px;color:var(--text3);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+  
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+main, .panel { 
+  flex: 1;
+}
+
+/* 💡 重なり順を一番手前にして、リンクをクリックできるように強制します */
+footer {
+  position: relative;
+  z-index: 10000 !important;
+}
 </style>
 </head>
 <body>
@@ -392,7 +409,6 @@ header{padding:0 14px}
 </header>
 
 <main>
-  
   <div id="panel-home" class="panel active">
     <div id="heroSlot"></div>
     
@@ -400,7 +416,7 @@ header{padding:0 14px}
     <div class="aff-row">
       <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" rel="nofollow" target="_blank" class="aff-card">
         <span class="aff-title">ABEMA プレミアム</span>
-        <span class="aff-desc">月額680円(広告付き)で話題の最新アニメから独占作品まで見放題。</span>
+        <span class="aff-desc">月額680円で話題 of 最新アニメから独占作品まで見放題。</span>
         <span class="aff-cta">詳しく見る →</span>
       </a>
       <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" alt="">
@@ -408,11 +424,12 @@ header{padding:0 14px}
       <a href="https://animestore.docomo.ne.jp/" target="_blank" class="aff-card aff-card-danime">
         <span class="aff-title">dアニメストア</span>
         <span class="aff-desc">アニメ特化ならここ！7,200作品以上が月額660円で見放題。</span>
-        <span class="aff-cta">詳しく見る →</span></a>
+        <span class="aff-cta">詳しく見る →</span>
+      </a>
 
       <a href="https://www.amazon.co.jp/gp/video/storefront" target="_blank" class="aff-card">
         <span class="aff-title">Amazon Prime Video</span>
-        <span class="aff-desc">プライム会員なら追加料金なしで人気アニメや独占配信見放題。</span>
+        <span class="aff-desc">プライム会員なら追加料金なしで人気アニメや独占配信が見放題。</span>
         <span class="aff-cta">詳しく見る →</span>
       </a>
     </div>
@@ -497,6 +514,21 @@ header{padding:0 14px}
   </div>
 </main>
 
+<footer style="text-align:center; padding:40px 20px; background:#121212; border-top:1px solid #222; font-size:13px; color:#aaa; margin-top:40px; line-height:1.8;">
+  <div style="max-width:800px; margin:0 auto; margin-bottom:25px; color:#ccc;">
+    <p style="font-weight:700; font-size:15px; color:#fff; margin-bottom:10px;">🛡️ ANIMEDB の運営理念とプライバシーへの配慮</p>
+    <p style="text-align:left; font-size:12px; color:#888;">
+      当サイト「ANIMEDB」は、アニメを愛するすべてのユーザーが安心・安全に最新の配信情報を探せる場所を目指して運営しています。私たちは、大切な訪問者である皆様のプライバシーを最優先に考えており、不正なデータ収集や不透明なトラッキングは一切行いません。Google AdSenseの広告配信やアフィリエイト連携においても、すべて公式かつ安全な基準に準拠し、透明性の高い誠実な情報発信を徹底することをお約束いたします。
+    </p>
+  </div>
+  
+  <p style="margin-bottom:10px; font-size:11px; color:#666;">© 2026 ANIMEDB. All Rights Reserved.</p>
+  <div>
+    <a href="./privacy.html" style="color:#ff4757; text-decoration:none; margin:0 15px; font-weight:700;">プライバシーポリシー（詳細）</a>
+    <a href="./contact.html" style="color:#aaa; text-decoration:none; margin:0 15px;">お問い合わせ</a>
+  </div>
+</footer>
+
 <div id="modalOv" class="modal-ov" onclick="closeModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeModal(force=true)">✕</button>
@@ -541,9 +573,8 @@ header{padding:0 14px}
       <h4>作品を今すぐ視聴する</h4>
       <div id="mStreamLinks" class="stream-links"></div>
     </div>
+  </div> </div>
 
-    </div>
-</div>
 <div id="toast" class="toast"></div>
 
 <div id="pwaBanner" class="pwa-banner">
@@ -1183,14 +1214,14 @@ function renderModalDetails(a){
   const streamSection = document.getElementById('mStreamSection');
   const streamLinks = document.getElementById('mStreamLinks');
   
-  let streamHtml = `
+let streamHtml = `
     <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" rel="nofollow" target="_blank" class="stream-link">
       ABEMAプレミアムで探す
     </a>
-    <a href="https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encodedKw}" target="_blank" class="stream-link">
+    <a href="https://px.a8.net/svt/ejp?a8mat=XXXXXXXXXXXX+XXXXXXXXXXXX" rel="nofollow" target="_blank" class="stream-link">
       dアニメストアで検索
     </a>
-    <a href="https://www.amazon.co.jp/s?k=${encodedKw}&i=instant-video" target="_blank" class="stream-link">
+    <a href="https://px.a8.net/svt/ejp?a8mat=YYYYYYYYYYYY+YYYYYYYYYYYY" rel="nofollow" target="_blank" class="stream-link">
       Amazon Prime Videoで検索
     </a>
   `;
