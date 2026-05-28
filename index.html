@@ -355,9 +355,7 @@ header{padding:0 14px}
 }
 
 /* ══ PHASE 2: AUTH ══ */
-.auth-btn{display:flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--border2);color:var(--text2);padding:6px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.auth-btn:hover{border-color:var(--red);color:var(--red)}
-.auth-btn.logged{border-color:var(--green);color:var(--green)}
+/* 💡 ヘッダーのログインボタン用スタイル（.auth-btn）だけを削除しました。以下のコードは感想欄などに必要なので残します */
 .user-avatar{width:24px;height:24px;border-radius:50%;object-fit:cover;flex-shrink:0}
 .user-avatar-ph{width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .c-login-wall{text-align:center;padding:16px;background:var(--bg4);border-radius:8px;border:1px dashed var(--border2)}
@@ -371,16 +369,30 @@ header{padding:0 14px}
 <body>
 
 <header>
-  <div class="logo">ANIMEDB</div>
-  <nav>
-    <a href="#">ホーム</a>
-    <a href="#">シーズン</a>
-    <a href="#">検索</a>
-    <a href="#">お気に入り</a>
-  </nav>
+  <div class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="switchPanel('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nav-lbl">ホーム</span>
+    </button>
+    <button class="nav-btn" onclick="switchPanel('season')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span class="nav-lbl">シーズン</span>
+    </button>
+    <button class="nav-btn" onclick="switchPanel('search')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="nav-lbl">検索</span>
+    </button>
+    <button class="nav-btn" onclick="switchPanel('fav')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span class="nav-lbl">お気に入り</span>
+      <span id="favBadge" class="fav-badge">0</span>
+    </button>
+  </div>
 </header>
 
 <main>
+  
   <div id="panel-home" class="panel active">
     <div id="heroSlot"></div>
     
@@ -388,20 +400,19 @@ header{padding:0 14px}
     <div class="aff-row">
       <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" rel="nofollow" target="_blank" class="aff-card">
         <span class="aff-title">ABEMA プレミアム</span>
-        <span class="aff-desc">月額960円で話題の最新アニメから独占作品まで見放題。初回2週間無料。</span>
+        <span class="aff-desc">月額680円(広告付き)で話題の最新アニメから独占作品まで見放題。</span>
         <span class="aff-cta">詳しく見る →</span>
       </a>
       <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" alt="">
 
       <a href="https://animestore.docomo.ne.jp/" target="_blank" class="aff-card aff-card-danime">
         <span class="aff-title">dアニメストア</span>
-        <span class="aff-desc">アニメ特化ならここ！5,700作品以上が月額550円で見放題。初月無料。</span>
-        <span class="aff-cta" style="color:#ff6600">詳しく見る →</span>
-      </a>
+        <span class="aff-desc">アニメ特化ならここ！7,200作品以上が月額660円で見放題。</span>
+        <span class="aff-cta">詳しく見る →</span></a>
 
       <a href="https://www.amazon.co.jp/gp/video/storefront" target="_blank" class="aff-card">
         <span class="aff-title">Amazon Prime Video</span>
-        <span class="aff-desc">プライム会員なら追加料金なしで人気アニメや独占配信が楽しめる。</span>
+        <span class="aff-desc">プライム会員なら追加料金なしで人気アニメや独占配信見放題。</span>
         <span class="aff-cta">詳しく見る →</span>
       </a>
     </div>
