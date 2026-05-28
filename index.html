@@ -1687,9 +1687,26 @@ function dismissPwaBanner(){
   localStorage.setItem('pwa_dismissed', 'true');
 }
   
-</script>
-localStorage.setItem('pwa_dismissed', 'true');
-}
+<script>
+// ① 画面全体をロックしていた透明な壁（不完全なモーダル）を強制非表示にする
+(function() {
+    const errorModal = document.getElementById('season-search-modal');
+    if (errorModal) {
+        errorModal.style.display = 'none';
+    }
+    document.body.style.overflow = ''; // スクロールロックも解除
+})();
+
+// ② 【重要】「総合ランキングを表示中」のアラート（ダイアログ）を完全にスルーさせる処理
+// これを最初に入れておくことで、元のコードに alert() が残っていても一切表示されなくなります！
+const originalAlert = window.alert;
+window.alert = function(message) {
+    if (message && (message.includes('総合ランキング') || message.includes('シーズン切り替え'))) {
+        console.log('邪魔なアラートを自動でブロックしました: ' + message);
+        return; // ダイアログを出さずに無視する
+    }
+    originalAlert(message); // それ以外の大事な警告は念のため残す
+};
 </script>
 
 </body>
