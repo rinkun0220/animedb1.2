@@ -381,6 +381,19 @@ footer {
   position: relative;
   z-index: 10000 !important;
 }
+/* ── モーダル修正・追加CSS ── */
+#modalOv {
+  z-index: 9999 !important;
+  cursor: pointer;
+  background: rgba(0,0,0,0.85);
+}
+/* 配信先ボタンのデザイン調整 */
+.stream-link.abema { border-color: rgba(0,188,212,.4); color: #00bcd4; }
+.stream-link.abema:hover { border-color: #00bcd4; background: rgba(0,0,0,0.1); }
+.stream-link.danime { border-color: rgba(255,102,0,.4); color: #ff6600; }
+.stream-link.danime:hover { border-color: #ff6600; background: rgba(0,0,0,0.1); }
+.stream-link.amazon { border-color: rgba(0,168,225,.4); color: #00a8e1; }
+.stream-link.amazon:hover { border-color: #00a8e1; background: rgba(0,0,0,0.1); }  
 </style>
 </head>
 <body>
