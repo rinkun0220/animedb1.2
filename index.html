@@ -8,7 +8,7 @@
 <meta name="description" content="2026年最新アニメから1990年までの全シーズン対応。スコアランキング・AIおすすめ・YouTube予告・配信先検索。無料で使えるアニメデータベース。">
 <meta name="keywords" content="アニメ,2026春アニメ,ランキング,おすすめ,神アニメ,泣けるアニメ,ANIMEDB,アニメDB,今期アニメ,アニメ一覧,dアニメストア">
 <meta name="robots" content="index,follow">
-<meta name="author" content=\"ANIMEDB\">
+<meta name="author" content="ANIMEDB">
 <meta property="og:title" content="ANIMEDB｜2026アニメランキング・検索・おすすめ">
 <meta property="og:description" content="2026年最新アニメから1990年まで全シーズン対応。AIおすすめ・YouTube予告・配信先まで分かるアニメデータベース。">
 <meta property="og:type" content="website">
@@ -52,10 +52,10 @@ body {
   color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: 60px;
+  padding-bottom: 0;
 }
 
-/* 修正2：モーダルオーバーレイのCSS拡張 */
+/* モーダルオーバーレイ */
 #modalOv {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -130,7 +130,7 @@ header {
 .nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,0.05); }
 
 /* メインコンテンツ */
-main { margin-top: var(--nav-height); padding: 24px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - var(--nav-height) - 150px); max-width: 1400px; margin-left: auto; margin-right: auto; }
 .panel { display: none; }
 .panel.active { display: block; animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -151,12 +151,12 @@ main { margin-top: var(--nav-height); padding: 24px; max-width: 1400px; margin-l
 .search-box-row { display: flex; gap: 12px; margin-bottom: 16px; }
 .search-input { flex: 1; background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; color: #fff; font-size: 1rem; transition: border-color 0.2s; }
 .search-input:focus { border-color: var(--accent); outline: none; }
-.search-btn { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 0 24px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+.search-btn { background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; padding: 12px 24px; }
 .search-btn:hover { background: var(--accent-hover); }
 .filter-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .filter-select { background: var(--bg-darker); color: #fff; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; font-size: 0.9rem; cursor: pointer; }
 
-/* アニメーション行（横スクロール） */
+/* セクションタイトル */
 .section-title { font-size: 1.5rem; font-weight: 700; margin: 32px 0 16px 0; display: flex; align-items: center; gap: 8px; }
 .section-title::before { content: ''; display: inline-block; width: 4px; height: 24px; background: var(--accent); border-radius: 2px; }
 .scroll-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 16px; scroll-behavior: smooth; }
@@ -179,7 +179,41 @@ main { margin-top: var(--nav-height); padding: 24px; max-width: 1400px; margin-l
 .card-title { font-size: 0.95rem; font-weight: 600; color: #fff; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; }
 .card-meta { font-size: 0.8rem; color: var(--text-muted); }
 
-/* グリッド表示（検索結果用） */
+/* ▼▼▼ 追加: トップページのカード用・配信ミニバッジ ▼▼▼ */
+.card-stream-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.badge { font-size: 0.65rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; color: #fff; }
+.badge.abema { background: #33CC66; }
+.badge.danime { background: #ff6600; }
+.badge.amazon { background: #00a8e1; }
+
+/* ▼▼▼ 追加: モーダル用のソリッド(塗りつぶし)配信ボタン ▼▼▼ */
+.stream-links-block { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
+.stream-link {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 18px; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
+  text-decoration: none; transition: all 0.2s; color: #fff; border: none;
+}
+.stream-link.abema { background: #33CC66; box-shadow: 0 4px 10px rgba(51,204,102,0.3); }
+.stream-link.abema:hover { background: #2eb85c; transform: translateY(-2px); }
+.stream-link.danime { background: #ff6600; box-shadow: 0 4px 10px rgba(255,102,0,0.3); }
+.stream-link.danime:hover { background: #e65c00; transform: translateY(-2px); }
+.stream-link.amazon { background: #00a8e1; box-shadow: 0 4px 10px rgba(0,168,225,0.3); }
+.stream-link.amazon:hover { background: #008fbf; transform: translateY(-2px); }
+
+/* 汎用テキストページ用スタイル */
+.text-page-content { background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid var(--border-color); max-width: 900px; margin: 0 auto 40px auto; }
+.text-page-content h2 { font-size: 1.8rem; margin-bottom: 20px; color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+.text-page-content h3 { font-size: 1.2rem; margin: 24px 0 12px 0; color: var(--accent); }
+.text-page-content p { color: var(--text-main); font-size: 0.95rem; margin-bottom: 16px; text-align: justify; }
+
+/* お問い合わせフォーム */
+.contact-form { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
+.form-control { background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: #fff; font-size: 0.95rem; }
+.form-control:focus { border-color: var(--accent); outline: none; }
+
+/* グリッド表示 */
 .anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; }
 
 /* ローダー */
@@ -187,37 +221,22 @@ main { margin-top: var(--nav-height); padding: 24px; max-width: 1400px; margin-l
 .loader { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* 修正4：配信先ボタンのブランドカラーCSS追加 */
-.stream-links-block { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
-.stream-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
-  text-decoration: none; border: 1px solid rgba(255,255,255,0.15); background: transparent; transition: all 0.2s;
-}
-/* ABEMA */
-.stream-link.abema { border-color: rgba(0,188,212,.4); color: #00bcd4; }
-.stream-link.abema:hover { border-color: #00bcd4; background: rgba(0,188,212,.08); }
-/* dアニメ */
-.stream-link.danime { border-color: rgba(255,102,0,.4); color: #ff6600; }
-.stream-link.danime:hover { border-color: #ff6600; background: rgba(255,102,0,.08); }
-/* Amazon */
-.stream-link.amazon { border-color: rgba(0,168,225,.4); color: #00a8e1; }
-.stream-link.amazon:hover { border-color: #00a8e1; background: rgba(0,168,225,.08); }
-/* その他デフォルト */
-.stream-link.default { border-color: rgba(255,71,87,.4); color: var(--accent); }
-.stream-link.default:hover { border-color: var(--accent); background: rgba(255,71,87,.08); }
-
-/* PWA バナー */
-#pwaBanner { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--bg-card); border: 1px solid var(--accent); border-radius: 12px; padding: 16px; z-index: 1000; display: none; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-width: 500px; margin: 0 auto; }
-.pwa-text { font-size: 0.9rem; color: #fff; }
-.pwa-btns { display: flex; gap: 10px; }
-.pwa-btn { padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; cursor: pointer; border: none; font-weight: 600; }
-.pwa-accept { background: var(--accent); color: #fff; }
-.pwa-decline { background: rgba(255,255,255,0.1); color: var(--text-muted); }
-
 /* トースト */
 #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(255,71,87,0.95); color: #fff; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; z-index: 10000; pointer-events: none; opacity: 0; transition: transform 0.3s, opacity 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* フッター */
+.site-footer {
+  background: var(--bg-darker);
+  border-top: 1px solid var(--border-color);
+  padding: 30px 24px;
+  text-align: center;
+  margin-top: 40px;
+}
+.footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; cursor: pointer; transition: color 0.2s; }
+.footer-link:hover { color: #fff; }
+.copyright { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
 </style>
 </head>
 <body>
@@ -273,7 +292,56 @@ main { margin-top: var(--nav-height); padding: 24px; max-width: 1400px; margin-l
     <div class="loader-wrap" id="recommendLoader"><div class="loader"></div></div>
     <div class="anime-grid" id="recommendResult"></div>
   </div>
+
+  <div id="panel-about" class="panel">
+    <div class="text-page-content">
+      <h2>ANIMEDBに込めた思い</h2>
+      <p>数あるWebサイトの中から「ANIMEDB」に足を運んでいただき、本当にありがとうございます。</p>
+      <p>このANIMEDBは、単なるデータ閲覧サイトではありません。APIの制限や読み込みの壁と何度も向き合い、どうすれば最も軽快に、最も美しく、素晴らしいアニメたちと出会えるかを追求して設計を重ねてきました。この場所が、あなたの毎日を彩る新しい神作との出会いの場になれば、開発者としてこれ以上の喜びはありません。</p>
+    </div>
+  </div>
+
+  <div id="panel-privacy" class="panel">
+    <div class="text-page-content">
+      <h2>プライバシーポリシー</h2>
+      <h3>個人情報の利用目的について</h3>
+      <p>当サイトでは、お問い合わせの際にお名前やメールアドレス等の個人情報を入力いただく場合がございますが、質問に対する回答のみに利用いたします。</p>
+      <h3>広告の配信について</h3>
+      <p>当サイトでは、第三者配信の広告サービス「Googleアドセンス」等を利用しています。広告配信事業者は、ユーザーの興味に応じた広告を表示するためにCookieを使用することがありますが、個人を特定できるものではありません。</p>
+    </div>
+  </div>
+
+  <div id="panel-contact" class="panel">
+    <div class="text-page-content">
+      <h2>お問い合わせ</h2>
+      <p>ANIMEDBに関するご意見、ご要望などがございましたら、以下のフォームよりご連絡ください。</p>
+      <div class="contact-form">
+        <div class="form-group">
+          <label for="contactName">お名前</label>
+          <input type="text" id="contactName" class="form-control" placeholder="アニメ 太郎">
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">メールアドレス</label>
+          <input type="email" id="contactEmail" class="form-control" placeholder="your@example.com">
+        </div>
+        <div class="form-group">
+          <label for="contactMessage">お問い合わせ内容</label>
+          <textarea id="contactMessage" class="form-control" rows="6" placeholder="ご意見やご要望をご記入ください..."></textarea>
+        </div>
+        <button class="search-btn" style="align-self: flex-start; margin-top: 10px;" onclick="submitContactForm()">メッセージを送信する</button>
+      </div>
+    </div>
+  </div>
 </main>
+
+<footer class="site-footer">
+  <div class="footer-links">
+    <span class="footer-link" onclick="switchPanel('about')">開発者の思い</span>
+    <span class="footer-link" onclick="switchPanel('privacy')">プライバシーポリシー</span>
+    <span class="footer-link" onclick="switchPanel('contact')">お問い合わせ</span>
+  </div>
+  <div class="copyright">&copy; 2026 ANIMEDB. All Rights Reserved.</div>
+</footer>
 
 <div id="modalOv" onclick="closeModal()">
   <div class="modal-body" onclick="event.stopPropagation()">
@@ -287,27 +355,22 @@ main { margin-top: var(--nav-height); padding: 24px; max-width: 1400px; margin-l
   </div>
 </div>
 
-<div id="pwaBanner">
-  <div class="pwa-text">ANIMEDBをホーム画面に追加して快適に楽しもう</div>
-  <div class="pwa-btns">
-    <button class="pwa-btn pwa-accept" onclick="triggerPwaInstall()">追加</button>
-    <button class="pwa-btn pwa-decline" onclick="dismissPwaBanner()">また今度</button>
-  </div>
-</div>
 <div id="toast"></div>
 
 <script>
-console.log("★★ANIMEDB 1.6 完全版 起動★★");
+// ==========================================
+// 【アフィリエイト設定】
+// A8.netの「ABEMA」アフィリエイトリンクがある場合は
+// 下の "" の中にURLを貼り付けてください。
+// 例: "https://px.a8.net/svt/ejp?a8mat=..."
+// ※空欄（""）の場合は、通常のABEMA検索ページへ飛びます。
+// ==========================================
+const A8_ABEMA_URL = "https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP";
+
+console.log("★★ANIMEDB 1.7 起動★★");
 
 // 1. グローバル状態管理
-const STATE = {
-  cache: {},
-  currentHeroIndex: 0,
-  heroTimer: null,
-  pwaDeferredPrompt: null
-};
-
-// 2. 定数定義
+const STATE = { cache: {}, currentHeroIndex: 0, heroTimer: null };
 const API_BASE = "https://api.jikan.moe/v4";
 const CURRENT_YEAR = 2026;
 
@@ -315,7 +378,6 @@ const CURRENT_YEAR = 2026;
 document.addEventListener("DOMContentLoaded", () => {
   setupYearDropdown();
   loadHomeContent();
-  initPwaDetection();
 });
 
 // 4. 年セレクトボックス生成
@@ -354,22 +416,13 @@ async function loadHomeContent() {
     if (!rowsContainer) return;
     rowsContainer.innerHTML = "";
     
-    // 今期トレンド
-    if (nowData && nowData.data) {
-      createScrollRow(rowsContainer, "今シーズンの注目アニメ", nowData.data);
-    }
+    if (nowData && nowData.data) createScrollRow(rowsContainer, "今シーズンの注目アニメ", nowData.data);
     
-    // 2026年高評価
     const top2026 = await fetchWithCache(`${API_BASE}/anime?year=2026&order_by=score&sort=desc&limit=10`);
-    if (top2026 && top2026.data) {
-      createScrollRow(rowsContainer, "2026年 高評価ランキング", top2026.data);
-    }
+    if (top2026 && top2026.data) createScrollRow(rowsContainer, "2026年 高評価ランキング", top2026.data);
     
-    // 歴代最高峰
     const topAll = await fetchWithCache(`${API_BASE}/top/anime?limit=10`);
-    if (topAll && topAll.data) {
-      createScrollRow(rowsContainer, "歴代最高評価の名作", topAll.data);
-    }
+    if (topAll && topAll.data) createScrollRow(rowsContainer, "歴代最高評価の名作", topAll.data);
   } catch (err) {
     console.error("Home load error:", err);
   }
@@ -400,6 +453,11 @@ function renderHeroSlider(list) {
         <h2 class="hero-title">${title}</h2>
         <div class="hero-meta"><span>${metaStr}</span></div>
         <p class="hero-desc">${desc}</p>
+        <div class="card-stream-badges" style="margin-top:16px;">
+          <span class="badge abema">ABEMA</span>
+          <span class="badge danime">dアニメ</span>
+          <span class="badge amazon">Amazon</span>
+        </div>
       </div>
     `;
     item.addEventListener("click", () => openModal(anime.mal_id));
@@ -432,7 +490,7 @@ function createScrollRow(container, heading, list) {
   container.appendChild(section);
 }
 
-// 9. カード型要素の生成（修正3：英語表記を日本語表記へ一括置換）
+// 9. カード型要素の生成（トップページ用配信バッジ追加）
 function createAnimeCard(anime) {
   const card = document.createElement("div");
   card.className = "anime-card";
@@ -450,8 +508,15 @@ function createAnimeCard(anime) {
       <div class="card-score-badge">★ ${score}</div>
     </div>
     <div class="card-info">
-      <div class="card-title">${title}</div>
-      <div class="card-meta">${metaStr}</div>
+      <div>
+        <div class="card-title">${title}</div>
+        <div class="card-meta">${metaStr}</div>
+      </div>
+      <div class="card-stream-badges">
+        <span class="badge abema">ABEMA</span>
+        <span class="badge danime">dアニメ</span>
+        <span class="badge amazon">Amazon</span>
+      </div>
     </div>
   `;
   return card;
@@ -475,7 +540,6 @@ async function executeSearch() {
   if (kw) url += `&q=${encodeURIComponent(kw)}`;
   if (year) url += `&year=${year}`;
   if (season) url += `&season=${season}`;
-  
   if (sort === "score") url += `&order_by=score&sort=desc`;
   else if (sort === "popularity") url += `&order_by=popularity&sort=asc`;
   
@@ -483,9 +547,7 @@ async function executeSearch() {
     const res = await fetchWithCache(url);
     if (loader) loader.style.display = "none";
     if (res && res.data && res.data.length > 0) {
-      res.data.forEach(anime => {
-        resultSlot.appendChild(createAnimeCard(anime));
-      });
+      res.data.forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
     } else {
       resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">該当するアニメが見つかりませんでした。</p>`;
     }
@@ -512,9 +574,7 @@ async function generateAiRecommend() {
     if (loader) loader.style.display = "none";
     if (res && res.data) {
       const shuffled = [...res.data].sort(() => 0.5 - Math.random());
-      shuffled.slice(0, 8).forEach(anime => {
-        resultSlot.appendChild(createAnimeCard(anime));
-      });
+      shuffled.slice(0, 8).forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
     }
   } catch (err) {
     if (loader) loader.style.display = "none";
@@ -522,7 +582,7 @@ async function generateAiRecommend() {
   }
 }
 
-// 12. 詳細モーダルの展開（修正3：英語ラベルを日本語へ修正）
+// 12. 詳細モーダルの展開
 async function openModal(id) {
   const modalOv = document.getElementById("modalOv");
   const frameSlot = document.getElementById("mTrailerFrameSlot");
@@ -547,7 +607,6 @@ async function openModal(id) {
     
     titleSlot.textContent = anime.title_japanese || anime.title;
     
-    // メタ情報ブロックの構築
     const score = anime.score ? anime.score.toFixed(2) : '--';
     const rank = anime.rank ? anime.rank : '--';
     const pop = anime.popularity ? anime.popularity : '--';
@@ -565,14 +624,13 @@ async function openModal(id) {
     const synText = anime.synopsis_japanese || anime.synopsis || "あらすじ情報はありません。";
     synSlot.innerHTML = infoHtml + `<div style="line-height:1.5;">${synText}</div>`;
     
-    // 予告動画表示
     if (anime.trailer?.youtube_id) {
       frameSlot.innerHTML = `<iframe src="https://www.youtube.com/embed/${anime.trailer.youtube_id}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     } else {
       frameSlot.innerHTML = `<div style="padding:40px 0; text-align:center; color:var(--text-muted); font-size:0.9rem;">予告動画はありません</div>`;
     }
     
-    // 配信ボタン群（自動リンク生成）
+    // 配信ボタン群を追加
     appendStreamLinks(streamSlot, anime.title_japanese || anime.title);
     
   } catch (err) {
@@ -581,7 +639,6 @@ async function openModal(id) {
   }
 }
 
-// 修正2：モーダルを確実に閉じるクリーンな関数
 function closeModal() {
   const modalOv = document.getElementById('modalOv');
   if (modalOv) {
@@ -593,15 +650,18 @@ function closeModal() {
   }
 }
 
-// 13. 配信リンク自動付与機能（修正4：指定カラーをクラスで割り当て統一）
+// 13. 配信リンク自動付与機能 (A8.net 連携 ＆ UI統一)
 function appendStreamLinks(container, title) {
   if (!container || !title) return;
   const encoded = encodeURIComponent(title);
   
+  // A8.netのリンクが設定されていればそれを使用。なければ通常の検索URL。
+  const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
+  
   const networks = [
-    { name: "ABEMA", url: `https://abema.tv/search?q=${encoded}`, cls: "abema" },
+    { name: "ABEMAプレミアム", url: abemaUrl, cls: "abema" },
     { name: "dアニメストア", url: `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`, cls: "danime" },
-    { name: "Amazonプライム", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" }
+    { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" }
   ];
   
   networks.forEach(net => {
@@ -610,12 +670,28 @@ function appendStreamLinks(container, title) {
     a.target = "_blank";
     a.rel = "noopener noreferrer";
     a.className = `stream-link ${net.cls}`;
-    a.innerHTML = `▶ ${net.name}`;
+    a.innerHTML = net.name; // ここで日本語のボタン名になります
     container.appendChild(a);
   });
 }
 
-// 14. ヘルパー関数
+// 14. お問い合わせフォーム送信シミュレーション
+function submitContactForm() {
+  const name = document.getElementById("contactName").value.trim();
+  const email = document.getElementById("contactEmail").value.trim();
+  const msg = document.getElementById("contactMessage").value.trim();
+  
+  if (!name || !email || !msg) {
+    showToastText("すべての項目を入力してください。");
+    return;
+  }
+  showToastText("メッセージを送信しました！ありがとうございます。");
+  document.getElementById("contactName").value = "";
+  document.getElementById("contactEmail").value = "";
+  document.getElementById("contactMessage").value = "";
+}
+
+// 15. ヘルパー関数
 function translateSeasonString(seasonWord) {
   if (!seasonWord) return '';
   const s = seasonWord.toLowerCase();
@@ -634,14 +710,14 @@ function showToastText(message) {
   setTimeout(() => { toast.classList.remove('show'); }, 3000);
 }
 
-// 15. キャッシュ機能付きフェッチ
+// 16. キャッシュ機能付きフェッチ
 async function fetchWithCache(url) {
   const now = Date.now();
   if (STATE.cache[url] && (now - STATE.cache[url].timestamp < 10 * 60 * 1000)) {
     return STATE.cache[url].data;
   }
   
-  await new Promise(res => setTimeout(res, 400)); // API負荷軽減
+  await new Promise(res => setTimeout(res, 400));
   const response = await fetch(url);
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   const data = await response.json();
@@ -649,37 +725,7 @@ async function fetchWithCache(url) {
   STATE.cache[url] = { timestamp: now, data: data };
   return data;
 }
-
-// 16. PWA・インストール制御
-function initPwaDetection() {
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    STATE.pwaDeferredPrompt = e;
-    const banner = document.getElementById('pwaBanner');
-    const dismissed = localStorage.getItem('pwa_banner_dismissed');
-    if (banner && !dismissed) {
-      banner.style.display = 'flex';
-    }
-  });
-}
-
-function triggerPwaInstall() {
-  const banner = document.getElementById('pwaBanner');
-  if (banner) banner.style.display = 'none';
-  
-  const promptEvent = STATE.pwaDeferredPrompt;
-  if (!promptEvent) return;
-  promptEvent.prompt();
-  promptEvent.userChoice.then(() => {
-    STATE.pwaDeferredPrompt = null;
-  });
-}
-
-function dismissPwaBanner() {
-  const banner = document.getElementById('pwaBanner');
-  if (banner) banner.style.display = 'none';
-  localStorage.setItem('pwa_banner_dismissed', 'true');
-}
 </script>
+<img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP" alt="" style="display:none;">
 </body>
 </html>
