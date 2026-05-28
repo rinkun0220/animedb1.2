@@ -42,7 +42,6 @@ body {
   color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: 0;
 }
 
 /* モーダルオーバーレイ */
@@ -54,7 +53,7 @@ body {
 }
 #modalOv.open { display: flex; opacity: 1; }
 .modal-body {
-  background: var(--bg-card); width: 90%; max-width: 760px; border-radius: 16px;
+  background: var(--bg-card); width: 90%; max-width: 600px; border-radius: 16px;
   border: 1px solid var(--border-color); overflow: hidden; position: relative;
   cursor: default; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
   transform: translateY(20px); transition: transform 0.3s ease;
@@ -67,10 +66,10 @@ body {
   transition: background 0.2s;
 }
 .m-close-btn:hover { background: var(--accent); }
-.video-container { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
-.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-.m-info-block { padding: 24px; max-height: 250px; overflow-y: auto; }
-.m-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; color: #fff; }
+
+/* 動画をカットしたため、閉じるボタンと被らないよう上部余白(padding-top)を広げています */
+.m-info-block { padding: 54px 24px 24px 24px; max-height: 80vh; overflow-y: auto; }
+.m-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; color: #fff; padding-right: 30px; }
 .m-synopsis { font-size: 0.95rem; color: var(--text-muted); }
 
 /* ヘッダー */
@@ -103,7 +102,6 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .hero-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 12px; }
 .hero-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; line-height: 1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 .hero-meta { display: flex; gap: 16px; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; }
-.hero-desc { font-size: 0.95rem; color: #e2e8f0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 /* 検索・フィルター */
 .search-filter-wrapper { background: var(--bg-card); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 32px; }
@@ -149,7 +147,7 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .badge.danime { background: #ff6600; }
 .badge.amazon { background: #00a8e1; }
 
-/* モーダル用のソリッド(塗りつぶし)配信ボタン */
+/* モーダル用の配信ボタン */
 .stream-links-block { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
 .stream-link {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -256,11 +254,11 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
       <p>当サイトは、アフィリエイトプログラム（A8.net等）により商品やサービスをご紹介しております。リンク先のサービスのご利用、ご契約につきましては、リンク先の各公式サイトにてご確認いただきますようお願いいたします。</p>
     </div>
   </div>
+
   <div id="panel-contact" class="panel">
     <div class="text-page-content">
       <h2>お問い合わせ</h2>
       <p>当サイトに関するご要望、不具合のご報告、その他のお問い合わせは、以下のボタンよりお願いいたします。</p>
-      
       <div style="text-align: center; margin-top: 32px;">
         <a href="mailto:info@example.com" class="search-btn" style="text-decoration: none; display: inline-block; padding: 14px 40px; font-size: 1.1rem;">
           ✉️ お問い合わせ窓口へ
@@ -282,7 +280,6 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 <div id="modalOv" onclick="closeModal()">
   <div class="modal-body" onclick="event.stopPropagation()">
     <button class="m-close-btn" onclick="closeModal()">&times;</button>
-    <div class="video-container" id="mTrailerFrameSlot"></div>
     <div class="m-info-block">
       <div class="m-title" id="mTitle">作品タイトル</div>
       <div class="m-synopsis" id="mSynopsis"></div>
@@ -296,8 +293,6 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 <script>
 // ==========================================
 // 【アフィリエイト設定】
-// A8.netの「ABEMA」アフィリエイトリンク
-// いただいたURLをそのまま設定済みです！
 // ==========================================
 const A8_ABEMA_URL = "https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP";
 
@@ -332,7 +327,6 @@ function switchPanel(panelId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 日本語タイトルを最優先で取得するヘルパー
 function getJapaneseTitle(anime) {
   if (anime.title_japanese) return anime.title_japanese;
   if (anime.titles && Array.isArray(anime.titles)) {
@@ -342,14 +336,12 @@ function getJapaneseTitle(anime) {
   return anime.title;
 }
 
-// 配信リンク生成（HTMLタグとして返す）
 function generateStreamBadgesHTML(title) {
   const encoded = encodeURIComponent(title);
   const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
   const danimeUrl = `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`;
   const amazonUrl = `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`;
   
-  // onClickのイベントバブリングを止めることで、バッジクリック時はモーダルを開かずリンク先へ飛ぶ
   return `
     <div class="card-stream-badges" onclick="event.stopPropagation()">
       <a href="${abemaUrl}" target="_blank" rel="noopener noreferrer" class="badge abema">ABEMA</a>
@@ -508,9 +500,9 @@ async function generateAiRecommend() {
   }
 }
 
+// YouTube枠・YouTube検索処理を完全に排除した新しい関数
 async function openModal(id) {
   const modalOv = document.getElementById("modalOv");
-  const frameSlot = document.getElementById("mTrailerFrameSlot");
   const titleSlot = document.getElementById("mTitle");
   const synSlot = document.getElementById("mSynopsis");
   const streamSlot = document.getElementById("mStreamSlot");
@@ -519,7 +511,6 @@ async function openModal(id) {
   
   titleSlot.textContent = "読み込み中...";
   synSlot.innerHTML = "";
-  frameSlot.innerHTML = "";
   streamSlot.innerHTML = "";
   
   modalOv.classList.add("open");
@@ -545,7 +536,6 @@ async function openModal(id) {
       </div>
     `;
     
-    // APIの仕様上あらすじは英語になるため、Google翻訳へ飛ぶボタンを設置
     const synText = anime.synopsis_japanese || anime.synopsis || "あらすじ情報はありません。";
     const translateUrl = `https://translate.google.com/?sl=en&tl=ja&text=${encodeURIComponent(synText)}&op=translate`;
     
@@ -556,13 +546,6 @@ async function openModal(id) {
     ` : '';
 
     synSlot.innerHTML = infoHtml + `<div style="line-height:1.5;">${synText}</div>` + translateBtnHtml;
-    
-    if (anime.trailer?.youtube_id) {
-      frameSlot.innerHTML = `<iframe src="https://www.youtube.com/embed/${anime.trailer.youtube_id}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    } else {
-      frameSlot.innerHTML = `<div style="padding:40px 0; text-align:center; color:var(--text-muted); font-size:0.9rem;">予告動画はありません</div>`;
-    }
-    
     appendStreamLinks(streamSlot, title);
     
   } catch (err) {
@@ -577,8 +560,6 @@ function closeModal() {
     modalOv.style.display = 'none';
     modalOv.classList.remove('open');
     document.body.style.overflow = '';
-    const frameSlot = document.getElementById('mTrailerFrameSlot');
-    if (frameSlot) frameSlot.innerHTML = '';
   }
 }
 
