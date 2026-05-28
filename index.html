@@ -614,32 +614,31 @@ footer {
 
 <script>
 // ========================================================
-// 【ANIMEDB 1.4 専用】Bプランサイズ調整＆50件超一括表示スクリプト
+// 【ANIMEDB 1.5 完全復活版】外部Jikan APIリアルタイム連動スクリプト
 // ========================================================
 
 // 1. グローバル状態管理
-let animeData = [];           // JSONから読み込んだ全データ
+let animeData = [];           // APIから取得した現在表示中のアニメ一覧
 let favorites = [];           // お気に入りアニメのID配列
-let currentActiveType = 'all'; // シーズン画面のメディア種別フィルター ('all', 'tv', 'movie', 'ova')
-let deferredPrompt = null;    // PWAインストールプロンプト保持用
+let currentActiveType = 'all'; // メディア種別フィルター ('all', 'tv', 'movie', 'ova')
+let deferredPrompt = null;    // PWA用
 
-// ── 【重要】今期ほぼ全作品（50件程度）を一気に出すため、1ページの上限を60件に引き上げ ──
-let currentGridPage = 1;
-const itemsPerPage = 60; 
-
-// お気に入りソート状態
-let currentFavSort = 'date'; // 'date' または 'score'
+// 表示上限
+const itemsPerPage = 50; 
+let currentFavSort = 'date';
 
 // 2. 初期起動ライフサイクル
 window.addEventListener('DOMContentLoaded', () => {
   loadFavorites();       // ローカルストレージからお気に入り復元
-  initYearDropdown();    // シーズン画面の「年」セレクトボックスを自動生成
-  fetchAnimeDatabase();  // data.jsonの非同期読み込み
-  initModalCloseEvent(); // モーダルをEscキーで閉じられるようにする
-  initPwaLifecycle();    // PWAバナーの初期化
+  initYearDropdown();    // プルダウンに1990年〜2026年をセット
+  
+  // 初期表示として、現在のトップ画面用データを自動取得
+  fetchInitialHomeData();
+  initModalCloseEvent(); 
+  initPwaLifecycle();    
 });
 
-// 3. セレクトボックスの「年」を自動生成（1990年〜2026年対応）
+// 3. セレクトボックスの「年」を自動生成
 function initYearDropdown() {
   const yearSelect = document.getElementById('seasonYear');
   if (yearSelect) {
@@ -651,49 +650,71 @@ function initYearDropdown() {
   }
 }
 
-// 4. 【API通信コア】data.jsonからアニメデータを取得
-async function fetchAnimeDatabase() {
+// 4. 【API通信コア】外部データベース(Jikan API)からデータを引っ張る関数
+async function fetchAnimeBySeason(year, season) {
+  // シーズン文字列の正規化 (Jikan API仕様: winter, spring, summer, fall)
+  let s = season.toLowerCase();
+  if (s.includes('秋')) s = 'fall';
+  if (s.includes('春')) s = 'spring';
+  if (s.includes('夏')) s = 'summer';
+  if (s.includes('冬')) s = 'winter';
+
+  const url = `https://api.jikan.moe/v4/seasons/${year}/${s}`;
+  
   try {
-    const response = await fetch('data.json');
-    if (!response.ok) throw new Error("ネットワーク応答が正常ではありません: " + response.status);
-    animeData = await response.json();
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("APIエラー: " + response.status);
+    const json = await response.json();
     
-    // データ展開と初期表示
-    renderHeroFeature();
-    renderHomeRows();
-    // 各画面の初期ビルド
-    loadSeasonPage(1);
-    executeSearchFilter();
+    // 外部APIの生データを、ANIMEDBのカードシステムに適合する形に変換
+    return (json.data || []).map(item => ({
+      id: item.mal_id,
+      title: item.title,
+      title_ja: item.title_japanese || item.title,
+      score: item.score || 0.00,
+      popularity: item.popularity || 999,
+      rank: item.rank || 999,
+      members: item.members || 0,
+      year: year,
+      season: season,
+      type: item.type ? item.type.toLowerCase() : 'tv',
+      image: item.images?.jpg?.large_image_url || item.images?.jpg?.image_url || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500',
+      trailer_id: item.trailer?.youtube_id || null,
+      synopsis: item.synopsis || '作品のあらすじ情報は登録されていません。'
+    }));
   } catch (error) {
-    console.error("アニメデータの読み込みに失敗しました:", error);
-    animeData = [{
-      id: 9999, title: "DATA RECOVERY", title_ja: "データの読み込みに失敗しました", 
-      score: 0, popularity: 999, members: 0, year: 2026, season: "spring", type: "tv",
-      image: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500",
-      synopsis: "data.jsonファイルが見つからないか、JSONの記述形式にエラーがある可能性があります。"
-    }];
-    renderHomeRows();
+    console.error("外部データ取得に失敗しました:", error);
+    return [];
   }
 }
 
-// 5. パネル（画面タブ）切り替え制御
+// 起動時にホーム画面を賑やかにする初期データ取得
+async function fetchInitialHomeData() {
+  // 2026年春データをベースとして取得
+  const data = await fetchAnimeBySeason(2026, 'spring');
+  if (data && data.length > 0) {
+    animeData = data;
+    renderHeroFeature();
+    renderHomeRows();
+    loadSeasonPage(); // シーズン側も初期構築
+    executeSearchFilter();
+  }
+}
+
+// 5. パネル切り替え
 function switchPanel(panelId) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   
   const targetPanel = document.getElementById(`panel-${panelId}`);
-  if (targetPanel) {
-    targetPanel.classList.add('active');
-  }
+  if (targetPanel) targetPanel.classList.add('active');
   
   const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(`'${panelId}'`));
   if (btn) btn.classList.add('active');
   
   window.scrollTo({ top: 0, behavior: 'instant' });
   
-  if (panelId === 'fav') {
-    renderFavorites();
-  }
+  if (panelId === 'fav') renderFavorites();
 }
 
 // 6. ホーム画面のダイナミック生成
@@ -701,9 +722,8 @@ function renderHeroFeature() {
   const heroSlot = document.getElementById('heroSlot');
   if (!heroSlot || !animeData.length) return;
   
-  const currentYearAnime = animeData.filter(a => a.year === 2026);
-  const heroAnime = (currentYearAnime.length ? currentYearAnime : animeData).sort((a, b) => b.score - a.score)[0];
-  
+  // スコアが一番高い作品をヒーロー枠に抜擢
+  const heroAnime = [...animeData].sort((a, b) => b.score - a.score)[0];
   const title = heroAnime.title_ja || heroAnime.title;
   
   heroSlot.innerHTML = `
@@ -711,9 +731,9 @@ function renderHeroFeature() {
       <div class="static-hero-bg" style="background-image: url('${heroAnime.image}'); background-size: cover; background-position: center 20%; filter: brightness(0.4);"></div>
       <div class="static-hero-overlay"></div>
       <div class="static-hero-content">
-        <div class="static-hero-eyebrow">✨ 2026年 注目のおすすめ神アニメ</div>
+        <div class="static-hero-eyebrow">✨ 注目のおすすめ神アニメ</div>
         <h1 class="static-hero-title" style="font-size: 2.5rem; font-weight: 800; margin-bottom: 12px;">${title}</h1>
-        <p class="static-hero-sub" style="font-size: 14px; max-width: 600px; line-height: 1.6;">${(heroAnime.synopsis || '').substring(0, 100)}...</p>
+        <p class="static-hero-sub" style="font-size: 14px; max-width: 600px; line-height: 1.6;">${(heroAnime.synopsis || '').substring(0, 120)}...</p>
         <div class="static-hero-stats" style="margin-top: 15px;">
           <div class="s-stat">
             <div class="s-stat-num" style="color: #2ed573; font-size: 20px; font-weight: 700;">★ ${Number(heroAnime.score).toFixed(2)}</div>
@@ -737,8 +757,8 @@ function renderHomeRows() {
   const homeRows = document.getElementById('homeRows');
   if (!homeRows) return;
   
-  const trendItems = [...animeData].sort((a, b) => a.popularity - b.popularity).slice(0, 60);
-  const topItems = [...animeData].sort((a, b) => b.score - a.score).slice(0, 60);
+  const trendItems = [...animeData].sort((a, b) => a.popularity - b.popularity).slice(0, itemsPerPage);
+  const topItems = [...animeData].sort((a, b) => b.score - a.score).slice(0, itemsPerPage);
   
   homeRows.innerHTML = `
     <div class="section">
@@ -746,20 +766,37 @@ function renderHomeRows() {
       <div class="nf-row">${generateCardHtmlList(trendItems)}</div>
     </div>
     <div class="section" style="margin-top: 50px;">
-      <div class="section-head" style="margin-bottom: 15px;"><h2 class="section-title" style="font-size: 20px; color: #fff; border-left: 4px solid #ff4757; padding-left: 10px;">🏆 歴代・今期 高評価アニメランキング</h2></div>
+      <div class="section-head" style="margin-bottom: 15px;"><h2 class="section-title" style="font-size: 20px; color: #fff; border-left: 4px solid #ff4757; padding-left: 10px;">🏆 高評価アニメランキング</h2></div>
       <div class="nf-row">${generateCardHtmlList(topItems)}</div>
     </div>
   `;
 }
 
-// 7. シーズン画面のフィルタリング・ページング・ソート
-function loadSeasonPage(page = 1) {
-  currentGridPage = page;
+// 7. シーズン表示（プルダウン選択時にデータを直接外部APIに繋ぎに行く）
+async function loadSeasonPage() {
+  const gridContainer = document.getElementById('seasonResult');
+  if (gridContainer) {
+    gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#ff4757; font-weight:700;">🌐 外部アニメデータベースから最新50件を取得中...</div>`;
+  }
+
   const yearVal = parseInt(document.getElementById('seasonYear')?.value) || 2026;
   const seasonVal = document.getElementById('seasonType')?.value || 'spring';
   const sortVal = document.getElementById('gridSort')?.value || 'score';
   
-  let filtered = animeData.filter(a => a.year === yearVal && a.season?.toLowerCase() === seasonVal.toLowerCase());
+  // ユーザーの選んだ「年」と「シーズン」でAPIから直接50件強を引っ張る！
+  const fetchedData = await fetchAnimeBySeason(yearVal, seasonVal);
+  
+  // グローバルデータを更新（検索やホームにも反映可能にするため）
+  if (fetchedData.length > 0) {
+    animeData = fetchedData;
+  } else {
+    if (gridContainer) {
+      gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#aaa;">指定された年代のデータが見つからなかったか、API制限中です。時間を置いて再度お試しください。</div>`;
+    }
+    return;
+  }
+
+  let filtered = [...animeData];
   
   if (currentActiveType !== 'all') {
     filtered = filtered.filter(a => a.type?.toLowerCase() === currentActiveType);
@@ -776,36 +813,24 @@ function loadSeasonPage(page = 1) {
   const countLabel = document.getElementById('gridCount');
   if (countLabel) countLabel.innerHTML = `該当: <strong>${filtered.length}</strong> 件`;
   
-  const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-  const startIndex = (currentGridPage - 1) * itemsPerPage;
-  const slicedItems = filtered.slice(startIndex, startIndex + itemsPerPage);
-  
-  const gridContainer = document.getElementById('seasonResult');
+  const slicedItems = filtered.slice(0, itemsPerPage);
   if (gridContainer) {
     gridContainer.innerHTML = generateCardHtmlList(slicedItems, true);
   }
   
+  // 1画面に一気に出すため、下部ページャーは不要につき非表示
   const pager = document.getElementById('seasonPager');
-  if (pager) {
-    if (filtered.length > itemsPerPage) {
-      pager.style.display = 'flex';
-      document.getElementById('pageInfo').textContent = `${currentGridPage} / ${totalPages}`;
-      document.getElementById('prevBtn').disabled = (currentGridPage === 1);
-      document.getElementById('nextBtn').disabled = (currentGridPage === totalPages);
-    } else {
-      pager.style.display = 'none';
-    }
-  }
+  if (pager) pager.style.display = 'none';
 }
 
 function filterGridType(buttonElement, typeStr) {
   document.querySelectorAll('.type-bar .chip').forEach(c => c.classList.remove('on'));
   buttonElement.classList.add('on');
   currentActiveType = typeStr;
-  loadSeasonPage(1);
+  loadSeasonPage();
 }
 
-// 8. 検索画面のインクリメンタル検索＆サジェスト機能
+// 8. 検索画面制御
 function onSearchInput() {
   executeSearchFilter();
 }
@@ -818,7 +843,7 @@ function executeSearchFilter() {
   if (!searchResult) return;
   
   if (!query) {
-    searchResult.innerHTML = generateCardHtmlList([...animeData].sort((a, b) => b.score - a.score).slice(0, 60));
+    searchResult.innerHTML = generateCardHtmlList([...animeData].sort((a, b) => b.score - a.score));
     if (sugBox) sugBox.style.display = 'none';
     return;
   }
@@ -854,18 +879,17 @@ function executeSearchFilter() {
 function quickSearch(word) {
   const input = document.getElementById('sInput');
   if (input) input.value = word;
-  
   const sugBox = document.getElementById('sugBox');
   if (sugBox) sugBox.style.display = 'none';
-  
   executeSearchFilter();
 }
 
-// 9. お気に入り（マイリスト）の構築ロジック
+// 9. お気に入り
 function renderFavorites() {
   const container = document.getElementById('favResult');
   if (!container) return;
   
+  // お気に入りは読み込んだ全データからID一致するものを抽出
   const favItems = animeData.filter(a => favorites.includes(a.id));
   
   if (currentFavSort === 'score') {
@@ -892,12 +916,11 @@ function clearAllFavs() {
     renderFavorites();
     refreshFavBadgeCount();
     showToastText("マイリストを空にしました");
-    
     document.querySelectorAll('.fav-toggle').forEach(el => el.classList.remove('on'));
   }
 }
 
-// 10. 【迫力重視・Bプラン専用】HTMLジェネレータ（画像と文字を大きく調整）
+// 10. 【迫力重視・Bプラン】HTMLジェネレータ
 function generateCardHtmlList(items, showRankIndex = false) {
   if (!items || items.length === 0) {
     return `<div class="state-box" style="grid-column: 1/-1; width:100%; text-align:center; padding:40px; color:#aaa;">対象の作品は見つかりませんでした。</div>`;
@@ -915,7 +938,6 @@ function generateCardHtmlList(items, showRankIndex = false) {
     
     const mediaTypeLabel = item.type ? item.type.toUpperCase() : 'TV';
     
-    // インラインスタイルで、Bプランに最適な「大きめの画像」「しっかり読める文字（15px）」を強制上書き注入
     html += `
       <div class="g-card nf-card" onclick="openDetail(${item.id})" style="background: #1e1e1e; border-radius: 10px; overflow: hidden; transition: transform 0.2s;">
         <div class="g-img-wrap" style="position: relative; width: 100%; aspect-ratio: 2/3; overflow: hidden;">
@@ -923,7 +945,7 @@ function generateCardHtmlList(items, showRankIndex = false) {
           <div class="score-pin ${scoreColorClass}" style="position: absolute; top: 10px; left: 10px; padding: 4px 8px; font-size: 12px; font-weight: 700; border-radius: 4px;">★ ${scoreVal}</div>
           <span class="type-pin" style="position: absolute; top: 10px; right: 10px; padding: 4px 8px; font-size: 11px; font-weight: 700; background: rgba(0,0,0,0.7); border-radius: 4px; color:#fff;">${mediaTypeLabel}</span>
           <button class="fav-toggle ${isFav ? 'on' : ''}" onclick="event.stopPropagation(); toggleFavorite(${item.id}, this)" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.6); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer;">❤</button>
-          ${showRankIndex ? `<div class="rank-bg" style="position: absolute; bottom: 10px; left: 10px; background: rgba(255,71,87,0.9); color: #fff; padding: 2px 8px; font-size: 12px; font-weight: 700; border-radius: 4px;">#${((currentGridPage - 1) * itemsPerPage) + index + 1}</div>` : ''}
+          ${showRankIndex ? `<div class="rank-bg" style="position: absolute; bottom: 10px; left: 10px; background: rgba(255,71,87,0.9); color: #fff; padding: 2px 8px; font-size: 12px; font-weight: 700; border-radius: 4px;">#${index + 1}</div>` : ''}
         </div>
         <div class="g-info" style="padding: 14px;">
           <div class="g-title" style="font-size: 15px; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${title}</div>
@@ -938,7 +960,7 @@ function generateCardHtmlList(items, showRankIndex = false) {
   return html;
 }
 
-// 11. モーダル詳細表示＆埋め込み制御
+// 11. モーダル詳細表示
 function openDetail(id) {
   const item = animeData.find(a => a.id === id);
   if (!item) return;
@@ -1005,7 +1027,6 @@ function openDetail(id) {
   const streamLinksContainer = document.getElementById('mStreamLinks');
   if (streamSection && streamLinksContainer) {
     const queryEncoded = encodeURIComponent(title);
-    
     streamLinksContainer.innerHTML = `
       <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77&url=${encodeURIComponent('https://abema.tv/search?q=' + queryEncoded)}" target="_blank" class="stream-link">ABEMAプレミアム</a>
       <a href="https://animestore.docomo.ne.jp/" target="_blank" class="stream-link" style="background:#da291c;">dアニメストア</a>
@@ -1022,13 +1043,12 @@ function openDetail(id) {
   }
 }
 
-function closeModal(force = false) {
+function closeModal() {
   const modalOv = document.getElementById('modalOv');
   if (modalOv) {
     modalOv.style.display = 'none';
     modalOv.classList.remove('open');
     document.body.style.overflow = '';
-    
     const frameSlot = document.getElementById('mTrailerFrameSlot');
     if (frameSlot) frameSlot.innerHTML = '';
   }
@@ -1057,9 +1077,7 @@ function toggleFavorite(id, clickedElement = null, isFromModal = false) {
   saveFavorites();
   refreshFavBadgeCount();
   
-  if (clickedElement) {
-    clickedElement.classList.toggle('on', added);
-  }
+  if (clickedElement) clickedElement.classList.toggle('on', added);
   
   if (isFromModal) {
     const favBtn = document.getElementById('mFavBtn');
@@ -1076,9 +1094,7 @@ function toggleFavorite(id, clickedElement = null, isFromModal = false) {
     }
   });
 
-  if (document.getElementById('panel-fav').classList.contains('active')) {
-    renderFavorites();
-  }
+  if (document.getElementById('panel-fav').classList.contains('active')) renderFavorites();
 }
 
 function loadFavorites() {
@@ -1107,7 +1123,6 @@ function initPwaLifecycle() {
     document.getElementById('pwaBanner').style.display = 'none';
     return;
   }
-
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -1117,7 +1132,6 @@ function initPwaLifecycle() {
       banner.classList.add('show');
     }
   });
-
   window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
     document.getElementById('pwaBanner').style.display = 'none';
@@ -1128,10 +1142,7 @@ function initPwaLifecycle() {
 function triggerPwaInstall() {
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
-  deferredPrompt.userChoice.then((choiceResult) => {
-    deferredPrompt = null;
-    document.getElementById('pwaBanner').style.display = 'none';
-  });
+  deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('pwaBanner').style.display = 'none'; });
 }
 
 function dismissPwaBanner() {
@@ -1140,17 +1151,18 @@ function dismissPwaBanner() {
   localStorage.setItem('pwa_banner_dismissed', 'true');
 }
 
-// 14. 各種ヘルパー関数
+// 14. ヘルパー関数
 function translateSeasonString(seasonWord) {
   if (!seasonWord) return '';
   const s = seasonWord.toLowerCase();
-  if (s.includes('winter')) return '冬';
-  if (s.includes('spring')) return '春';
-  if (s.includes('summer')) return '夏';
-  if (s.includes('fall') || s.includes('autumn')) return '秋';
+  if (s.includes('winter') || s.includes('冬')) return '冬';
+  if (s.includes('spring') || s.includes('春')) return '春';
+  if (s.includes('summer') || s.includes('夏')) return '夏';
+  if (s.includes('fall') || s.includes('autumn') || s.includes('秋')) return '秋';
   return seasonWord;
 }
 
+// シーズン文字列の正規化
 function showToastText(message) {
   const toast = document.getElementById('toast');
   if (!toast) return;
