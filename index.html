@@ -999,38 +999,34 @@ function generateCardHtmlList(items, showRankIndex = false) {
   return html;
 }
 
-// 11. 【修正版】モーダル詳細表示と閉じるイベントの設定
+// 11. 【最終確認版】モーダル詳細表示と閉じるイベントの設定
 function initModalCloseEvent() {
   // ① Escキーで閉じる
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
   });
 
-  // ② モーダルの背景（modalOv）をクリックしたら閉じる
   const modalOv = document.getElementById('modalOv');
   if (modalOv) {
+    // 背景をクリックしたときだけ閉じる
     modalOv.addEventListener('click', (e) => {
-      // モーダルの中身（m-bodyなど）自体をクリックしたときは閉じず、
-      // 余白（背景）をクリックしたときだけ閉じるようにします
       if (e.target.id === 'modalOv') {
         closeModal();
       }
     });
   }
-}
-
-// モーダルを閉じる関数自体に修正はありませんが、念のため再掲
-function closeModal() {
-  const modalOv = document.getElementById('modalOv');
-  if (modalOv) {
-    modalOv.style.display = 'none';
-    modalOv.classList.remove('open');
-    document.body.style.overflow = '';
-    // YouTube動画を停止させるためフレームをリセット
-    const frameSlot = document.getElementById('mTrailerFrameSlot');
-    if (frameSlot) frameSlot.innerHTML = '';
+  
+  // 【超重要】モーダルの中身をクリックしても閉じないようにする
+  const modalContent = document.querySelector('.m-body') || document.querySelector('.modal-content');
+  if (modalContent) {
+    modalContent.addEventListener('click', (e) => {
+      e.stopPropagation(); // これを入れることで背景にクリックが伝わらなくなります
+    });
   }
 }
+
+// openDetail 関数内では、モーダル自体の表示と、
+// もし「×ボタン」があるならそのクリック処理を確実に行います
 function openDetail(id) {
   const item = animeData.find(a => a.id === id);
   if (!item) return;
@@ -1110,7 +1106,8 @@ function openDetail(id) {
     `;
     streamSection.style.display = 'block';
   }
-  
+  const closeBtn = document.querySelector('.m-close'); 
+if(closeBtn) closeBtn.onclick = closeModal;
   const modalOv = document.getElementById('modalOv');
   if (modalOv) {
     modalOv.style.display = 'flex';
