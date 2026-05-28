@@ -1168,4 +1168,41 @@ function initPwaLifecycle() {
     const banner = document.getElementById('pwaBanner');
     if (banner) {
       banner.style.display = 'flex';
-      banner.classList.add
+      banner.classList.add('show');
+    }
+  });
+}
+
+function triggerPwaInstall() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('pwaBanner').style.display = 'none'; });
+}
+
+function dismissPwaBanner() {
+  const banner = document.getElementById('pwaBanner');
+  if (banner) banner.style.display = 'none';
+  localStorage.setItem('pwa_banner_dismissed', 'true');
+}
+
+// 14. ヘルパー関数
+function translateSeasonString(seasonWord) {
+  if (!seasonWord) return '';
+  const s = seasonWord.toLowerCase();
+  if (s.includes('winter') || s.includes('冬')) return '冬';
+  if (s.includes('spring') || s.includes('春')) return '春';
+  if (s.includes('summer') || s.includes('夏')) return '夏';
+  if (s.includes('fall') || s.includes('autumn') || s.includes('秋')) return '秋';
+  return seasonWord;
+}
+
+function showToastText(message) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => { toast.classList.remove('show'); }, 3000);
+}
+</script>
+</body>
+</html>
