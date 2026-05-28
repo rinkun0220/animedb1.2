@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Chainsaw Man Season 2",
+    "title_ja": "チェンソーマン レゼ篇 (2026)",
+    "score": 8.85,
+    "popularity": 1,
+    "rank": 1,
+    "members": 250000,
+    "year": 2026,
+    "season": "spring",
+    "type": "movie",
+    "image": "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500",
+    "trailer_id": "l9PrSAtz994",
+    "synopsis": "全世界を震撼させたダークヒーローアクション、待望の劇場版。チェンソーマンことデンジの前に現れた謎の少女レゼ。彼女との出会いが、激しい戦いへと彼を巻き込んでいく。"
+  },
+  {
+    "id": 2,
+    "title": "Kaiju No. 8 Part 2",
+    "title_ja": "怪獣8号 第2期",
+    "score": 8.20,
+    "popularity": 2,
+    "rank": 2,
+    "members": 180000,
+    "year": 2026,
+    "season": "spring",
+    "type": "tv",
+    "image": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=500",
+    "trailer_id": "Zm94bH9V124",
+    "synopsis": "日本防衛隊の隊員として、再び迫り来る巨大怪獣との死闘に身を投じる日比野カフカ。自身の怪獣化の秘密と向き合いながら、仲間たちと共に国を守るために戦う。"
+  }
+]
