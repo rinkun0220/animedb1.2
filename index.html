@@ -644,8 +644,13 @@ async function openModal(id, fallbackTitle = "作品詳細") {
     const translateUrl = `https://translate.google.com/?sl=en&tl=ja&text=${encodeURIComponent(synText)}&op=translate`;
     
     const translateBtnHtml = anime.synopsis ? `
-      <div style="margin-top:12px;">
-        <a href="${translateUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block; font-size:0.85rem; background:#4285F4; color:#fff; padding:6px 16px; border-radius:6px; text-decoration:none; font-weight:600;">🌍 このあらすじを日本語に翻訳する (Google翻訳)</a>
+      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="https://translate.google.co.jp/?sl=en&tl=ja&text=${encodeURIComponent(synText)}&op=translate&hl=ja" target="_blank" style="display:inline-block; padding:8px 16px; background:#4285F4; color:#fff; text-decoration:none; border-radius:4px; font-size:0.9rem; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2);">
+          🌍 Google翻訳で読む
+        </a>
+        <a href="https://www.deepl.com/ja/translator#en/ja/${encodeURIComponent(synText)}" target="_blank" style="display:inline-block; padding:8px 16px; background:#0F2B46; color:#fff; text-decoration:none; border-radius:4px; font-size:0.9rem; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2);">
+          ✨ DeepL翻訳で読む(おすすめ)
+        </a>
       </div>
     ` : '';
 
