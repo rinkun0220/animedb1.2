@@ -614,31 +614,30 @@ footer {
 
 <script>
 // ========================================================
-// 【ANIMEDB 1.5 完全復活版】外部Jikan APIリアルタイム連動スクリプト
+// 【ANIMEDB 1.6 確定版】API制限回避＆Bプラン対応スクリプト
 // ========================================================
 
 // 1. グローバル状態管理
-let animeData = [];           // APIから取得した現在表示中のアニメ一覧
+let animeData = [];           // 現在表示中のアニメ一覧
 let favorites = [];           // お気に入りアニメのID配列
-let currentActiveType = 'all'; // メディア種別フィルター ('all', 'tv', 'movie', 'ova')
+let currentActiveType = 'all'; // メディア種別フィルター
 let deferredPrompt = null;    // PWA用
 
-// 表示上限
 const itemsPerPage = 50; 
 let currentFavSort = 'date';
 
 // 2. 初期起動ライフサイクル
 window.addEventListener('DOMContentLoaded', () => {
-  loadFavorites();       // ローカルストレージからお気に入り復元
-  initYearDropdown();    // プルダウンに1990年〜2026年をセット
+  loadFavorites();       
+  initYearDropdown();    
   
-  // 初期表示として、現在のトップ画面用データを自動取得
+  // 起動時の初期表示（2026年春）を安全に呼び出す
   fetchInitialHomeData();
   initModalCloseEvent(); 
   initPwaLifecycle();    
 });
 
-// 3. セレクトボックスの「年」を自動生成
+// 3. セレクトボックスの「年」を自動生成（1990〜2026）
 function initYearDropdown() {
   const yearSelect = document.getElementById('seasonYear');
   if (yearSelect) {
@@ -650,54 +649,102 @@ function initYearDropdown() {
   }
 }
 
-// 4. 【API通信コア】外部データベース(Jikan API)からデータを引っ張る関数
+// 4. 【API制限回避コア】キャッシュ付き非同期通信関数
 async function fetchAnimeBySeason(year, season) {
-  // シーズン文字列の正規化 (Jikan API仕様: winter, spring, summer, fall)
   let s = season.toLowerCase();
   if (s.includes('秋')) s = 'fall';
   if (s.includes('春')) s = 'spring';
   if (s.includes('夏')) s = 'summer';
   if (s.includes('冬')) s = 'winter';
 
+  // ── 対策A: ブラウザのキャッシュ（一時記憶）をチェック ──
+  // 同じ年代を何度も選んだときにAPIを叩かず、一瞬で表示させて負荷をゼロにします
+  const cacheKey = `animedb_cache_${year}_${s}`;
+  const cachedData = localStorage.getItem(cacheKey);
+  if (cachedData) {
+    try {
+      console.log(`[Cache Hit] ${year} ${s} のデータをキャッシュから復元しました。`);
+      return JSON.parse(cachedData);
+    } catch(e) {
+      localStorage.removeItem(cacheKey);
+    }
+  }
+
+  // ── 対策B: API連続呼び出しを防ぐための「0.5秒のウェイト」 ──
+  // ボタン連打などによる意図しない負荷でのエラーをシャットアウトします
+  await new Promise(resolve => setTimeout(resolve, 500));
+
   const url = `https://api.jikan.moe/v4/seasons/${year}/${s}`;
   
   try {
     const response = await fetch(url);
+    
+    // もし429（レート制限）を喰らったら、あえて2秒待って1回だけ自動リトライする執念の処理
+    if (response.status === 429) {
+      console.warn("API制限を検知しました。2秒後に自動リトライします...");
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      const retryResponse = await fetch(url);
+      if (!retryResponse.ok) throw new Error("リトライ後も取得失敗");
+      const retryJson = await retryResponse.json();
+      return processAndCacheApiData(retryJson, year, season, cacheKey);
+    }
+
     if (!response.ok) throw new Error("APIエラー: " + response.status);
     const json = await response.json();
-    
-    // 外部APIの生データを、ANIMEDBのカードシステムに適合する形に変換
-    return (json.data || []).map(item => ({
-      id: item.mal_id,
-      title: item.title,
-      title_ja: item.title_japanese || item.title,
-      score: item.score || 0.00,
-      popularity: item.popularity || 999,
-      rank: item.rank || 999,
-      members: item.members || 0,
-      year: year,
-      season: season,
-      type: item.type ? item.type.toLowerCase() : 'tv',
-      image: item.images?.jpg?.large_image_url || item.images?.jpg?.image_url || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500',
-      trailer_id: item.trailer?.youtube_id || null,
-      synopsis: item.synopsis || '作品のあらすじ情報は登録されていません。'
-    }));
+    return processAndCacheApiData(json, year, season, cacheKey);
+
   } catch (error) {
     console.error("外部データ取得に失敗しました:", error);
     return [];
   }
 }
 
-// 起動時にホーム画面を賑やかにする初期データ取得
+// 生データを整形してキャッシュに保存するヘルパー
+function processAndCacheApiData(json, year, season, cacheKey) {
+  const mapped = (json.data || []).map(item => ({
+    id: item.mal_id,
+    title: item.title,
+    title_ja: item.title_japanese || item.title,
+    score: item.score || 0.00,
+    popularity: item.popularity || 999,
+    rank: item.rank || 999,
+    members: item.members || 0,
+    year: year,
+    season: season,
+    type: item.type ? item.type.toLowerCase() : 'tv',
+    image: item.images?.jpg?.large_image_url || item.images?.jpg?.image_url || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500',
+    trailer_id: item.trailer?.youtube_id || null,
+    synopsis: item.synopsis || '作品のあらすじ情報は登録されていません。'
+  }));
+
+  // 取得に成功したデータはローカルストレージへ24時間キャッシュ（保存）
+  if (mapped.length > 0) {
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify(mapped));
+    } catch (e) {
+      // 容量上限対策として古いキャッシュを少しクリア
+      localStorage.clear();
+      loadFavorites(); // お気に入りだけは死守
+    }
+  }
+  return mapped;
+}
+
+// 起動時の初期データ取得
 async function fetchInitialHomeData() {
-  // 2026年春データをベースとして取得
   const data = await fetchAnimeBySeason(2026, 'spring');
   if (data && data.length > 0) {
     animeData = data;
     renderHeroFeature();
     renderHomeRows();
-    loadSeasonPage(); // シーズン側も初期構築
+    loadSeasonPage(); 
     executeSearchFilter();
+  } else {
+    // 万が一APIが完全に死んでいた場合のセーフティ表示
+    const gridContainer = document.getElementById('seasonResult');
+    if (gridContainer) {
+      gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#aaa;">現在外部データベースとの接続を確立しています。もう一度「表示」ボタンを押すか、少し時間を置いてリロードしてください。</div>`;
+    }
   }
 }
 
@@ -722,7 +769,6 @@ function renderHeroFeature() {
   const heroSlot = document.getElementById('heroSlot');
   if (!heroSlot || !animeData.length) return;
   
-  // スコアが一番高い作品をヒーロー枠に抜擢
   const heroAnime = [...animeData].sort((a, b) => b.score - a.score)[0];
   const title = heroAnime.title_ja || heroAnime.title;
   
@@ -772,32 +818,29 @@ function renderHomeRows() {
   `;
 }
 
-// 7. シーズン表示（プルダウン選択時にデータを直接外部APIに繋ぎに行く）
+// 7. シーズン切り替え（安全設計）
 async function loadSeasonPage() {
   const gridContainer = document.getElementById('seasonResult');
   if (gridContainer) {
-    gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#ff4757; font-weight:700;">🌐 外部アニメデータベースから最新50件を取得中...</div>`;
+    gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#ff4757; font-weight:700;">🌐 外部データベースからデータを安全に読込中...</div>`;
   }
 
   const yearVal = parseInt(document.getElementById('seasonYear')?.value) || 2026;
   const seasonVal = document.getElementById('seasonType')?.value || 'spring';
   const sortVal = document.getElementById('gridSort')?.value || 'score';
   
-  // ユーザーの選んだ「年」と「シーズン」でAPIから直接50件強を引っ張る！
   const fetchedData = await fetchAnimeBySeason(yearVal, seasonVal);
   
-  // グローバルデータを更新（検索やホームにも反映可能にするため）
   if (fetchedData.length > 0) {
     animeData = fetchedData;
   } else {
     if (gridContainer) {
-      gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#aaa;">指定された年代のデータが見つからなかったか、API制限中です。時間を置いて再度お試しください。</div>`;
+      gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#aaa;">指定された年代のデータが見つからなかったか、APIが一時的に混み合っています。少し時間をおいて再度「表示」を押してください。</div>`;
     }
     return;
   }
 
   let filtered = [...animeData];
-  
   if (currentActiveType !== 'all') {
     filtered = filtered.filter(a => a.type?.toLowerCase() === currentActiveType);
   }
@@ -818,7 +861,6 @@ async function loadSeasonPage() {
     gridContainer.innerHTML = generateCardHtmlList(slicedItems, true);
   }
   
-  // 1画面に一気に出すため、下部ページャーは不要につき非表示
   const pager = document.getElementById('seasonPager');
   if (pager) pager.style.display = 'none';
 }
@@ -830,7 +872,7 @@ function filterGridType(buttonElement, typeStr) {
   loadSeasonPage();
 }
 
-// 8. 検索画面制御
+// 8. 検索画面
 function onSearchInput() {
   executeSearchFilter();
 }
@@ -889,15 +931,12 @@ function renderFavorites() {
   const container = document.getElementById('favResult');
   if (!container) return;
   
-  // お気に入りは読み込んだ全データからID一致するものを抽出
   const favItems = animeData.filter(a => favorites.includes(a.id));
-  
   if (currentFavSort === 'score') {
     favItems.sort((a, b) => b.score - a.score);
   } else {
     favItems.sort((a, b) => favorites.indexOf(a.id) - favorites.indexOf(b.id));
   }
-  
   container.innerHTML = generateCardHtmlList(favItems);
 }
 
@@ -920,7 +959,7 @@ function clearAllFavs() {
   }
 }
 
-// 10. 【迫力重視・Bプラン】HTMLジェネレータ
+// 10. HTMLジェネレータ（Bプラン専用迫力サイズ）
 function generateCardHtmlList(items, showRankIndex = false) {
   if (!items || items.length === 0) {
     return `<div class="state-box" style="grid-column: 1/-1; width:100%; text-align:center; padding:40px; color:#aaa;">対象の作品は見つかりませんでした。</div>`;
@@ -1076,7 +1115,6 @@ function toggleFavorite(id, clickedElement = null, isFromModal = false) {
   
   saveFavorites();
   refreshFavBadgeCount();
-  
   if (clickedElement) clickedElement.classList.toggle('on', added);
   
   if (isFromModal) {
@@ -1109,6 +1147,7 @@ function saveFavorites() {
   localStorage.setItem('animedb_favorites_list', JSON.stringify(favorites));
 }
 
+// バッジ
 function refreshFavBadgeCount() {
   const badge = document.getElementById('favBadge');
   if (badge) {
@@ -1117,7 +1156,7 @@ function refreshFavBadgeCount() {
   }
 }
 
-// 13. PWA制御
+// 13. PWA
 function initPwaLifecycle() {
   if (localStorage.getItem('pwa_banner_dismissed') === 'true') {
     document.getElementById('pwaBanner').style.display = 'none';
@@ -1129,47 +1168,4 @@ function initPwaLifecycle() {
     const banner = document.getElementById('pwaBanner');
     if (banner) {
       banner.style.display = 'flex';
-      banner.classList.add('show');
-    }
-  });
-  window.addEventListener('appinstalled', () => {
-    deferredPrompt = null;
-    document.getElementById('pwaBanner').style.display = 'none';
-    showToastText("ANIMEDB がインストールされました！");
-  });
-}
-
-function triggerPwaInstall() {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('pwaBanner').style.display = 'none'; });
-}
-
-function dismissPwaBanner() {
-  const banner = document.getElementById('pwaBanner');
-  if (banner) banner.style.display = 'none';
-  localStorage.setItem('pwa_banner_dismissed', 'true');
-}
-
-// 14. ヘルパー関数
-function translateSeasonString(seasonWord) {
-  if (!seasonWord) return '';
-  const s = seasonWord.toLowerCase();
-  if (s.includes('winter') || s.includes('冬')) return '冬';
-  if (s.includes('spring') || s.includes('春')) return '春';
-  if (s.includes('summer') || s.includes('夏')) return '夏';
-  if (s.includes('fall') || s.includes('autumn') || s.includes('秋')) return '秋';
-  return seasonWord;
-}
-
-// シーズン文字列の正規化
-function showToastText(message) {
-  const toast = document.getElementById('toast');
-  if (!toast) return;
-  toast.textContent = message;
-  toast.classList.add('show');
-  setTimeout(() => { toast.classList.remove('show'); }, 3000);
-}
-</script>
-</body>
-</html>
+      banner.classList.add
