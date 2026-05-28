@@ -1765,9 +1765,43 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.style.fontSize = '12px';
             btn.textContent = seasonName;
 
-            // ボタンクリックで .html を省いたスマートなURLへジャンプ
+            // 🛠️ ボタンをクリックした時の動きを修正：既存の検索システムを呼び出す
             btn.addEventListener('click', function() {
-                window.location.href = `/animedb1.2/search?year=${year}&season=${seasonKeys[index]}`;
+                // ① まずポップアップを閉じる
+                seasonModal.classList.remove('open');
+                document.body.style.overflow = '';
+
+                // ② 元々サイトにある「検索画面（パネル）」を開くシステムを実行
+                if (typeof switchPanel === 'function') {
+                    switchPanel('search');
+                }
+
+                // ③ あなたのサイトにあるはずの「年」と「季節」を選ぶセレクトボックス（ドロップダウン）を探す
+                // ※ もしセレクトボックスの id や class 名が違っていれば自動調整できるように複数パターンで探します
+                const yearSelect = document.getElementById('year-select') || document.querySelector('select[name="year"]') || document.querySelector('.season-bar select');
+                const seasonSelect = document.getElementById('season-select') || document.querySelector('select[name="season"]') || document.querySelectorAll('.season-bar select')[1];
+                const showBtn = document.getElementById('show-btn') || document.querySelector('.show-btn');
+
+                // ④ 見つかったセレクトボックスに、選んだ年と季節を自動セットする
+                if (yearSelect) {
+                    yearSelect.value = year;
+                    // 変更をブラウザに認識させるイベントを発生させる
+                    yearSelect.dispatchEvent(new Event('change'));
+                }
+                
+                if (seasonSelect) {
+                    // サイト側が日本語（春・夏など）か英語キー（spring等）どちらでも合うように判定
+                    const hasKey = Array.from(seasonSelect.options).some(opt => opt.value === seasonKeys[index]);
+                    seasonSelect.value = hasKey ? seasonKeys[index] : seasonName;
+                    seasonSelect.dispatchEvent(new Event('change'));
+                }
+
+                // ⑤ 「表示」や「検索」ボタンがあれば、全自動でクリックして結果を読み込む
+                if (showBtn) {
+                    setTimeout(() => {
+                        showBtn.click();
+                    }, 100);
+                }
             });
 
             btnGroup.appendChild(btn);
@@ -1777,6 +1811,6 @@ document.addEventListener('DOMContentLoaded', function() {
         yearListContainer.appendChild(row);
     }
 });
-
+</script>
 </script> </body>
 </html>
