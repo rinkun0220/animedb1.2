@@ -1028,7 +1028,6 @@ function initModalCloseEvent() {
       }
     });
   }
-  
   // 【超重要】モーダルの中身をクリックしても閉じないようにする
   const modalContent = document.querySelector('.m-body') || document.querySelector('.modal-content');
   if (modalContent) {
@@ -1037,7 +1036,6 @@ function initModalCloseEvent() {
     });
   }
 }
-
 // openDetail 関数内では、モーダル自体の表示と、
 // もし「×ボタン」があるならそのクリック処理を確実に行います
 function openDetail(id) {
@@ -1233,6 +1231,28 @@ function showToastText(message) {
   toast.classList.add('show');
   setTimeout(() => { toast.classList.remove('show'); }, 3000);
 }
+// モーダルを閉じる関数（もし無ければここに追加）
+function closeModal() {
+  const modalOv = document.getElementById('modalOv');
+  if (modalOv) {
+    modalOv.style.display = 'none';
+    modalOv.classList.remove('open');
+    document.body.style.overflow = '';
+    const frameSlot = document.getElementById('mTrailerFrameSlot');
+    if (frameSlot) frameSlot.innerHTML = '';
+  }
+}  
+// 背景をクリックしたときに closeModal を実行する設定
+document.addEventListener('DOMContentLoaded', () => {
+  const modalOv = document.getElementById('modalOv');
+  if (modalOv) {
+    modalOv.addEventListener('click', (e) => {
+      if (e.target.id === 'modalOv') {
+        closeModal();
+      }
+    });
+  }
+});  
 </script>
 </body>
 </html>
