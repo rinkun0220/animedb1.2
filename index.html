@@ -513,10 +513,26 @@ async function executeSearch() {
   resultSlot.innerHTML = "";
   if (loader) loader.style.display = "flex";
   
+  // 修正：APIが理解できる正しい形式でURLを構築する
   let url = `${API_BASE}/anime?limit=24`;
   if (kw) url += `&q=${encodeURIComponent(kw)}`;
-  if (year) url += `&year=${year}`;
-  if (season) url += `&season=${season}`;
+  
+  // 年とシーズンを「日付」に変換して検索（これが正解の記述です）
+  if (year) {
+    if (season === "winter") {
+      url += `&start_date=${year}-01-01&end_date=${year}-03-31`;
+    } else if (season === "spring") {
+      url += `&start_date=${year}-04-01&end_date=${year}-06-30`;
+    } else if (season === "summer") {
+      url += `&start_date=${year}-07-01&end_date=${year}-09-30`;
+    } else if (season === "fall") {
+      url += `&start_date=${year}-10-01&end_date=${year}-12-31`;
+    } else {
+      // 年のみ指定の場合
+      url += `&start_date=${year}-01-01&end_date=${year}-12-31`;
+    }
+  }
+  
   if (sort === "score") url += `&order_by=score&sort=desc`;
   else if (sort === "popularity") url += `&order_by=popularity&sort=asc`;
   
@@ -526,29 +542,35 @@ async function executeSearch() {
     if (res && res.data && res.data.length > 0) {
       res.data.forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
     } else {
-      resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">見つかりませんでした。</p>`;
+      resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">条件に一致する作品が見つかりませんでした。</p>`;
     }
   } catch (err) {
     if (loader) loader.style.display = "none";
     
-    // サーバーが死んでいる場合はバックアップデータから部分一致で救済検索
+    // APIが本当に落ちている時でも、バックアップデータから「年・シーズン」を絞り込めるように改良
     const allBackup = [...BACKUP_DATA.now, ...BACKUP_DATA.top2026, ...BACKUP_DATA.topAll];
     const uniqueBackup = Array.from(new Set(allBackup.map(a => a.mal_id))).map(id => allBackup.find(a => a.mal_id === id));
     
     let filtered = uniqueBackup;
     if (kw) {
-      filtered = uniqueBackup.filter(a => {
+      filtered = filtered.filter(a => {
         const t1 = (a.title_japanese || '').toLowerCase();
         const t2 = (a.title || '').toLowerCase();
         return t1.includes(kw.toLowerCase()) || t2.includes(kw.toLowerCase());
       });
     }
+    if (year) {
+      filtered = filtered.filter(a => a.year == parseInt(year));
+    }
+    if (season) {
+      filtered = filtered.filter(a => a.season === season);
+    }
     
     if (filtered.length > 0) {
       filtered.forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
-      showToastText("現在サーバー混雑のため、内蔵おすすめデータを表示中...");
+      showToastText("現在サーバー混雑のため、内蔵データから検索しました。");
     } else {
-      resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">一時的に検索機能が混み合っています。ページを再読み込みするか、時間を置いてお試しください。</p>`;
+      resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">サーバー混み合い中につきデータが取得できません。時間をおいて再度お試しください。</p>`;
     }
   }
 }
