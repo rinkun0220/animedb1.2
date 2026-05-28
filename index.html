@@ -1688,25 +1688,37 @@ function dismissPwaBanner(){
 }
   
 <script>
-// ① 画面全体をロックしていた透明な壁（不完全なモーダル）を強制非表示にする
 (function() {
-    const errorModal = document.getElementById('season-search-modal');
-    if (errorModal) {
-        errorModal.style.display = 'none';
+    // 1. 画面フリーズを発生させていた目に見えない透明な壁を完全に破壊・除去
+    const blockElement = document.getElementById('season-search-modal');
+    if (blockElement) {
+        blockElement.remove(); 
     }
-    document.body.style.overflow = ''; // スクロールロックも解除
-})();
+    document.body.style.overflow = '';
+    document.body.style.pointerEvents = 'auto';
 
-// ② 【重要】「総合ランキングを表示中」のアラート（ダイアログ）を完全にスルーさせる処理
-// これを最初に入れておくことで、元のコードに alert() が残っていても一切表示されなくなります！
-const originalAlert = window.alert;
-window.alert = function(message) {
-    if (message && (message.includes('総合ランキング') || message.includes('シーズン切り替え'))) {
-        console.log('邪魔なアラートを自動でブロックしました: ' + message);
-        return; // ダイアログを出さずに無視する
-    }
-    originalAlert(message); // それ以外の大事な警告は念のため残す
-};
+    // 2. Claudeが指摘した「邪魔なアラート（警告ダイアログ）」のみを狙い撃ちして永久遮断
+    const nativeAlert = window.alert;
+    window.alert = function(msg) {
+        if (msg && (msg.includes('総合ランキング') || msg.includes('シーズン切り替え'))) {
+            // アラートの表示を完全に握りつぶし、バックグラウンド処理だけを正常通過させる
+            return; 
+        }
+        nativeAlert(msg);
+    };
+
+    // 3. ヘッダーのボタン群のイベント再結合（不具合の完全自動修正）
+    document.addEventListener('DOMContentLoaded', function() {
+        const seasonBtn = document.getElementById('nav-season-btn');
+        if (seasonBtn) {
+            seasonBtn.removeAttribute('onclick');
+            seasonBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (typeof switchPanel === 'function') switchPanel('search');
+            });
+        }
+    });
+})();
 </script>
 
 </body>
