@@ -542,13 +542,8 @@ header{padding:0 14px}
       <div id="mStreamLinks" class="stream-links"></div>
     </div>
 
-    <div class="m-comments">
-      <h4>みんなの感想・コメント</h4>
-      <div id="commentWall"></div>
     </div>
-  </div>
 </div>
-
 <div id="toast" class="toast"></div>
 
 <div id="pwaBanner" class="pwa-banner">
@@ -638,14 +633,14 @@ function renderHome(list){
   const title = getJpTitle(topAnime);
   const score = topAnime.score ? topAnime.score.toFixed(2) : '---';
   const episodes = topAnime.episodes || '?';
-  const syn = topAnime.synopsis ? topAnime.synopsis.substring(0,120)+'...' : 'ストーリー概要は現在登録されていません。';
+  const syn = ''; // 💡 ここを空っぽにすることで、英語のあらすじが一切表示されなくなります！
   
   heroSlot.innerHTML = `
     <div class="hero" onclick="openModal(${topAnime.mal_id}, 'home')">
       <div class="hero-bg" style="background-image:url('${bg}')"></div>
       <div class="hero-vignette"></div>
       <div class="hero-content">
-        <div class="hero-badge">🔥 本期最注目作品</div>
+        <div class="hero-badge">🔥 今期注目作品</div>
         <h2 class="hero-title">${title}</h2>
         <div class="hero-meta">
           <span class="hero-score">★ ${score}</span>
@@ -1189,10 +1184,10 @@ function renderModalDetails(a){
   const streamLinks = document.getElementById('mStreamLinks');
   
   let streamHtml = `
-    <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" rel="nofollow" target="_blank" class="stream-link" style="border-color:var(--red); color:#fff; background:var(--red-a)">
+    <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" rel="nofollow" target="_blank" class="stream-link">
       ABEMAプレミアムで探す
     </a>
-    <a href="https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encodedKw}" target="_blank" class="stream-link" style="border-color:#ff6600; color:#ff6600">
+    <a href="https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encodedKw}" target="_blank" class="stream-link">
       dアニメストアで検索
     </a>
     <a href="https://www.amazon.co.jp/s?k=${encodedKw}&i=instant-video" target="_blank" class="stream-link">
@@ -1244,6 +1239,17 @@ function renderComments(animeId){
         <button class="c-send" onclick="submitComment(${animeId})">投稿</button>
       </div>
     `;
+  } else {
+    formHtml = `
+      <div class="c-login-wall">
+        <p>感想の投稿やいいね機能を利用するにはログインが必要です</p>
+      </div>
+    `;
+  }
+  
+  // 💡 コメントリストの組み立て処理をすべて無くし、ログイン枠（formHtml）だけを画面に表示します
+  wall.innerHTML = formHtml;
+}
   } else {
     formHtml = `
       <div class="c-login-wall">
