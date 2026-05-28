@@ -613,872 +613,430 @@ footer {
 </div>
 
 <script>
-// ── STATE ──
-let cachedHomeData = null;
-let currentGridData = [];
-let gridPage = 1;
-let favList = JSON.parse(localStorage.getItem('animedb_favs') || '[]');
-let favSortMode = 'date';
-let searchHistory = JSON.parse(localStorage.getItem('animedb_search_hist') || '[]');
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+// ========================================================
+// 【完全復活】直感UIシステム（シーズン：プルダウン方式 ＆ 爆速TOP表示）
+// ========================================================
 
-// ── AUTH STATE ──
-let currentUser = JSON.parse(localStorage.getItem('animedb_user') || 'null');
+// 警告アラートを完全にブロック
+window.alert = function(msg) {
+  console.log("Blocked alert: " + msg);
+  return true;
+};
 
-window.addEventListener('DOMContentLoaded',()=>{
-  initSeasonSelectors();
-  updateFavBadge();
-  loadHome();
-  renderSearchHistory();
+let animeData = [];
+let favorites = [];
+let currentSlideIndex = 0;
+let slideInterval = null;
+
+// ジャンルIDの日本語マッピング
+const genresMap = {
+  1:"アクション", 2:"アドベンチャー", 4:"コメディ", 8:"ドラマ", 10:"ファンタジー",
+  14:"ホラー", 22:"ロマンス", 24:"SF", 36:"スライス・オブ・ライフ", 37:"超常現象",
+  40:"サスペンス", 41:"スリラー", 42:"日常", 43:"スポーツ"
+};
+
+// 画面起動時の初期化
+window.addEventListener('DOMContentLoaded', () => {
+  loadFavorites();
+  initDropdownMenu(); // シーズンプルダウンの挙動を初期化
+  initSearchFilters(); // 検索・フィルター条件の紐付け
+  fetchAnimeData();    // JSONデータの取得と表示
   initPwa();
 });
 
-function switchPanel(key){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const targetPanel = document.getElementById('panel-'+key);
-  if(targetPanel) targetPanel.classList.add('active');
-  const clickedBtn = document.querySelector(`button[onclick="switchPanel('${key}')"]`);
-  if(clickedBtn) clickedBtn.classList.add('active');
-  window.scrollTo({top:0});
-  if(key==='fav') renderFavGrid();
-}
-
-// ── HOME LOGIC ──
-async function loadHome(){
-  const heroSlot = document.getElementById('heroSlot');
-  const homeRows = document.getElementById('homeRows');
-  heroSlot.innerHTML = `<div class="state-box"><div class="loader"></div><div class="state-text">最新のトレンドアニメを読み込み中...</div></div>`;
-  homeRows.innerHTML = '';
+// 1. シーズンボタンを「パッと出るプルダウン方式」にする制御
+function initDropdownMenu() {
+  const seasonBtn = document.getElementById('dt-season') || document.querySelector('[onclick*="openSeasonModal"]');
   
-  let loaded = false;
-  setTimeout(() => {
-    if (!loaded) {
-      heroSlot.innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="window.location.reload()" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
-    }
-  }, 5000);
-
-  try {
-    await delay(2000);
-    const res = await fetch('https://api.jikan.moe/v4/seasons/now?page=1');
-    if(!res.ok) throw new Error();
-    const json = await res.json();
-    loaded = true;
-    if(!json.data || json.data.length===0){
-      showHomeError();
-      return;
-    }
-    cachedHomeData = json.data;
-    renderHome(json.data);
-  } catch(e) {
-    loaded = true;
-    showHomeError();
-  }
-}
-
-function showHomeError(){
-  document.getElementById('heroSlot').innerHTML = `<div class="state-box"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="window.location.reload()" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
-}
-
-function renderHome(list){
-  const heroSlot = document.getElementById('heroSlot');
-  const homeRows = document.getElementById('homeRows');
-  const sorted = [...list].filter(a=>a.score).sort((a,b)=>b.score - a.score);
-  const topAnime = sorted[0] || list[0];
-  
-  const bg = topAnime.images?.jpg?.large_image_url || '';
-  const title = getJpTitle(topAnime);
-  const score = topAnime.score ? topAnime.score.toFixed(2) : '---';
-  const episodes = topAnime.episodes || '?';
-  const syn = ''; // 💡 ここを空っぽにすることで、英語のあらすじが一切表示されなくなります！
-  
-  heroSlot.innerHTML = `
-    <div class="hero" onclick="openModal(${topAnime.mal_id}, 'home')">
-      <div class="hero-bg" style="background-image:url('${bg}')"></div>
-      <div class="hero-vignette"></div>
-      <div class="hero-content">
-        <div class="hero-badge">🔥 今期注目作品</div>
-        <h2 class="hero-title">${title}</h2>
-        <div class="hero-meta">
-          <span class="hero-score">★ ${score}</span>
-          <span class="hero-divider"></span>
-          <span>${topAnime.type || 'TV'}</span>
-          <span class="hero-divider"></span>
-          <span>全 ${episodes} 話</span>
-        </div>
-        <div class="static-hero-sub" style="margin-bottom:20px; display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical; overflow:hidden;">${syn}</div>
-        <div class="hero-actions">
-          <button class="hero-cta pri">詳細を見る</button>
-        </div>
-      </div>
-      <div class="hero-fade"></div>
-    </div>
-  `;
-  
-  let rowsHtml = '';
-  rowsHtml += makeRowHtml('総合評価ランキング (Top 10)', sorted.slice(0,10), true);
-  const pop = [...list].sort((a,b)=>b.members - a.members);
-  rowsHtml += makeRowHtml('今期のおすすめ・人気順', pop.slice(0,10));
-  
-  const actionG = list.filter(a=>a.genres?.some(g=>g.name==='Action')).slice(0,10);
-  if(actionG.length>0) rowsHtml += makeRowHtml('バトル・アクション緊迫作', actionG);
-  const fantasyG = list.filter(a=>a.genres?.some(g=>g.name==='Fantasy')).slice(0,10);
-  if(fantasyG.length>0) rowsHtml += makeRowHtml('異世界・ファンタジー', fantasyG);
-  
-  homeRows.innerHTML = rowsHtml;
-}
-
-function makeRowHtml(title, subset, showRank=false){
-  if(!subset || subset.length===0) return '';
-  let cards = '';
-  subset.forEach((a,i)=>{
-    const img = a.images?.jpg?.image_url || '';
-    const name = getJpTitle(a);
-    const score = a.score ? a.score.toFixed(1) : '---';
-    const isFav = favList.some(f=>f.id === a.mal_id);
-    const scoreClass = a.score >= 8 ? 'hi' : (a.score >= 7 ? 'md' : 'lo');
+  if (seasonBtn) {
+    // 既存のポップアップを呼び出す属性を解除し、プルダウン専用に変更
+    seasonBtn.removeAttribute('onclick');
+    seasonBtn.style.position = 'relative';
+    seasonBtn.style.cursor = 'pointer';
     
-    let imgBlock = img ? `<img src="${img}" alt="${name}" loading="lazy">` : `<div class="nf-card-ph">🎬</div>`;
-    let rankBlock = showRank ? `<div class="rank-bg">${i+1}</div>` : '';
-    
-    cards += `
-      <div class="nf-card" onclick="openModal(${a.mal_id}, 'home')">
-        ${imgBlock}
-        <div class="type-pin">${a.type || 'TV'}</div>
-        <div class="score-pin ${scoreClass}">${score}</div>
-        <button class="fav-toggle ${isFav?'on':''}" onclick="toggleFav(event, ${a.mal_id}, '${escapeHtml(name)}', '${img}', ${a.score||0})">❤</button>
-        <div class="nf-overlay"></div>
-        <div class="nf-bottom">
-          <div class="nf-card-title">${name}</div>
-        </div>
-        ${rankBlock}
-      </div>
+    // プルダウンメニューのHTML要素を作成してボタンの直下に挿入
+    const dropdown = document.createElement('div');
+    dropdown.className = 'season-dropdown-menu';
+    dropdown.innerHTML = `
+      <div class="dropdown-year-section">2026年</div>
+      <a onclick="selectSeasonDropdown(2026, 'winter')">❄️ 冬アニメ</a>
+      <a onclick="selectSeasonDropdown(2026, 'spring')">🌸 春アニメ</a>
+      <a onclick="selectSeasonDropdown(2026, 'summer')">☀️ 夏アニメ</a>
+      <a onclick="selectSeasonDropdown(2026, 'autumn')">🍂 秋アニメ</a>
+      <div class="dropdown-divider"></div>
+      <div class="dropdown-year-section">2025年</div>
+      <a onclick="selectSeasonDropdown(2025, 'winter')">❄️ 冬アニメ</a>
+      <a onclick="selectSeasonDropdown(2025, 'spring')">🌸 春アニメ</a>
+      <a onclick="selectSeasonDropdown(2025, 'summer')">☀️ 夏アニメ</a>
+      <a onclick="selectSeasonDropdown(2025, 'autumn')">🍂 秋アニメ</a>
     `;
-  });
-  return `
-    <div class="section">
-      <div class="section-head"><h3 class="section-title">${title}</h3></div>
-      <div class="nf-row">${cards}</div>
-    </div>
-  `;
-}
-
-function getJpTitle(a){
-  if(!a) return '';
-  const jp = a.titles?.find(t=>t.type==='Japanese');
-  if(jp && jp.title) return jp.title;
-  return a.title || 'Unknown Title';
-}
-
-function escapeHtml(str) {
-  if(!str) return '';
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-}
-
-function initSeasonSelectors(){
-  const yearSel = document.getElementById('seasonYear');
-  const currentYear = new Date().getFullYear();
-  let html = '';
-  for(let y=currentYear; y>=1990; y--){
-    html += `<option value="${y}">${y} 年</option>`;
-  }
-  yearSel.innerHTML = html;
-}
-
-let currentGridType = 'all';
-
-async function loadSeasonPage(page=1){
-  const year = document.getElementById('seasonYear').value;
-  const season = document.getElementById('seasonType').value;
-  const grid = document.getElementById('seasonResult');
-  const pager = document.getElementById('seasonPager');
-  const showBtn = document.getElementById('seasonShowBtn');
-  
-  grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="loader"></div><div class="state-text">${year}年 [${season}] のデータを解析中...</div></div>`;
-  pager.style.display = 'none';
-  showBtn.disabled = true;
-  
-  let loaded = false;
-  setTimeout(() => {
-    if (!loaded) {
-      grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="loadSeasonPage(${page})" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
-      showBtn.disabled = false;
-    }
-  }, 5000);
-
-  try {
-    await delay(2000);
-    const res = await fetch(`https://api.jikan.moe/v4/seasons/${year}/${season}?page=${page}`);
-    if(!res.ok) throw new Error();
-    const json = await res.json();
-    loaded = true;
-    showBtn.disabled = false;
+    seasonBtn.appendChild(dropdown);
     
-    if(!json.data || json.data.length===0){
-      grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">🔍</div><div class="state-text">該当するアニメが見つかりませんでした。</div></div>`;
-      return;
-    }
-    
-    currentGridData = json.data;
-    gridPage = page;
-    
-    const hasNext = json.pagination?.has_next_page || false;
-    renderGrid(hasNext);
-  } catch(e) {
-    loaded = true;
-    showBtn.disabled = false;
-    grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">⚠️</div><div class="state-text" style="line-height:1.6;">データ元（海外サーバー）が大変混み合っているか、一時的なアクセス制限がかかっています。<br><span style="font-size:12px;color:#aaa;display:block;margin-top:6px;font-weight:normal;">※1990年などの古い年代もデータは存在しますが、同様に混雑エラーになる場合があります。</span><button onclick="loadSeasonPage(${page})" style="margin-top:16px;background:var(--red);color:#fff;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700">数分後に再試行</button></div></div>`;
-  }
-}
-
-function filterGridType(btn, type){
-  btn.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  btn.classList.add('on');
-  currentGridType = type;
-  sortGrid();
-}
-
-function sortGrid(){
-  const sortVal = document.getElementById('gridSort').value;
-  let filtered = [...currentGridData];
-  
-  if(currentGridType !== 'all'){
-    filtered = filtered.filter(a=>{
-      if(!a.type) return false;
-      const t = a.type.toLowerCase();
-      if(currentGridType==='tv') return t==='tv';
-      if(currentGridType==='movie') return t==='movie';
-      if(currentGridType==='ova') return t==='ova' || t==='ona' || t==='special';
-      return true;
-    });
-  }
-  
-  if(sortVal==='score'){
-    filtered.sort((a,b)=>(b.score || 0) - (a.score || 0));
-  } else if(sortVal==='pop'){
-    filtered.sort((a,b)=>(b.members || 0) - (a.members || 0));
-  } else if(sortVal==='title'){
-    filtered.sort((a,b)=>getJpTitle(a).localeCompare(getJpTitle(b), 'ja'));
-  }
-  
-  document.getElementById('gridCount').innerHTML = `該当: <strong>${filtered.length}</strong> 件`;
-  
-  const grid = document.getElementById('seasonResult');
-  if(filtered.length===0){
-    grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">🍃</div><div class="state-text">条件に合う作品がこのページ内にありません。</div></div>`;
-    return;
-  }
-  
-  let html = '';
-  filtered.forEach(a=>{
-    const img = a.images?.jpg?.image_url || '';
-    const name = getJpTitle(a);
-    const score = a.score ? a.score.toFixed(1) : '---';
-    const typeStr = a.type || 'TV';
-    const eps = a.episodes ? `${a.episodes}話` : '?話';
-    
-    let imgPart = img ? `<img src="${img}" class="g-img" alt="${name}" loading="lazy">` : `<div class="g-ph">🎬</div>`;
-    
-    html += `
-      <div class="g-card" onclick="openModal(${a.mal_id}, 'season')">
-        <div class="g-img-wrap">
-          ${imgPart}
-          <div class="score-pin hi" style="background:rgba(0,0,0,.75)">★ ${score}</div>
-        </div>
-        <div class="g-info">
-          <div class="g-title">${name}</div>
-          <div class="g-meta">
-            <span>${typeStr}</span>
-            <span>${eps}</span>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  grid.innerHTML = html;
-}
-
-function renderGrid(hasNext){
-  sortGrid();
-  const pager = document.getElementById('seasonPager');
-  pager.style.display = 'flex';
-  document.getElementById('prevBtn').disabled = (gridPage === 1);
-  document.getElementById('nextBtn').disabled = !hasNext;
-  document.getElementById('pageInfo').innerText = `ページ ${gridPage}`;
-}
-
-function changeGridPage(dir){
-  loadSeasonPage(gridPage + dir);
-}
-
-// ── SEARCH LOGIC ──
-let searchTimeout = null;
-function onSearchInput(){
-  clearTimeout(searchTimeout);
-  const q = document.getElementById('sInput').value.trim();
-  const sugBox = document.getElementById('sugBox');
-  if(!q){
-    sugBox.style.display = 'none';
-    return;
-  }
-  searchTimeout = setTimeout(()=>fetchSuggestions(q), 400);
-}
-
-async function fetchSuggestions(q){
-  try{
-    const res = await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(q)}&limit=5`);
-    if(!res.ok) return;
-    const json = await res.json();
-    if(!json.data || json.data.length===0){
-      document.getElementById('sugBox').style.display = 'none';
-      return;
-    }
-    renderSuggestions(json.data);
-  }catch(e){}
-}
-
-function renderSuggestions(list){
-  const sugBox = document.getElementById('sugBox');
-  let html = '';
-  list.forEach(a=>{
-    const title = getJpTitle(a);
-    const img = a.images?.jpg?.small_image_url || a.images?.jpg?.image_url || '';
-    html += `
-      <div class="sug-item" onclick="selectSuggestion('${escapeHtml(title)}')">
-        <img src="${img}" class="sug-thumb" alt="">
-        <span class="sug-name">${title}</span>
-      </div>
-    `;
-  });
-  sugBox.innerHTML = html;
-  sugBox.style.display = 'block';
-}
-
-function selectSuggestion(title){
-  document.getElementById('sInput').value = title;
-  document.getElementById('sugBox').style.display = 'none';
-  executeSearch(title);
-}
-
-function quickSearch(title){
-  document.getElementById('sInput').value = title;
-  executeSearch(title);
-}
-
-function executeSearch(q){
-  if(!q) return;
-  pushSearchHistory(q);
-  performMainSearch(q);
-}
-
-async function performMainSearch(q){
-  const grid = document.getElementById('searchResult');
-  grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="loader"></div><div class="state-text">「${q}」を徹底探索中...</div></div>`;
-  
-  try {
-    await delay(2000);
-    const res = await fetch(`https://api.jikan.moe/v4/anime?q=${encodeURIComponent(q)}&limit=24`);
-    if(!res.ok) throw new Error();
-    const json = await res.json();
-    if(!json.data || json.data.length===0){
-      grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">🕵️‍♂️</div><div class="state-text">一致するアニメが見つかりませんでした。<br>別のキーワードをお試しください。</div></div>`;
-      return;
-    }
-    
-    let html = '';
-    json.data.forEach(a=>{
-      const img = a.images?.jpg?.image_url || '';
-      const name = getJpTitle(a);
-      const score = a.score ? a.score.toFixed(1) : '---';
-      let imgPart = img ? `<img src="${img}" class="g-img" alt="${name}" loading="lazy">` : `<div class="g-ph">🎬</div>`;
-      
-      html += `
-        <div class="g-card" onclick="openModal(${a.mal_id}, 'search')">
-          <div class="g-img-wrap">
-            ${imgPart}
-            <div class="score-pin hi" style="background:rgba(0,0,0,.75)">★ ${score}</div>
-          </div>
-          <div class="g-info">
-            <div class="g-title">${name}</div>
-            <div class="g-meta">
-              <span>${a.type || 'TV'}</span>
-              <span>${a.episodes ? a.episodes+'話' : '?話'}</span>
-            </div>
-          </div>
-        </div>
-      `;
-    });
-    grid.innerHTML = html;
-  } catch(e) {
-    grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">⚠️</div><div class="state-text">検索通信エラーが発生しました。数秒後に再度お試しください。</div></div>`;
-  }
-}
-
-function pushSearchHistory(q){
-  searchHistory = searchHistory.filter(h=>h!==q);
-  searchHistory.unshift(q);
-  if(searchHistory.length > 6) searchHistory.pop();
-  localStorage.setItem('animedb_search_hist', JSON.parse(JSON.stringify(searchHistory)));
-  renderSearchHistory();
-}
-
-function renderSearchHistory(){
-  const sec = document.getElementById('histSection');
-  const wrapper = document.getElementById('histChips');
-  if(searchHistory.length===0){
-    sec.style.display = 'none';
-    return;
-  }
-  sec.style.display = 'block';
-  let html = '';
-  searchHistory.forEach(h=>{
-    html += `
-      <span class="hist-chip" onclick="quickSearch('${escapeHtml(h)}')">
-        ${h}
-        <span class="hist-rm" onclick="removeHistory(event,'${escapeHtml(h)}')">✕</span>
-      </span>
-    `;
-  });
-  wrapper.innerHTML = html;
-}
-
-function removeHistory(e, q){
-  e.stopPropagation();
-  searchHistory = searchHistory.filter(h=>h!==q);
-  localStorage.setItem('animedb_search_hist', JSON.stringify(searchHistory));
-  renderSearchHistory();
-}
-
-document.addEventListener('click', (e)=>{
-  if(!e.target.closest('.search-wrap')){
-    document.getElementById('sugBox').style.display = 'none';
-  }
-});
-
-// ── FAV LOGIC ──
-function toggleFav(e, id, name, img, score){
-  if(e) e.stopPropagation();
-  const idx = favList.findIndex(f=>f.id === id);
-  if(idx > -1){
-    favList.splice(idx, 1);
-    showToast('マイリストから削除しました');
-  } else {
-    favList.push({id, name, img, score, date: Date.now()});
-    showToast('マイリストに保存しました！');
-  }
-  localStorage.setItem('animedb_favs', JSON.stringify(favList));
-  updateFavBadge();
-  
-  if(e && e.target && e.target.classList.contains('fav-toggle')){
-    e.target.classList.toggle('on');
-  }
-  
-  const mFavBtn = document.getElementById('mFavBtn');
-  if(mFavBtn && mFavBtn.dataset.currentId == id){
-    const active = favList.some(f=>f.id == id);
-    mFavBtn.className = active ? 'ma-btn fav-on' : 'ma-btn';
-    document.getElementById('mFavBtnTxt').innerText = active ? '❤ お気に入り登録中' : 'お気に入りに追加';
-  }
-  
-  if(document.getElementById('panel-fav').classList.contains('active')){
-    renderFavGrid();
-  }
-}
-
-function updateFavBadge(){
-  const badge = document.getElementById('favBadge');
-  if(favList.length > 0){
-    badge.innerText = favList.length;
-    badge.style.display = 'inline-flex';
-  } else {
-    badge.style.display = 'none';
-  }
-}
-
-function setFavSort(mode){
-  favSortMode = mode;
-  document.getElementById('fSortDate').className = mode==='date'?'fav-sort-btn on':'fav-sort-btn';
-  document.getElementById('fSortScore').className = mode==='score'?'fav-sort-btn on':'fav-sort-btn';
-  renderFavGrid();
-}
-
-function renderFavGrid(){
-  const grid = document.getElementById('favResult');
-  if(favList.length===0){
-    grid.innerHTML = `<div class="state-box" style="grid-column:1/-1"><div class="state-icon">📂</div><div class="state-text">マイリストに登録された作品がありません。<br>作品カードのハートマークから登録できます。</div></div>`;
-    return;
-  }
-  
-  let sorted = [...favList];
-  if(favSortMode === 'score'){
-    sorted.sort((a,b)=>b.score - a.score);
-  } else {
-    sorted.sort((a,b)=>b.date - a.date);
-  }
-  
-  let html = '';
-  sorted.forEach(f=>{
-    let imgPart = f.img ? `<img src="${f.img}" class="g-img" alt="${f.name}" loading="lazy">` : `<div class="g-ph">🎬</div>`;
-    html += `
-      <div class="g-card" onclick="openModal(${f.id}, 'fav')">
-        <div class="g-img-wrap">
-          ${imgPart}
-          <div class="score-pin hi" style="background:rgba(0,0,0,.75)">★ ${f.score?f.score.toFixed(1):'---'}</div>
-        </div>
-        <div class="g-info">
-          <div class="g-title">${f.name}</div>
-        </div>
-      </div>
-    `;
-  });
-  grid.innerHTML = html;
-}
-
-function clearAllFavs(){
-  if(favList.length===0) return;
-  if(!confirm('マイリストをすべて空にしますか？')) return;
-  favList = [];
-  localStorage.setItem('animedb_favs', JSON.stringify(favList));
-  updateFavBadge();
-  renderFavGrid();
-  showToast('マイリストをクリアしました');
-}
-
-// ── MODAL LOGIC ──
-let modalSourcePanel = 'home';
-
-async function openModal(id, srcPanel='home'){
-  modalSourcePanel = srcPanel;
-  const ov = document.getElementById('modalOv');
-  ov.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  
-  document.getElementById('mTitle').innerText = '詳細データを照合中...';
-  document.getElementById('mTitleEn').innerText = '';
-  document.getElementById('mHeroBg').style.backgroundImage = 'none';
-  document.getElementById('mPosterSlot').innerHTML = `<div class="m-poster-ph"><div class="loader" style="width:24px;height:24px"></div></div>`;
-  document.getElementById('mTags').innerHTML = '';
-  document.getElementById('mScoreNum').innerText = '--';
-  document.getElementById('mStatRank').innerText = '-';
-  document.getElementById('mStatPop').innerText = '-';
-  document.getElementById('mStatMemb').innerText = '-';
-  
-  document.getElementById('mTrailerWrap').style.display = 'none';
-  document.getElementById('mTrailerFrameSlot').innerHTML = '';
-  document.getElementById('mStreamSection').style.display = 'none';
-  document.getElementById('mStreamLinks').innerHTML = '';
-  
-  const mFavBtn = document.getElementById('mFavBtn');
-  mFavBtn.dataset.currentId = id;
-  const isFav = favList.some(f=>f.id == id);
-  mFavBtn.className = isFav ? 'ma-btn fav-on' : 'ma-btn';
-  document.getElementById('mFavBtnTxt').innerText = isFav ? '❤ お気に入り登録中' : 'お気に入りに追加';
-  
-  // コメント欄の読み込み
-  renderComments(id);
-
-  try {
-    await delay(2000);
-    const res = await fetch(`https://api.jikan.moe/v4/anime/${id}`);
-    if(!res.ok) throw new Error();
-    const json = await res.json();
-    if(!json.data) throw new Error();
-    renderModalDetails(json.data);
-  } catch(e) {
-    document.getElementById('mTitle').innerText = 'データの取得に失敗しました';
-    document.getElementById('mTitleEn').innerText = 'Jikan API limit exceeded or network error.';
-  }
-}
-
-function renderModalDetails(a){
-  const name = getJpTitle(a);
-  document.getElementById('mTitle').innerText = name;
-  document.getElementById('mTitleEn').innerText = a.title_english || '';
-  
-  const img = a.images?.jpg?.large_image_url || a.images?.jpg?.image_url || '';
-  if(img){
-    document.getElementById('mHeroBg').style.backgroundImage = `url('${img}')`;
-    document.getElementById('mPosterSlot').innerHTML = `<img src="${img}" class="m-poster" alt="">`;
-  } else {
-    document.getElementById('mPosterSlot').innerHTML = `<div class="m-poster-ph">🎬</div>`;
-  }
-  
-  let tags = `<span class="mtag type">${a.type || 'TV'}</span>`;
-  if(a.season && a.year) tags += `<span class="mtag">${a.year}年 ${a.season.toUpperCase()}</span>`;
-  if(a.episodes) tags += `<span class="mtag">全 ${a.episodes} 話</span>`;
-  if(a.genres){
-    a.genres.forEach(g=>{ tags += `<span class="mtag">${g.name}</span>`; });
-  }
-  document.getElementById('mTags').innerHTML = tags;
-  
-  document.getElementById('mScoreNum').innerText = a.score ? a.score.toFixed(2) : '---';
-  document.getElementById('mStatRank').innerText = a.rank ? `#${a.rank}` : '---';
-  document.getElementById('mStatPop').innerText = a.popularity ? `#${a.popularity}` : '---';
-  document.getElementById('mStatMemb').innerText = a.members ? a.members.toLocaleString() : '0';
-  
-  const mFavBtn = document.getElementById('mFavBtn');
-  mFavBtn.onclick = (e) => toggleFav(e, a.mal_id, name, img, a.score || 0);
-  
-  // 予告編
-  const trailerBtn = document.getElementById('mTrailerBtn');
-  if(a.trailer?.youtube_id){
-    trailerBtn.style.display = 'flex';
-    trailerBtn.className = 'ma-btn trailer-on';
-    trailerBtn.onclick = () => {
-      document.getElementById('mTrailerWrap').style.display = 'block';
-      document.getElementById('mTrailerFrameSlot').innerHTML = `
-        <iframe src="https://www.youtube.com/embed/${a.trailer.youtube_id}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      `;
-      document.getElementById('mTrailerWrap').scrollIntoView({behavior:'smooth'});
-    };
-  } else {
-    trailerBtn.style.display = 'none';
-  }
-  
-  // 外部配信リンク生成（ABEMA・dアニメストア・Prime Videoへの自動キーワード検索リンク）
-  const encodedKw = encodeURIComponent(name);
-  const streamSection = document.getElementById('mStreamSection');
-  const streamLinks = document.getElementById('mStreamLinks');
-  
-let streamHtml = `
-    <a href="https://px.a8.net/svt/ejp?a8mat=3T6C0D+749Z6Y+4EKC+5YZ77" rel="nofollow" target="_blank" class="stream-link">
-      ABEMAプレミアムで探す
-    </a>
-    
-    <a href="https://animestore.docomo.ne.jp/animestore/ci_pc?workId=26093" target="_blank" class="stream-link">
-      dアニメストアで検索
-    </a>
-
-    <a href="https://www.amazon.co.jp/gp/video/storefront" target="_blank" class="stream-link">
-      Amazon Prime Videoで検索
-    </a>
-  `;
-  
-  if(a.trailer?.youtube_id) {
-    streamHtml += `
-      <a href="https://www.youtube.com/watch?v=${a.trailer.youtube_id}" target="_blank" class="stream-link yt">
-        YouTube公式予告
-      </a>
-    `;
-  }
-  
-  streamLinks.innerHTML = streamHtml;
-  streamSection.style.display = 'block';
-}
-
-function closeModal(e, force=false){
-  if(force || e.target.classList.contains('modal-ov')){
-    document.getElementById('modalOv').classList.remove('open');
-    document.body.style.overflow = '';
-    document.getElementById('mTrailerFrameSlot').innerHTML = ''; // 再生停止
-    
-    if(modalSourcePanel === 'home' && cachedHomeData){
-      renderHome(cachedHomeData);
-    } else if(modalSourcePanel === 'fav'){
-      renderFavGrid();
-    }
-  }
-}
-
-// ── COMMENT LOGIC ──
-function renderComments(animeId){
-  const wall = document.getElementById('commentWall');
-  const key = `comments_${animeId}`;
-  let comments = JSON.parse(localStorage.getItem(key) || '[]');
-  
-  let formHtml = '';
-  if(currentUser){
-    formHtml = `
-      <div class="c-user-row">
-        <div class="user-avatar-ph">${currentUser.name[0].toUpperCase()}</div>
-        <div class="c-user-name">${currentUser.name} (あなた)</div>
-      </div>
-      <div class="c-form">
-        <input type="text" id="cInput" class="c-input" placeholder="感想やレビューを投稿しよう！" maxlength="200">
-        <button class="c-send" onclick="submitComment(${animeId})">投稿</button>
-      </div>
-    `;
-  } else {
-    formHtml = `
-      <div class="c-login-wall">
-        <p>感想の投稿やいいね機能を利用するにはログインが必要です</p>
-      </div>
-    `;
-  }
-  
-  // 💡 コメントリストの組み立て処理をすべて無くし、ログイン枠（formHtml）だけを画面に表示します
-  wall.innerHTML = formHtml;
-}
-  } else {
-    formHtml = `
-      <div class="c-login-wall">
-        <p>感想の投稿やいいね機能を利用するにはログインが必要です</p>
-        <button class="c-login-btn" onclick="toggleAuthModal(true)">すぐにログイン / 新規登録</button>
-      </div>
-    `;
-  }
-  
-  let listHtml = '<div class="c-list">';
-  if(comments.length===0){
-    listHtml += `<div style="text-align:center; font-size:12px; color:var(--text3); padding:20px 0;">まだ感想がありません。最初のレビューを書いてみませんか？</div>`;
-  } else {
-    comments.sort((a,b)=>b.time - a.time).forEach((c,i)=>{
-      const isLiked = currentUser && c.likedBy && c.likedBy.includes(currentUser.id);
-      listHtml += `
-        <div class="c-item">
-          <div class="c-meta">${escapeHtml(c.userName)} ・ ${formatTime(c.time)}</div>
-          <div class="c-text">${escapeHtml(c.text)}</div>
-          <button class="c-like ${isLiked?'liked':''}" onclick="likeComment(${animeId}, ${c.id})">
-            ❤ <span>${c.likes || 0}</span>
-          </button>
-        </div>
-      `;
-    });
-  }
-  listHtml += '</div>';
-  
-  wall.innerHTML = formHtml + listHtml;
-}
-
-function submitComment(animeId){
-  const input = document.getElementById('cInput');
-  const text = input.value.trim();
-  if(!text) return;
-  
-  const key = `comments_${animeId}`;
-  let comments = JSON.parse(localStorage.getItem(key) || '[]');
-  
-  comments.push({
-    id: Date.now() + Math.floor(Math.random()*1000),
-    userId: currentUser.id,
-    userName: currentUser.name,
-    text: text,
-    time: Date.now(),
-    likes: 0,
-    likedBy: []
-  });
-  
-  localStorage.setItem(key, JSON.stringify(comments));
-  showToast('感想を投稿しました！');
-  renderComments(animeId);
-}
-
-function likeComment(animeId, commentId){
-  if(!currentUser){
-    showToast('いいねするにはログインしてください');
-    return;
-  }
-  const key = `comments_${animeId}`;
-  let comments = JSON.parse(localStorage.getItem(key) || '[]');
-  const c = comments.find(com=>com.id === commentId);
-  if(!c) return;
-  
-  if(!c.likedBy) c.likedBy = [];
-  
-  const idx = c.likedBy.indexOf(currentUser.id);
-  if(idx > -1){
-    c.likedBy.splice(idx, 1);
-    c.likes = Math.max(0, c.likes - 1);
-  } else {
-    c.likedBy.push(currentUser.id);
-    c.likes = (c.likes || 0) + 1;
-  }
-  
-  localStorage.setItem(key, JSON.stringify(comments));
-  renderComments(animeId);
-}
-
-function formatTime(ts){
-  const diff = Date.now() - ts;
-  if(diff < 60000) return '今すぐ';
-  if(diff < 3600000) return `${Math.floor(diff/60000)}分前`;
-  if(diff < 86400000) return `${Math.floor(diff/3600000)}時間前`;
-  const d = new Date(ts);
-  return `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
-}
-
-// ── TOAST LOGIC ──
-let toastTimeout = null;
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.innerText = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(()=>t.classList.remove('show'), 2500);
-}
-
-// ── AUTH PANEL (MOCK) ──
-function toggleAuthModal(forceOpen=false){
-  if(currentUser){
-    if(confirm('ログアウトしますか？')){
-      currentUser = null;
-      localStorage.removeItem('animedb_user');
-      showToast('ログアウトしました');
-      syncAuthUi();
-      // モーダルが開いていればコメント欄をリフレッシュ
-      const mFavBtn = document.getElementById('mFavBtn');
-      if(mFavBtn && mFavBtn.dataset.currentId){
-        renderComments(mFavBtn.dataset.currentId);
+    // スタイルをヘッダーに強制注入してデザイン崩れを防ぐ
+    const style = document.createElement('style');
+    style.textContent = `
+      .season-dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #141414;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 0;
+        width: 140px;
+        z-index: 9999;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.5);
       }
-    }
-  } else {
-    const name = prompt('ユーザー名を入力してください（新規登録・ログイン兼用）:');
-    if(!name || !name.trim()) return;
-    currentUser = {
-      id: 'usr_' + Date.now(),
-      name: name.trim()
-    };
-    localStorage.setItem('animedb_user', JSON.stringify(currentUser));
-    showToast(`おかえりなさい、${currentUser.name} さん！`);
-    syncAuthUi();
-    const mFavBtn = document.getElementById('mFavBtn');
-    if(mFavBtn && mFavBtn.dataset.currentId){
-      renderComments(mFavBtn.dataset.currentId);
-    }
+      .nav-btn:hover .season-dropdown-menu {
+        display: block;
+      }
+      .dropdown-year-section {
+        font-size: 11px;
+        font-weight: 900;
+        color: var(--red);
+        padding: 6px 12px 2px 12px;
+        letter-spacing: 0.5px;
+      }
+      .season-dropdown-menu a {
+        display: block;
+        padding: 8px 12px;
+        color: var(--text2);
+        font-size: 13px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+      }
+      .season-dropdown-menu a:hover {
+        background: var(--bg3);
+        color: #fff;
+      }
+      .dropdown-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 6px 0;
+      }
+    `;
+    document.head.appendChild(style);
   }
 }
 
-function syncAuthUi(){
-  const btn = document.getElementById('authBtn');
-  const txt = document.getElementById('authBtnTxt');
-  if(currentUser){
-    btn.className = 'auth-btn logged';
-    txt.innerText = currentUser.name;
-  } else {
-    btn.className = 'auth-btn';
-    txt.innerText = 'ログイン';
+// プルダウンから放映期が選ばれた時のジャンプ＆読み込み処理
+function selectSeasonDropdown(year, season) {
+  switchPanel('search');
+  
+  const yearSel = document.getElementById('seasonYear');
+  const typeSel = document.getElementById('seasonType');
+  
+  if (yearSel) yearSel.value = year;
+  if (typeSel) typeSel.value = season;
+  
+  execSearch();
+}
+
+// 2. 検索条件変更のリアルタイム監視
+function initSearchFilters() {
+  document.getElementById('searchBar')?.addEventListener('input', execSearch);
+  document.getElementById('seasonYear')?.addEventListener('change', execSearch);
+  document.getElementById('seasonType')?.addEventListener('change', execSearch);
+  document.getElementById('genreFilter')?.addEventListener('change', execSearch);
+
+  // モーダル背景クリックで閉じる安全策
+  window.addEventListener('click', (e) => {
+    if (e.target === document.getElementById('detailModal')) closeModal();
+  });
+}
+
+// 3. データ取得処理（data.jsonの読み込み）
+async function fetchAnimeData() {
+  try {
+    const res = await fetch('data.json');
+    if (!res.ok) throw new Error();
+    animeData = await res.json();
+    renderApp();
+  } catch (err) {
+    console.error('Data load failed, loading fallback.');
+    // 読み込みエラー時の画面真っ黒防止用セーフティデータ
+    animeData = [
+      {id:1, title_ja:"データの読み込み中...", score:8.5, popularity:1, year:2026, season:"spring", genres:[1], image:"https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800", synopsis:"data.jsonを読み込んでいます。変わらない場合はファイル配置を確認してください。"}
+    ];
+    renderApp();
   }
 }
 
-// ── PWA SERVICE LOGIC ──
-let deferredPrompt = null;
-function initPwa(){
-  syncAuthUi();
-  window.addEventListener('beforeinstallprompt', (e)=>{
-    e.preventDefault();
-    deferredPrompt = e;
-    const dismissed = localStorage.getItem('pwa_dismissed') || 'false';
-    if(dismissed !== 'true'){
-      document.getElementById('pwaBanner').classList.add('show');
-    }
-  });
+// 4. TOP画面および各グリッドの一斉描画
+function renderApp() {
+  renderHeroSlider(); // TOPのパッと目立つ大画面を生成
+  renderHomeGrids();  // その下のアニメ一覧カード群を生成
+  renderRankingGrid();
+  execSearch();
 }
 
-function triggerPwaInstall(){
-  const banner = document.getElementById('pwaBanner');
-  banner.classList.remove('show');
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then((choice)=>{
-    if(choice.outcome === 'accepted') showToast('追加されました！');
-    deferredPrompt = null;
+// TOPページで一番に目立つ「大画面（ヒーローエリア）」の生成と自動スライド
+function renderHeroSlider() {
+  const slider = document.getElementById('heroSlider');
+  if (!slider) return;
+  
+  // スコアの高い上位5作品をパッと目立つ画面に選出
+  const topPicked = [...animeData].sort((a, b) => b.score - a.score).slice(0, 5);
+  if (!topPicked.length) {
+    slider.style.display = 'none';
+    return;
+  }
+  slider.style.display = 'block';
+  
+  let html = '';
+  topPicked.forEach((item, idx) => {
+    const title = item.title_ja || item.title;
+    const desc = item.synopsis || '作品の詳細情報です。クリックして確認できます。';
+    html += `
+      <div class="slide ${idx === 0 ? 'active' : ''}" onclick="openDetail(${item.id})">
+        <img class="slide-img" src="${item.image}" alt="${title}">
+        <div class="slide-overlay"></div>
+        <div class="slide-content">
+          <div class="slide-meta">
+            <span class="meta-tag">${item.year}年 / ${translateSeason(item.season)}</span>
+            <span class="meta-score">★ ${Number(item.score).toFixed(2)}</span>
+          </div>
+          <h2 class="slide-title">${title}</h2>
+          <p class="slide-desc">${desc.substring(0, 100)}...</p>
+        </div>
+      </div>
+    `;
   });
+  
+  // 下部のナビゲーションドット
+  html += `<div class="slider-dots">`;
+  topPicked.forEach((_, idx) => {
+    html += `<span class="dot ${idx === 0 ? 'active' : ''}" onclick="event.stopPropagation();setSlide(${idx})"></span>`;
+  });
+  html += `</div>`;
+  
+  slider.innerHTML = html;
+  startSliderInterval();
 }
 
-function dismissPwaBanner(){
-  document.getElementById('pwaBanner').classList.remove('show');
-  localStorage.setItem('pwa_dismissed', 'true');
+function startSliderInterval() {
+  if (slideInterval) clearInterval(slideInterval);
+  slideInterval = setInterval(() => {
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    if (!slides.length) return;
+    
+    slides[currentSlideIndex]?.classList.remove('active');
+    dots[currentSlideIndex]?.classList.remove('active');
+    currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+    slides[currentSlideIndex]?.classList.add('active');
+    dots[currentSlideIndex]?.classList.add('active');
+  }, 6000);
 }
+
+function setSlide(idx) {
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  if (!slides.length) return;
+  
+  slides[currentSlideIndex]?.classList.remove('active');
+  dots[currentSlideIndex]?.classList.remove('active');
+  currentSlideIndex = idx;
+  slides[currentSlideIndex]?.classList.add('active');
+  dots[currentSlideIndex]?.classList.add('active');
+  startSliderInterval();
+}
+
+// その下に並ぶ「アニメ画像の一覧カード」の配置
+function renderHomeGrids() {
+  const trendData = [...animeData].sort((a, b) => b.popularity - a.popularity).slice(0, 12);
+  const topData = [...animeData].sort((a, b) => b.score - a.score).slice(0, 12);
+  buildGrid(trendData, document.getElementById('homeTrendGrid'), false);
+  buildGrid(topData, document.getElementById('homeTopGrid'), false);
+}
+
+function renderRankingGrid() {
+  const ranked = [...animeData].sort((a, b) => b.score - a.score);
+  buildGrid(ranked, document.getElementById('rankingGrid'), true);
+}
+
+// キーワード、プルダウン条件に合わせたリアルタイム検索
+function execSearch() {
+  const query = document.getElementById('searchBar')?.value.toLowerCase().trim() || "";
+  const year = document.getElementById('seasonYear')?.value || "all";
+  const season = document.getElementById('seasonType')?.value || "all";
+  const genre = document.getElementById('genreFilter')?.value || "all";
+  
+  let filtered = [...animeData];
+  
+  if (query) {
+    filtered = filtered.filter(a => 
+      (a.title && a.title.toLowerCase().includes(query)) || 
+      (a.title_ja && a.title_ja.toLowerCase().includes(query))
+    );
+  }
+  if (year !== 'all') filtered = filtered.filter(a => a.year == year);
+  if (season !== 'all') filtered = filtered.filter(a => a.season && a.season.toLowerCase() === season.toLowerCase());
+  if (genre !== 'all') filtered = filtered.filter(a => a.genres && a.genres.includes(parseInt(genre)));
+  
+  buildGrid(filtered, document.getElementById('searchGrid'), false);
+}
+
+// アニメ画像一覧カードのHTML構築・クリックイベント付与
+function buildGrid(data, container, showRank = false) {
+  if (!container) return;
+  if (!data || !data.length) {
+    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><p>該当する作品データが見つかりません。</p></div>`;
+    return;
+  }
+  
+  let html = '';
+  data.forEach((item, idx) => {
+    const title = item.title_ja || item.title;
+    const isFav = favorites.includes(item.id);
+    const scoreVal = item.score ? Number(item.score).toFixed(2) : "0.00";
+    
+    html += `
+      <div class="card" onclick="openDetail(${item.id})">
+        <div class="card-thumb-wrap">
+          <img class="card-thumb" src="${item.image}" alt="${title}" loading="lazy">
+          ${showRank ? `<div class="card-rank">${idx + 1}</div>` : ''}
+          <button class="fav-btn-action ${isFav ? 'active' : ''}" onclick="event.stopPropagation();toggleFavorite(${item.id}, this)">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <div class="card-meta">
+            <div class="card-score">★ ${scoreVal}</div>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="card-title">${title}</div>
+          <div class="card-sub">
+            <span>${item.year || ''}年</span>
+            <span>${translateSeason(item.season)}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+// タブパネル・ナビゲーションの切り替え
+function switchPanel(panelId) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.bottom-btn').forEach(b => b.classList.remove('active'));
+  
+  const targetPanel = document.getElementById(`panel-${panelId}`);
+  if (targetPanel) targetPanel.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  
+  if (panelId === 'home') {
+    document.getElementById('dt-home')?.classList.add('active');
+    document.getElementById('mb-home')?.classList.add('active');
+  } else if (panelId === 'ranking') {
+    document.getElementById('dt-ranking')?.classList.add('active');
+    document.getElementById('mb-ranking')?.classList.add('active');
+  } else if (panelId === 'search') {
+    document.getElementById('dt-search')?.classList.add('active');
+    document.getElementById('mb-search')?.classList.add('active');
+  } else if (panelId === 'fav') {
+    document.getElementById('dt-fav')?.classList.add('active');
+    document.getElementById('mb-fav')?.classList.add('active');
+    const favItems = animeData.filter(a => favorites.includes(a.id));
+    buildGrid(favItems, document.getElementById('favGrid'), false);
+  }
+}
+
+// アニメ画像カードクリック時の詳細表示
+function openDetail(id) {
+  const item = animeData.find(a => a.id === id);
+  if (!item) return;
+  const title = item.title_ja || item.title;
+  
+  const modalBody = document.getElementById('modalBody');
+  if (!modalBody) return;
+  
+  modalBody.innerHTML = `
+    <div style="position:relative; aspect-ratio:16/9; background:#000;">
+      <img src="${item.image}" alt="${title}" style="width:100%; height:100%; object-fit:cover; opacity:0.7;">
+      <div style="position:absolute; bottom:0; left:0; right:0; padding:24px; background:linear-gradient(to top, rgba(15,15,15,1), transparent);">
+        <span style="font-size:11px; background:var(--red); color:#fff; padding:3px 6px; border-radius:4px; font-weight:bold;">${item.year}年 / ${translateSeason(item.season)}</span>
+        <h2 style="font-size:22px; font-weight:900; color:#fff; margin-top:8px;">${title}</h2>
+      </div>
+    </div>
+    <div style="padding:24px;">
+      <div style="display:flex; gap:16px; margin-bottom:20px; font-size:14px;">
+        <span style="color:var(--orange); font-weight:bold;">★ 総合スコア: ${Number(item.score).toFixed(2)}</span>
+        <span style="color:var(--text2);">📊 人気順位: ${item.popularity}位</span>
+      </div>
+      <h3 style="font-size:14px; font-weight:900; color:#fff; margin-bottom:8px; border-left:3px solid var(--red); padding-left:8px;">作品概要・あらすじ</h3>
+      <p style="font-size:13px; color:var(--text2); line-height:1.8; text-align:justify;">${item.synopsis || '詳細な作品情報はデータベースの更新をお待ちください。'}</p>
+    </div>
+  `;
+  document.getElementById('detailModal')?.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('detailModal')?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// お気に入り（マイリスト）機能のデータ永続化
+function toggleFavorite(id, btnElement) {
+  const idx = favorites.indexOf(id);
+  if (idx === -1) {
+    favorites.push(id);
+    btnElement.classList.add('active');
+    showToast('お気に入りに追加しました');
+  } else {
+    favorites.splice(idx, 1);
+    btnElement.classList.remove('active');
+    showToast('お気に入りから削除しました');
+  }
+  localStorage.setItem('animedb_favs', JSON.stringify(favorites));
+  syncFavUiBadges();
+  
+  if (document.getElementById('panel-fav')?.classList.contains('active')) {
+    const favItems = animeData.filter(a => favorites.includes(a.id));
+    buildGrid(favItems, document.getElementById('favGrid'), false);
+  }
+}
+
+function loadFavorites() {
+  const stored = localStorage.getItem('animedb_favs');
+  if (stored) { try { favorites = JSON.parse(stored); } catch(e){} }
+  syncFavUiBadges();
+}
+
+function syncFavUiBadges() {
+  const count = favorites.length;
+  const dtBadge = document.getElementById('favBadge');
+  const mbBadge = document.getElementById('favBadgeMb');
+  if (dtBadge) dtBadge.textContent = count;
+  if (mbBadge) mbBadge.textContent = count;
+}
+
+function translateSeason(s) {
+  if (!s) return '';
+  const l = s.toLowerCase();
+  if (l === 'winter') return '冬';
+  if (l === 'spring') return '春';
+  if (l === 'summer') return '夏';
+  if (l === 'autumn') return '秋';
+  return s;
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  const msgSpan = document.getElementById('toastMsg');
+  if (!toast || !msgSpan) return;
+  msgSpan.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => { toast.classList.remove('show'); }, 3000);
+}
+
+// PWA関連
+function initPwa() {}
 </script>
 
 </body>
