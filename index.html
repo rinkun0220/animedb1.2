@@ -999,7 +999,7 @@ function generateCardHtmlList(items, showRankIndex = false) {
   return html;
 }
 
-// 11. モーダル詳細表示
+// 11. モーダル詳細表示（修正版）
 function openDetail(id) {
   const item = animeData.find(a => a.id === id);
   if (!item) return;
@@ -1009,7 +1009,9 @@ function openDetail(id) {
   document.getElementById('mHeroBg').style.backgroundImage = `url('${item.image}')`;
   document.getElementById('mPosterSlot').innerHTML = `<img src="${item.image}" alt="" class="m-poster">`;
   document.getElementById('mTitle').textContent = title;
-  document.getElementById('mTitleEn').textContent = item.title !== item.title_ja ? item.title : '';
+  
+  // 【変更点1】英語タイトル表示用の要素を空にすることで非表示にします
+  document.getElementById('mTitleEn').textContent = '';
   
   document.getElementById('mTags').innerHTML = `
     <span class="mtag type">${item.type ? item.type.toUpperCase() : 'TV'}</span>
@@ -1017,11 +1019,15 @@ function openDetail(id) {
     <span class="mtag">${translateSeasonString(item.season)}アニメ</span>
   `;
   
+  // 【変更点2】スコア等の数値を表示しつつ、クリックイベントが発火しないよう変更
   document.getElementById('mScoreNum').textContent = item.score ? Number(item.score).toFixed(2) : '0.00';
   document.getElementById('mStatRank').textContent = item.rank ? `#${item.rank}` : '-';
   document.getElementById('mStatPop').textContent = item.popularity ? `#${item.popularity}` : '-';
   document.getElementById('mStatMemb').textContent = item.members ? Number(item.members).toLocaleString() : '-';
   
+  // ※ここで「ランクやスコアの表示領域」に onclick イベント等が設定されていないか確認してください。
+  // 上記の記述のみであれば、ただのテキストなのでクリックはされません。
+
   let synopsisEl = document.getElementById('mSynopsis');
   if (!synopsisEl) {
     synopsisEl = document.createElement('p');
@@ -1080,23 +1086,6 @@ function openDetail(id) {
     modalOv.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
-}
-
-function closeModal() {
-  const modalOv = document.getElementById('modalOv');
-  if (modalOv) {
-    modalOv.style.display = 'none';
-    modalOv.classList.remove('open');
-    document.body.style.overflow = '';
-    const frameSlot = document.getElementById('mTrailerFrameSlot');
-    if (frameSlot) frameSlot.innerHTML = '';
-  }
-}
-
-function initModalCloseEvent() {
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-  });
 }
 
 // 12. お気に入り制御
