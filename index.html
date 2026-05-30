@@ -147,6 +147,7 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .badge.abema { background: #33CC66; }
 .badge.danime { background: #ff6600; }
 .badge.amazon { background: #00a8e1; }
+.badge.netflix { background: #E50914; }
 
 /* モーダル用の配信ボタン */
 .stream-links-block { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
@@ -161,6 +162,8 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .stream-link.danime:hover { background: #e65c00; transform: translateY(-2px); }
 .stream-link.amazon { background: #00a8e1; box-shadow: 0 4px 10px rgba(0,168,225,0.3); }
 .stream-link.amazon:hover { background: #008fbf; transform: translateY(-2px); }
+.stream-link.netflix { background: #E50914; box-shadow: 0 4px 10px rgba(229,9,20,0.3); }
+.stream-link.netflix:hover { background: #b20710; transform: translateY(-2px); }
 
 /* 汎用テキストページ */
 .text-page-content { background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid var(--border-color); max-width: 900px; margin: 0 auto 40px auto; }
@@ -373,11 +376,14 @@ function generateStreamBadgesHTML(title) {
   const danimeUrl = `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`;
   const amazonUrl = `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`;
   
+  const netflixBadgeUrl = `https://www.netflix.com/search?q=${encoded}`;
+  
   return `
     <div class="card-stream-badges" onclick="event.stopPropagation()">
       <a href="${abemaUrl}" target="_blank" rel="noopener noreferrer" class="badge abema">ABEMA</a>
       <a href="${danimeUrl}" target="_blank" rel="noopener noreferrer" class="badge danime">dアニメ</a>
       <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="badge amazon">Amazon</a>
+      <a href="${netflixBadgeUrl}" target="_blank" rel="noopener noreferrer" class="badge netflix">Netflix</a>
     </div>
   `;
 }
@@ -677,10 +683,13 @@ function appendStreamLinks(container, title) {
   const encoded = encodeURIComponent(title);
   const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
   
+  const netflixUrl = `https://www.netflix.com/search?q=${encoded}`;
+  
   const networks = [
     { name: "ABEMAプレミアム", url: abemaUrl, cls: "abema" },
     { name: "dアニメストア", url: `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`, cls: "danime" },
-    { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" }
+    { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" },
+    { name: "Netflix", url: netflixUrl, cls: "netflix" }
   ];
   
   networks.forEach(net => {
