@@ -390,7 +390,7 @@ function generateStreamBadgesHTML(title) {
   const amazonUrl = `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`;
   const netflixBadgeUrl = `https://www.netflix.com/search?q=${encoded}`;
   
-  // ★ U-NEXTのURLを構築
+  // ★ DMMTVのURLを構築
   const unextUrl = (A8_UNEXT_URL !== "") ? A8_UNEXT_URL : `https://video.unext.jp/freeword?query=${encoded}`;
   
   return `
@@ -399,7 +399,7 @@ function generateStreamBadgesHTML(title) {
       <a href="${danimeUrl}" target="_blank" rel="noopener noreferrer" class="badge danime">dアニメ</a>
       <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="badge amazon">Amazon</a>
       <a href="${netflixBadgeUrl}" target="_blank" rel="noopener noreferrer" class="badge netflix">Netflix</a>
-      <a href="${unextUrl}" target="_blank" rel="noopener noreferrer" class="badge unext">U-NEXT</a>
+      <a href="${A8_DMMTV_URL}" target="_blank" rel="noopener noreferrer" class="badge dmmtv">DMM TV</a>
     </div>
   `;
 }
