@@ -148,7 +148,7 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .badge.danime { background: #ff6600; }
 .badge.amazon { background: #00a8e1; }
 .badge.netflix { background: #E50914; }
-.badge.dmmtv { background: #32c8e6; } /* ★ DMMTV用のカラー追加 */
+.badge.dmmtv { background: #C8FF00; color: #111; font-weight:800; } /* DMM TV ネオンイエロー */
 
 /* モーダル用の配信ボタン */
 .stream-links-block { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
@@ -165,8 +165,8 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .stream-link.amazon:hover { background: #008fbf; transform: translateY(-2px); }
 .stream-link.netflix { background: #E50914; box-shadow: 0 4px 10px rgba(229,9,20,0.3); }
 .stream-link.netflix:hover { background: #b20710; transform: translateY(-2px); }
-.stream-link.dmmtv { background: #FF6B35; box-shadow: 0 4px 10px rgba(255,107,53,0.3); }
-.stream-link.dmmtv:hover { background: #e55a25; transform: translateY(-2px); }
+.stream-link.dmmtv { background: #C8FF00; color: #111; font-weight:800; box-shadow: 0 4px 10px rgba(200,255,0,0.35); }
+.stream-link.dmmtv:hover { background: #b0e600; color: #111; transform: translateY(-2px); }
 
 /* 汎用テキストページ */
 .text-page-content { background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid var(--border-color); max-width: 900px; margin: 0 auto 40px auto; }
@@ -398,7 +398,7 @@ function generateStreamBadgesHTML(title) {
       <a href="${danimeUrl}" target="_blank" rel="noopener noreferrer" class="badge danime">dアニメ</a>
       <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="badge amazon">Amazon</a>
       <a href="${netflixBadgeUrl}" target="_blank" rel="noopener noreferrer" class="badge netflix">Netflix</a>
-      <a href="${A8_DMMTV_URL}" target="_blank" rel="noopener noreferrer" class="badge dmmtv">DMM TV</a>
+      <a href="${dmmtvUrl}" target="_blank" rel="noopener noreferrer" class="badge dmmtv">DMM TV</a>
     </div>
   `;
 }
