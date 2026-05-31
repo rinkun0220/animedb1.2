@@ -683,7 +683,7 @@ function appendStreamLinks(container, title) {
   if (!container || !title) return;
   const encoded = encodeURIComponent(title);
   const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
-  const unextUrl = (A8_UNEXT_URL !== "") ? A8_UNEXT_URL : `https://video.unext.jp/freeword?query=${encoded}`; // ★ U-NEXT追加
+  const unextUrl = (A8_UNEXT_URL !== "") ? A8_UNEXT_URL : `https://video.unext.jp/freeword?query=${encoded}`; // ★ DMMTV追加
   const netflixUrl = `https://www.netflix.com/search?q=${encoded}`;
   
   const networks = [
@@ -691,7 +691,7 @@ function appendStreamLinks(container, title) {
     { name: "dアニメストア", url: `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`, cls: "danime" },
     { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" },
     { name: "Netflix", url: netflixUrl, cls: "netflix" },
-    { name: "U-NEXT", url: unextUrl, cls: "unext" } // ★ U-NEXT追加
+    { name: "DMMTV", url: unextUrl, cls: "unext" } // ★ DMMTV追加
   ];
   
   networks.forEach(net => {
