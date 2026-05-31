@@ -148,6 +148,7 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .badge.danime { background: #ff6600; }
 .badge.amazon { background: #00a8e1; }
 .badge.netflix { background: #E50914; }
+.badge.unext { background: #32c8e6; } /* ★ U-NEXT用のカラー追加 */
 
 /* モーダル用の配信ボタン */
 .stream-links-block { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
@@ -164,6 +165,9 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .stream-link.amazon:hover { background: #008fbf; transform: translateY(-2px); }
 .stream-link.netflix { background: #E50914; box-shadow: 0 4px 10px rgba(229,9,20,0.3); }
 .stream-link.netflix:hover { background: #b20710; transform: translateY(-2px); }
+/* ★ U-NEXT用のモーダルボタンCSS追加 */
+.stream-link.unext { background: #32c8e6; box-shadow: 0 4px 10px rgba(50,200,230,0.3); }
+.stream-link.unext:hover { background: #26abc5; transform: translateY(-2px); }
 
 /* 汎用テキストページ */
 .text-page-content { background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid var(--border-color); max-width: 900px; margin: 0 auto 40px auto; }
@@ -304,8 +308,9 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 // 【アフィリエイト設定】
 // ==========================================
 const A8_ABEMA_URL = "https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP";
+// ★ U-NEXTのアフィリエイトリンクを取得したらここに入力してください
+const A8_UNEXT_URL = ""; 
 
-// ★新機能：APIサーバーがパンクしているときに自動表示される超安全なバックアップ神データ
 const BACKUP_DATA = {
   now: [
     { mal_id: 52991, title: "Sousou no Frieren", title_japanese: "葬送のフリーレン", score: 9.39, year: 2024, season: "fall", images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1015/138075.jpg", large_image_url: "https://cdn.myanimelist.net/images/anime/1015/138075.jpg" } }, synopsis: "魔王を倒した勇者一行のその後を描く、心温まる後日譚ファンタジー。" },
@@ -375,8 +380,10 @@ function generateStreamBadgesHTML(title) {
   const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
   const danimeUrl = `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`;
   const amazonUrl = `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`;
-  
   const netflixBadgeUrl = `https://www.netflix.com/search?q=${encoded}`;
+  
+  // ★ U-NEXTのURLを構築
+  const unextUrl = (A8_UNEXT_URL !== "") ? A8_UNEXT_URL : `https://video.unext.jp/freeword?query=${encoded}`;
   
   return `
     <div class="card-stream-badges" onclick="event.stopPropagation()">
@@ -384,17 +391,16 @@ function generateStreamBadgesHTML(title) {
       <a href="${danimeUrl}" target="_blank" rel="noopener noreferrer" class="badge danime">dアニメ</a>
       <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="badge amazon">Amazon</a>
       <a href="${netflixBadgeUrl}" target="_blank" rel="noopener noreferrer" class="badge netflix">Netflix</a>
+      <a href="${unextUrl}" target="_blank" rel="noopener noreferrer" class="badge unext">U-NEXT</a>
     </div>
   `;
 }
 
-// ★修正箇所：各セクションを完全に独立させて、サーバーエラーでも100%バックアップ描画
 async function loadHomeContent() {
   const rowsContainer = document.getElementById("homeRows");
   if (!rowsContainer) return;
   rowsContainer.innerHTML = "";
   
-  // 1. 今シーズンの注目（スライダーと1段目）
   try {
     const nowData = await fetchWithCache(`${API_BASE}/seasons/now?limit=10`);
     if (nowData && nowData.data && nowData.data.length > 0) {
@@ -409,7 +415,6 @@ async function loadHomeContent() {
     createScrollRow(rowsContainer, "今シーズンの注目アニメ (おすすめ)", BACKUP_DATA.now);
   }
   
-  // 2. 2026年 高評価ランキング
   try {
     const top2026 = await fetchWithCache(`${API_BASE}/anime?year=2026&order_by=score&sort=desc&limit=10`);
     if (top2026 && top2026.data && top2026.data.length > 0) {
@@ -421,7 +426,6 @@ async function loadHomeContent() {
     createScrollRow(rowsContainer, "2026年 おすすめ注目作品", BACKUP_DATA.top2026);
   }
   
-  // 3. 歴代最高評価の名作
   try {
     const topAll = await fetchWithCache(`${API_BASE}/top/anime?limit=10`);
     if (topAll && topAll.data && topAll.data.length > 0) {
@@ -511,7 +515,6 @@ function createAnimeCard(anime) {
   return card;
 }
 
-// ★修正箇所：検索機能でもサーバーダウン時の代替検索ロジックを追加
 async function executeSearch() {
   const kw = document.getElementById("keywordInput").value.trim();
   const year = document.getElementById("yearSelect").value;
@@ -524,11 +527,9 @@ async function executeSearch() {
   resultSlot.innerHTML = "";
   if (loader) loader.style.display = "flex";
   
-  // 修正：APIが理解できる正しい形式でURLを構築する
   let url = `${API_BASE}/anime?limit=24`;
   if (kw) url += `&q=${encodeURIComponent(kw)}`;
   
-  // 年とシーズンを「日付」に変換して検索（これが正解の記述です）
   if (year) {
     if (season === "winter") {
       url += `&start_date=${year}-01-01&end_date=${year}-03-31`;
@@ -539,7 +540,6 @@ async function executeSearch() {
     } else if (season === "fall") {
       url += `&start_date=${year}-10-01&end_date=${year}-12-31`;
     } else {
-      // 年のみ指定の場合
       url += `&start_date=${year}-01-01&end_date=${year}-12-31`;
     }
   }
@@ -558,7 +558,6 @@ async function executeSearch() {
   } catch (err) {
     if (loader) loader.style.display = "none";
     
-    // APIが本当に落ちている時でも、バックアップデータから「年・シーズン」を絞り込めるように改良
     const allBackup = [...BACKUP_DATA.now, ...BACKUP_DATA.top2026, ...BACKUP_DATA.topAll];
     const uniqueBackup = Array.from(new Set(allBackup.map(a => a.mal_id))).map(id => allBackup.find(a => a.mal_id === id));
     
@@ -610,7 +609,6 @@ async function generateAiRecommend() {
   }
 }
 
-// ★修正箇所：詳細モーダルもAPIエラー時は自動で配信サイトの導線リンクを救済表示
 async function openModal(id, fallbackTitle = "作品詳細") {
   const modalOv = document.getElementById("modalOv");
   const titleSlot = document.getElementById("mTitle");
@@ -647,8 +645,6 @@ async function openModal(id, fallbackTitle = "作品詳細") {
     `;
     
     const synText = anime.synopsis_japanese || anime.synopsis || "あらすじ情報はありません。";
-    const translateUrl = `https://translate.google.com/?sl=en&tl=ja&text=${encodeURIComponent(synText)}&op=translate`;
-    
     const translateBtnHtml = anime.synopsis ? `
       <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
         <a href="https://translate.google.co.jp/?sl=en&tl=ja&text=${encodeURIComponent(synText)}&op=translate&hl=ja" target="_blank" style="display:inline-block; padding:8px 16px; background:#4285F4; color:#fff; text-decoration:none; border-radius:4px; font-size:0.9rem; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2);">
@@ -682,14 +678,15 @@ function appendStreamLinks(container, title) {
   if (!container || !title) return;
   const encoded = encodeURIComponent(title);
   const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
-  
+  const unextUrl = (A8_UNEXT_URL !== "") ? A8_UNEXT_URL : `https://video.unext.jp/freeword?query=${encoded}`; // ★ U-NEXT追加
   const netflixUrl = `https://www.netflix.com/search?q=${encoded}`;
   
   const networks = [
     { name: "ABEMAプレミアム", url: abemaUrl, cls: "abema" },
     { name: "dアニメストア", url: `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`, cls: "danime" },
     { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" },
-    { name: "Netflix", url: netflixUrl, cls: "netflix" }
+    { name: "Netflix", url: netflixUrl, cls: "netflix" },
+    { name: "U-NEXT", url: unextUrl, cls: "unext" } // ★ U-NEXT追加
   ];
   
   networks.forEach(net => {
@@ -721,7 +718,6 @@ function showToastText(message) {
   setTimeout(() => { toast.classList.remove('show'); }, 3000);
 }
 
-// ★修正箇所：APIリトライ上限時にリジェクトを明確にし、undefinedバグ（無限ループ）を根絶
 async function fetchWithCache(url, retries = 2) {
   const now = Date.now();
   if (STATE.cache[url] && (now - STATE.cache[url].timestamp < 10 * 60 * 1000)) {
