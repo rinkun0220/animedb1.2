@@ -390,8 +390,8 @@ function generateStreamBadgesHTML(title) {
   const amazonUrl = `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`;
   const netflixBadgeUrl = `https://www.netflix.com/search?q=${encoded}`
   
-  // ★ DMMTVのURLを構築
-  const dmmtvUrl = (A8_DMMTV_URL !== "") ? A8_DMMTV_URL : `https://tv.dmm.com/vod/search/?query=${encoded}`;
+  // ★ DMMTVのURLを構築（検索URLが存在しないためトップページへ遷移）
+  const dmmtvUrl = (A8_DMMTV_URL !== "") ? A8_DMMTV_URL : `https://tv.dmm.com/vod/`;
   
   return `
     <div class="card-stream-badges" onclick="event.stopPropagation()">
@@ -686,7 +686,7 @@ function appendStreamLinks(container, title) {
   if (!container || !title) return;
   const encoded = encodeURIComponent(title);
   const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
-  const dmmtvUrl = (A8_DMMTV_URL !== "") ? A8_DMMTV_URL : `https://tv.dmm.com/vod/search/?query=${encoded}`; // ★ DMMTV
+  const dmmtvUrl = (A8_DMMTV_URL !== "") ? A8_DMMTV_URL : `https://tv.dmm.com/vod/`; // ★ DMMTVトップページへ
   const netflixUrl = `https://www.netflix.com/search?q=${encoded}`;
   
   const networks = [
