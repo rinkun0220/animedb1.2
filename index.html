@@ -387,7 +387,7 @@ function generateStreamBadgesHTML(title) {
   const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
   const danimeUrl = `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`;
   const amazonUrl = `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`;
-  const netflixBadgeUrl = `https://www.netflix.com/search?q=${encoded}`;
+  const netflixBadgeUrl = `https://tv.dmm.com/vod/search/?query=${encoded}`
   
   // ★ DMMTVのURLを構築
   const dmmtvUrl = (A8_DMMTV_URL !== "") ? A8_DMMTV_URL : `https://tv.dmm.com/vod/list/?keyword=${encoded}`;
