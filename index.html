@@ -12,7 +12,7 @@
 <meta property="og:title" content="ANIMEDB｜2026アニメランキング・検索・おすすめ">
 <meta property="og:description" content="2026年最新アニメから1990年まで全シーズン対応。AIおすすめ・配信先まで分かるアニメデータベース。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://rinkun0220.github.io/animedb1.2/">
+<meta property="og:url" content="https://rinkun0220.github.io/">
 <meta property="og:site_name" content="ANIMEDB">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
@@ -213,36 +213,40 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 </header>
 
 <main>
-  <div id="panel-home" class="panel active">
+ <div id="panel-home" class="panel active">
     <div class="hero-slider" id="heroSlot">
       <div class="loader-wrap" style="display:flex;"><div class="loader"></div></div>
     </div>
-    <div id="homeRows"></div>
-  </div>
 
-  <div id="panel-search" class="panel">
-    <div class="search-filter-wrapper">
-      <div class="search-box-row">
-        <input type="text" id="keywordInput" class="search-input" placeholder="作品名、キーワードを入力...">
-        <button class="search-btn" onclick="executeSearch()">検索</button>
-      </div>
-      <div class="filter-row">
-        <select id="yearSelect" class="filter-select"><option value="">すべての年</option></select>
-        <select id="seasonSelect" class="filter-select">
-          <option value="">すべてのシーズン</option>
-          <option value="winter">冬</option>
-          <option value="spring">春</option>
-          <option value="summer">夏</option>
-          <option value="fall">秋</option>
-        </select>
-        <select id="sortSelect" class="filter-select">
-          <option value="score">スコア順</option>
-          <option value="popularity">人気順</option>
-        </select>
+    <div class="adsense-seo-content" style="margin-bottom: 40px; animation: fadeIn 0.8s ease-out;">
+      <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">ANIMEDB｜過去の名作から最新アニメまで網羅するデータベース</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.8;">
+        当サイトは、毎クール多数放送されるアニメ作品の中から、あなたに最適な作品を見つけるためのアニメデータベースです。「昔見たあの名作をもう一度見直したい」「今期のトレンドを逃したくない」といった思いに応えるため、詳細検索、AIおすすめ、各種動画配信サービスへのアクセスを一つにまとめました。システムによる自動取得データだけでなく、アニメファンの視点に立った独自の作品レビューも発信しています。
+      </p>
+
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
+        <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; color: #fff; border-left: 4px solid var(--accent); padding-left: 10px;">
+          【独自レビュー】管理人が選ぶ！いま絶対に見るべきおすすめアニメ
+        </h2>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+          <div style="flex: 1; min-width: 250px;">
+            <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px;">1. 葬送のフリーレン</h3>
+            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify;">
+              魔王討伐後の世界をエルフの視点で描くという斬新な切り口。特筆すべきは、キャラクターたちの繊細な感情の機微を表現する「間」の演出と圧倒的な作画クオリティです。派手なバトルだけでなく、日常の何気ない会話に感動できる、アニメ史に残る大傑作だと断言できます。
+            </p>
+          </div>
+
+          <div style="flex: 1; min-width: 250px;">
+            <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px;">2. 呪術廻戦 (第2期)</h3>
+            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify;">
+              「渋谷事変」の絶望感とそれを上回るバトルアクション。限界突破した作画カロリーに毎話度肝を抜かれました。容赦のないストーリー展開と、息を呑むようなカメラワークは、まさに現代バトルアニメの最高峰。一度見始めたら途中で止めることができません。
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="loader-wrap" id="searchLoader"><div class="loader"></div></div>
-    <div class="anime-grid" id="searchResult"></div>
+    <div id="homeRows"></div>
   </div>
 
   <div id="panel-recommend" class="panel">
