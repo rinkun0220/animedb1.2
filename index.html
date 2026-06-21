@@ -552,41 +552,61 @@ async function loadHomeContent() {
   const rowsContainer = document.getElementById("homeRows");
   if (!rowsContainer) return;
   rowsContainer.innerHTML = "";
-  
+
+  // セクション横断で重複を管理するSet
+  const globalSeenIds = new Set();
+
+  // リストから重複を除去するユーティリティ
+  function dedup(list) {
+    const result = [];
+    for (const a of list) {
+      if (!a.mal_id || globalSeenIds.has(a.mal_id)) continue;
+      globalSeenIds.add(a.mal_id);
+      result.push(a);
+    }
+    return result;
+  }
+
   try {
-    const nowData = await fetchWithCache(`${API_BASE}/seasons/now?limit=10`);
+    const nowData = await fetchWithCache(`${API_BASE}/seasons/now?limit=25`);
     if (nowData && nowData.data && nowData.data.length > 0) {
-      renderHeroSlider(nowData.data.slice(0, 5));
-      createScrollRow(rowsContainer, "今シーズンの注目アニメ", nowData.data);
+      const unique = dedup(nowData.data);
+      renderHeroSlider(unique.slice(0, 5));
+      createScrollRow(rowsContainer, "今シーズンの注目アニメ", unique);
     } else {
       throw new Error("No Data");
     }
   } catch (err) {
     console.warn("注目アニメの取得に失敗。バックアップを表示します。");
-    renderHeroSlider(BACKUP_DATA.now);
-    createScrollRow(rowsContainer, "今シーズンの注目アニメ (おすすめ)", BACKUP_DATA.now);
+    const unique = dedup(BACKUP_DATA.now);
+    renderHeroSlider(unique.slice(0, 5));
+    createScrollRow(rowsContainer, "今シーズンの注目アニメ (おすすめ)", unique);
   }
-  
+
   try {
-    const top2026 = await fetchWithCache(`${API_BASE}/anime?year=2026&order_by=score&sort=desc&limit=10`);
+    const top2026 = await fetchWithCache(`${API_BASE}/anime?year=2026&order_by=score&sort=desc&limit=25`);
     if (top2026 && top2026.data && top2026.data.length > 0) {
-      createScrollRow(rowsContainer, "2026年 高評価ランキング", top2026.data);
+      const unique = dedup(top2026.data);
+      if (unique.length > 0) createScrollRow(rowsContainer, "2026年 高評価ランキング", unique);
     } else {
       throw new Error("No Data");
     }
   } catch (err) {
-    createScrollRow(rowsContainer, "2026年 おすすめ注目作品", BACKUP_DATA.top2026);
+    const unique = dedup(BACKUP_DATA.top2026);
+    if (unique.length > 0) createScrollRow(rowsContainer, "2026年 おすすめ注目作品", unique);
   }
-  
+
   try {
-    const topAll = await fetchWithCache(`${API_BASE}/top/anime?limit=10`);
+    const topAll = await fetchWithCache(`${API_BASE}/top/anime?limit=25`);
     if (topAll && topAll.data && topAll.data.length > 0) {
-      createScrollRow(rowsContainer, "歴代最高評価の名作", topAll.data);
+      const unique = dedup(topAll.data);
+      if (unique.length > 0) createScrollRow(rowsContainer, "歴代最高評価の名作", unique);
     } else {
       throw new Error("No Data");
     }
   } catch (err) {
-    createScrollRow(rowsContainer, "歴代最高評価の名作 (おすすめ)", BACKUP_DATA.topAll);
+    const unique = dedup(BACKUP_DATA.topAll);
+    if (unique.length > 0) createScrollRow(rowsContainer, "歴代最高評価の名作 (おすすめ)", unique);
   }
 }
 
@@ -631,11 +651,19 @@ function renderHeroSlider(list) {
 }
 
 function createScrollRow(container, heading, list) {
+  // リスト単体の重複も除去（同じmal_idが複数ある場合）
+  const seenLocal = new Set();
+  const uniqueList = list.filter(a => {
+    if (!a.mal_id || seenLocal.has(a.mal_id)) return false;
+    seenLocal.add(a.mal_id);
+    return true;
+  });
+  if (uniqueList.length === 0) return;
   const section = document.createElement("section");
   section.innerHTML = `<h3 class="section-title">${heading}</h3>`;
   const row = document.createElement("div");
   row.className = "scroll-row";
-  list.forEach(anime => row.appendChild(createAnimeCard(anime)));
+  uniqueList.forEach(anime => row.appendChild(createAnimeCard(anime)));
   section.appendChild(row);
   container.appendChild(section);
 }
