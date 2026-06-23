@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>アニメブログ｜ANIMEDB - 感想・考察・ランキング</title>
-<meta name="description" content="2026年春アニメの感想まとめ、おすすめランキング、作品考察など。ANIMEDBスタッフによる独自レビューを掲載。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ANIMEDB｜2026年アニメランキング・検索・おすすめ完全版</title>
+<link rel="canonical" href="https://rinkun0220.github.io/">
+<meta name="description" content="2026年最新アニメから1990年までの全シーズン対応。スコアランキング・AIおすすめ・配信先検索。無料で使えるアニメデータベース。">
+<meta name="keywords" content="アニメ,2026春アニメ,ランキング,おすすめ,神アニメ,泣けるアニメ,ANIMEDB,アニメDB,今期アニメ,アニメ一覧,dアニメストア">
 <meta name="robots" content="index,follow">
 <meta name="author" content="ANIMEDB">
-<meta property="og:title" content="アニメブログ｜ANIMEDB">
-<meta property="og:description" content="2026年春アニメの感想まとめ、おすすめランキング、作品考察。">
+<meta property="og:title" content="ANIMEDB｜2026アニメランキング・検索・おすすめ">
+<meta property="og:description" content="2026年最新アニメから1990年まで全シーズン対応。AIおすすめ・配信先まで分かるアニメデータベース。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://rinkun0220.github.io/blog/">
-<meta name="google-adsense-account" content="ca-pub-4858195974765934">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<meta property="og:url" content="https://rinkun0220.github.io/">
+<meta property="og:site_name" content="ANIMEDB">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --bg-main: #0b0f19;
@@ -29,141 +35,897 @@
   --border-color: rgba(255,255,255,0.08);
   --nav-height: 64px;
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background: var(--bg-main); color: var(--text-main); line-height: 1.6; }
+body {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* モーダル */
+#modalOv {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(4,6,10,0.85); backdrop-filter: blur(8px);
+  display: flex; justify-content: center; align-items: center;
+  z-index: -1; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s;
+  cursor: pointer;
+}
+#modalOv.open {
+  z-index: 9999 !important; visibility: visible; opacity: 1;
+}
+.modal-body {
+  background: var(--bg-card); width: 90%; max-width: 600px; border-radius: 16px;
+  border: 1px solid var(--border-color); overflow: hidden; position: relative;
+  cursor: default; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  transform: translateY(20px); transition: transform 0.3s ease;
+}
+#modalOv.open .modal-body { transform: translateY(0); }
+.m-close-btn {
+  position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.5); border: none;
+  color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 20px;
+  cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.m-close-btn:hover { background: var(--accent); }
+.m-info-block { padding: 54px 24px 24px 24px; max-height: 80vh; overflow-y: auto; }
+.m-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; color: #fff; padding-right: 30px; }
+.m-synopsis { font-size: 0.95rem; color: var(--text-muted); }
+
+/* ヘッダー */
 header {
-  height: var(--nav-height); background: rgba(11,15,25,0.9); backdrop-filter: blur(12px);
+  height: var(--nav-height); background: rgba(11,15,25,0.8); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color); display: flex; align-items: center;
   justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
 }
-.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; }
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; cursor: pointer; }
 .logo-a { color: #fff; } .logo-db { color: var(--accent); }
-.nav-links { display: flex; gap: 8px; }
-.nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: all 0.2s; }
+.nav-links { display: flex; gap: 20px; }
+.nav-item {
+  color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; transition: color 0.2s; padding: 8px 12px; border-radius: 6px;
+}
 .nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,0.05); }
-main { margin-top: var(--nav-height); padding: 40px 24px; max-width: 1100px; margin-left: auto; margin-right: auto; }
-.page-header { margin-bottom: 40px; }
-.page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
-.page-header h1 span { color: var(--accent); }
-.page-header p { color: var(--text-muted); font-size: 0.95rem; }
-.section-title { font-size: 1.3rem; font-weight: 700; margin: 40px 0 20px; display: flex; align-items: center; gap: 8px; }
-.section-title::before { content: ''; display: inline-block; width: 4px; height: 22px; background: var(--accent); border-radius: 2px; }
-.blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
-.blog-card {
-  background: var(--bg-card); border-radius: 14px; overflow: hidden;
-  border: 1px solid var(--border-color); transition: transform 0.3s, border-color 0.3s;
-  text-decoration: none; display: flex; flex-direction: column;
+
+/* メインコンテンツ */
+main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - var(--nav-height) - 150px); max-width: 1400px; margin-left: auto; margin-right: auto; }
+.panel { display: none; }
+.panel.active { display: block; animation: fadeIn 0.4s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ヒーローセクション */
+.hero-slider { margin-bottom: 40px; border-radius: 16px; overflow: hidden; position: relative; height: 380px; background: var(--bg-darker); }
+.hero-item { position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease; display: flex; align-items: flex-end; cursor: pointer; }
+.hero-item.active { opacity: 1; z-index: 1; }
+.hero-bg { position: absolute; top:0; left:0; width:100%; height:100%; background-size: cover; background-position: center; filter: brightness(0.4) blur(2px); }
+.hero-content { position: relative; z-index: 2; padding: 40px; max-width: 800px; }
+.hero-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 12px; }
+.hero-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 12px; line-height: 1.3; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.hero-meta { display: flex; gap: 16px; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; }
+
+/* 検索・フィルター */
+.search-filter-wrapper { background: var(--bg-card); padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); margin-bottom: 32px; }
+.search-box-row { display: flex; gap: 12px; margin-bottom: 16px; }
+.search-input { flex: 1; background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 16px; color: #fff; font-size: 1rem; transition: border-color 0.2s; }
+.search-input:focus { border-color: var(--accent); outline: none; }
+.search-btn { background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; padding: 12px 24px; }
+.search-btn:hover { background: var(--accent-hover); }
+.filter-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.filter-select { background: var(--bg-darker); color: #fff; border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; font-size: 0.9rem; }
+
+/* セクションタイトル */
+.section-title { font-size: 1.5rem; font-weight: 700; margin: 32px 0 16px 0; display: flex; align-items: center; gap: 8px; }
+.section-title::before { content: ''; display: inline-block; width: 4px; height: 24px; background: var(--accent); border-radius: 2px; }
+.scroll-row { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 16px; scroll-behavior: smooth; }
+.scroll-row::-webkit-scrollbar { height: 8px; }
+.scroll-row::-webkit-scrollbar-track { background: transparent; }
+.scroll-row::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+/* カードデザイン */
+.anime-card {
+  flex: 0 0 220px; background: var(--bg-card); border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--border-color); cursor: pointer; transition: transform 0.3s, border-color 0.3s;
+  position: relative; display: flex; flex-direction: column;
 }
-.blog-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.2); }
-.blog-card-thumb {
-  width: 100%; height: 180px; object-fit: cover; background: linear-gradient(135deg, #1a2540, #0f1825);
-  display: flex; align-items: center; justify-content: center; font-size: 3rem;
+.anime-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.2); }
+.card-img-wrap { position: relative; width: 100%; padding-top: 142%; background: var(--bg-darker); overflow: hidden; }
+.card-img { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; transition: transform 0.5s; }
+.anime-card:hover .card-img { transform: scale(1.05); }
+.card-score-badge { position: absolute; top: 10px; left: 10px; background: rgba(11,15,25,0.85); backdrop-filter: blur(4px); padding: 4px 8px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; color: var(--star-color); display: flex; align-items: center; gap: 4px; }
+.card-info { padding: 14px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.card-title { font-size: 0.95rem; font-weight: 600; color: #fff; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 8px; }
+.card-meta { font-size: 0.8rem; color: var(--text-muted); }
+
+/* 配信リンクバッジ */
+.card-stream-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; z-index: 10; position: relative; }
+.badge { 
+  font-size: 0.65rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; 
+  color: #fff; text-decoration: none; display: inline-block; transition: opacity 0.2s; 
 }
-.blog-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
-.blog-tag { display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
-.blog-tag.season { background: #2563eb; }
-.blog-tag.ranking { background: #7c3aed; }
-.blog-tag.review { background: #059669; }
-.blog-card-title { font-size: 1rem; font-weight: 700; color: #fff; line-height: 1.5; margin-bottom: 10px; }
-.blog-card-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; flex: 1; }
-.blog-card-meta { margin-top: 14px; font-size: 0.8rem; color: rgba(255,255,255,0.3); }
-.site-footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 60px; }
+.badge:hover { opacity: 0.8; }
+.badge.abema { background: #33CC66; }
+.badge.danime { background: #ff6600; }
+.badge.amazon { background: #00a8e1; }
+.badge.netflix { background: #E50914; }
+.badge.dmmtv { background: #C8FF00; color: #111; font-weight:800; } /* DMM TV ネオンイエロー */
+
+/* モーダル用の配信ボタン */
+.stream-links-block { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color); }
+.stream-link {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 18px; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
+  text-decoration: none; transition: all 0.2s; color: #fff; border: none;
+}
+.stream-link.abema { background: #33CC66; box-shadow: 0 4px 10px rgba(51,204,102,0.3); }
+.stream-link.abema:hover { background: #2eb85c; transform: translateY(-2px); }
+.stream-link.danime { background: #ff6600; box-shadow: 0 4px 10px rgba(255,102,0,0.3); }
+.stream-link.danime:hover { background: #e65c00; transform: translateY(-2px); }
+.stream-link.amazon { background: #00a8e1; box-shadow: 0 4px 10px rgba(0,168,225,0.3); }
+.stream-link.amazon:hover { background: #008fbf; transform: translateY(-2px); }
+.stream-link.netflix { background: #E50914; box-shadow: 0 4px 10px rgba(229,9,20,0.3); }
+.stream-link.netflix:hover { background: #b20710; transform: translateY(-2px); }
+.stream-link.dmmtv { background: #C8FF00; color: #111; font-weight:800; box-shadow: 0 4px 10px rgba(200,255,0,0.35); }
+.stream-link.dmmtv:hover { background: #b0e600; color: #111; transform: translateY(-2px); }
+
+/* 汎用テキストページ */
+.text-page-content { background: var(--bg-card); padding: 40px; border-radius: 16px; border: 1px solid var(--border-color); max-width: 900px; margin: 0 auto 40px auto; }
+.text-page-content h2 { font-size: 1.8rem; margin-bottom: 20px; color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+.text-page-content h3 { font-size: 1.2rem; margin: 24px 0 12px 0; color: var(--accent); }
+.text-page-content p { color: var(--text-main); font-size: 0.95rem; margin-bottom: 16px; text-align: justify; }
+
+/* ユーティリティ */
+.anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 24px; }
+.loader-wrap { display: none; justify-content: center; align-items: center; padding: 40px 0; }
+.loader { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+#toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(255,71,87,0.95); color: #fff; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; z-index: 10000; opacity: 0; transition: transform 0.3s, opacity 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); pointer-events: none;}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.site-footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 40px; }
 .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
-.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; cursor: pointer; transition: color 0.2s; }
 .footer-link:hover { color: #fff; }
 .copyright { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+  /* --- DMM TV 最高品質ボタンUI --- */
+.dmm-tv-btn {
+    background: linear-gradient(135deg, #FFD700 0%, #FFAA00 100%);
+    color: #1A1A1A;
+    /* ...中略... */
+.dmm-tv-btn:hover::before {
+    left: 100%;
+}
 </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="canonical" href="https://rinkun0220.github.io/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"ANIMEDB","url":"https://rinkun0220.github.io/","description":"1990年から最新まで全シーズン対応のアニメデータベース。","inLanguage":"ja"}
+</script>
 </head>
 <body>
+
 <header>
-  <a href="https://rinkun0220.github.io/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
-  <nav class="nav-links">
-    <a href="https://rinkun0220.github.io/" class="nav-item">ホーム</a>
-    <a href="https://rinkun0220.github.io/blog/" class="nav-item active">ブログ</a>
-  </nav>
+  <div class="logo" onclick="switchPanel('home')"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></div>
+  <div class="nav-links">
+    <div class="nav-item active" id="nav-home" onclick="switchPanel('home')">ホーム</div>
+    <div class="nav-item" id="nav-search" onclick="switchPanel('search')">詳細検索</div>
+    <div class="nav-item" id="nav-recommend" onclick="switchPanel('recommend')">AIおすすめ</div>
+  </div>
 </header>
 
 <main>
-  <div class="page-header">
-    <h1>アニメ<span>ブログ</span></h1>
-    <p>感想・考察・ランキングなど、独自の視点でアニメを掘り下げます。</p>
+ <div id="panel-home" class="panel active">
+    <div class="hero-slider" id="heroSlot">
+      <div class="loader-wrap" style="display:flex;"><div class="loader"></div></div>
+    </div>
+
+    <div class="adsense-seo-content" style="margin-bottom: 40px; animation: fadeIn 0.8s ease-out;">
+      <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">ANIMEDB｜過去の名作から最新アニメまで網羅するデータベース</h1>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.8;">
+        当サイトは、毎クール70本前後放送されるアニメ作品の中から、あなたに最適な作品を見つけるためのアニメデータベースです。「昔見たあの名作をもう一度見直したい」「今期のトレンドを逃したくない」といった思いに応えるため、詳細検索、AIおすすめ、各種動画配信サービスへのアクセスを一つにまとめました。システムによる自動取得データだけでなく、アニメファンの視点に立った独自の作品レビューも発信しています。<a href="./about.html" style="color:var(--accent);text-decoration:none;margin-left:4px;">開発者の思いを見て頂ければ幸いです。</a>
+      </p>
+
+      <!-- 来期おすすめアニメ -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin-bottom: 20px;">
+        <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; color: #fff; border-left: 4px solid var(--accent); padding-left: 10px;">
+          【独自レビュー】管理人が選ぶ！2026年7月開始おすすめアニメ！
+        </h2>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+          <div style="flex: 1; min-width: 250px;">
+            <a href="https://bleach-anime.com/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+              <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                1. BLEACH 千年血戦篇-禍進譚-
+                <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+              </h3>
+            </a>
+            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
+              <strong style="color: var(--accent);">「BLEACH最終章、いよいよ大詰め！」</strong><br>
+              <br>
+              千年血戦篇の最終フェーズ。これまで積み上げてきた伏線が一気に回収される怒涛の展開へ。原作完結から数年。アニメ完結へのカウントダウン開始。これを機会にBLEACHを読み返したくなる。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <a href="https://www.disneyplus.com/ja-jp" target="_blank" rel="noopener noreferrer" style="background:#1a3a8f;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Disney+</a>
+              <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+              <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-width: 250px;">
+            <a href="https://mushokutensei.jp/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+              <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                2. 無職転生Ⅲ
+                <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+              </h3>
+            </a>
+            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
+              <strong style="color: var(--accent);">「異世界転生モノの頂点が帰ってくる！」</strong><br>
+              <br>
+              無職転生シリーズを作るために会社を興した。StudioBind。その間にもお兄ちゃんはおしまい！花は咲く、修羅の如く、瑠璃の宝石の名作を作り。満を持しての無職転生Ⅲ放送。ルーデウスの成長を見届けてきたファンには待望の続編。多々ある異世界アニメとは一線を画す。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
+              <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
+              <a href="https://www.amazon.co.jp/s?k=%E7%84%A1%E8%81%B7%E8%BB%A2%E7%94%9F&i=instant-video" target="_blank" rel="noopener noreferrer" style="background:#ff9900;color:#000;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Amazon</a>
+              <a href="https://www.netflix.com/jp/" target="_blank" rel="noopener noreferrer" style="background:#e50914;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Netflix</a>
+              <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-width: 250px;">
+            <a href="https://grandblue-anime.com/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+              <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                3. ぐらんぶる Season 3
+                <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+              </h3>
+            </a>
+            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
+              <strong style="color: var(--accent);">「俺たちの夏は終わらない！待望のSeason 3！」</strong><br>
+              <br>
+              Season 2から1年。ファン待望の続編。今度の舞台はついに海外。パラオ！「銀魂」「男子高校生の日常」「坂本ですが？」の監督を務めた。高松信司監督続投！唯一無二のギャグセンスはそのままに、舞台は海外。パラオへ！豪華声優陣がこんなセリフ言う!?な点にも注目。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
+              <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
+              <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+              <a href="https://tv.dmm.com/" target="_blank" rel="noopener noreferrer" style="background:#ff4500;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">DMM TV</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 今期おすすめアニメ -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
+        <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; color: #fff; border-left: 4px solid var(--accent); padding-left: 10px;">
+          【独自レビュー】管理人が選ぶ！2026年4月開始。見逃がしたら後悔するアニメ！
+        </h2>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+          <div style="flex: 1; min-width: 250px;">
+            <a href="https://www.marriagetoxin-anime.com/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+              <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                1. マリッジトキシン
+                <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+              </h3>
+            </a>
+            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
+              <strong style="color: var(--accent);">「ジャンプ＋ × ボンズの化学反応は凄い！」</strong><br>
+              <br>
+              殺し屋×婚活物語という、これまでにありそうでなかった唯一無二の組み合わせ。エンターテインメントとしてこの組み合わせの作品は本当に稀有で、観始めたら止まらない。話が進むにつれて婚活候補が次々と増えていく展開も見どころのひとつ。そして当の本人がまったく気づいていないという点にも注目してほしい。1クール70本放送で埋もれてしまっている作品代表。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
+              <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
+              <a href="https://www.amazon.co.jp/s?k=%E3%83%9E%E3%83%AA%E3%83%83%E3%82%B8%E3%83%88%E3%82%AD%E3%82%B7%E3%83%B3&i=instant-video" target="_blank" rel="noopener noreferrer" style="background:#ff9900;color:#000;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Amazon</a>
+              <a href="https://www.netflix.com/jp/" target="_blank" rel="noopener noreferrer" style="background:#e50914;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Netflix</a>
+              <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-width: 250px;">
+            <a href="https://www.tadaoja-anime.com/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+              <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                2. ただいま、おじゃまされます！
+                <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+              </h3>
+            </a>
+            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
+              <strong style="color: var(--accent);">「新時代のラブコメ？いやラブコメなのか？？」</strong><br>
+              <br>
+              左隣の隣人がなんと推しの漫画家で、右隣の方は主人公と不思議な関係性が？主人公がOL＆メシアシスタントとして大活躍するギャップも魅力。そして何より、花澤香菜さんのボイスが1日の疲れをじんわりと癒してくれる。ラブコメと言い切れない独特の雰囲気が癖になる。今期の中でひっそりと輝いている隠れた名作。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
+              <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
+              <a href="https://www.amazon.co.jp/s?k=%E3%81%9F%E3%81%A0%E3%81%84%E3%81%BE%E3%81%8A%E3%81%98%E3%82%83%E3%81%BE%E3%81%95%E3%82%8C%E3%81%BE%E3%81%99&i=instant-video" target="_blank" rel="noopener noreferrer" style="background:#ff9900;color:#000;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Amazon</a>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-width: 250px;">
+            <a href="https://www.nipponsangoku.com/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+              <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                3. 日本三國
+                <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+              </h3>
+            </a>
+            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
+              <strong style="color: var(--accent);">「現在の三國志。これを観たら三國志にハマる！」</strong><br>
+              <br>
+              話が進むにつれて癖のあるキャラクターたちが次々と集結し、物語の熱量がどんどん上がっていく。Amazon MGMスタジオとの共同制作という体制からも分かる通り、最初から世界に向けて作られた作品。スケール感と細部へのこだわりが両立している点が圧巻。三國志を知らなくても、知っていても、どちらも楽しめる新世代の歴史エンタメ。
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <a href="https://www.amazon.co.jp/s?k=%E6%97%A5%E6%9C%AC%E4%B8%89%E5%9C%8B&i=instant-video" target="_blank" rel="noopener noreferrer" style="background:#ff9900;color:#000;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Amazon</a>
+              <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="homeRows"></div>
   </div>
 
-  <div class="section-title">最新記事</div>
-  <div class="blog-grid">
-
-    <a href="./2026-spring-all.html" class="blog-card">
-      <div class="blog-card-thumb">🌸</div>
-      <div class="blog-card-body">
-        <span class="blog-tag season">季節まとめ</span>
-        <div class="blog-card-title">2026年春アニメ全作品を見た感想まとめ【完全版】</div>
-        <div class="blog-card-desc">2026年春クールの放送作品を全て視聴。各作品の1話〜最終話まで追った正直な感想と評価をまとめました。</div>
-        <div class="blog-card-meta">2026年6月 · 読了目安 10分</div>
+  <div id="panel-search" class="panel">
+    <div class="search-filter-wrapper">
+      <h2 class="section-title" style="margin-top:0;">詳細検索</h2>
+      <div class="search-box-row">
+        <input type="text" id="keywordInput" class="search-input" placeholder="アニメタイトルで検索...">
+        <button class="search-btn" onclick="executeSearch()">検索する</button>
       </div>
-    </a>
-
-    <a href="./isekai-top10.html" class="blog-card">
-      <div class="blog-card-thumb">⚔️</div>
-      <div class="blog-card-body">
-        <span class="blog-tag ranking">ランキング</span>
-        <div class="blog-card-title">異世界転生アニメおすすめ10選【2026年最新版】</div>
-        <div class="blog-card-desc">数多ある異世界転生ものの中から、本当に面白いと思った10作品を厳選。初心者向けから上級者向けまで幅広く紹介。</div>
-        <div class="blog-card-meta">2026年6月 · 読了目安 8分</div>
+      <div class="filter-row">
+        <select id="yearSelect" class="filter-select">
+          <option value="">すべての年</option>
+        </select>
+        <select id="seasonSelect" class="filter-select">
+          <option value="">すべての季節</option>
+          <option value="winter">冬</option>
+          <option value="spring">春</option>
+          <option value="summer">夏</option>
+          <option value="fall">秋</option>
+        </select>
+        <select id="sortSelect" class="filter-select">
+          <option value="score">評価が高い順</option>
+          <option value="popularity">人気順</option>
+        </select>
       </div>
-    </a>
+    </div>
+    <div class="loader-wrap" id="searchLoader"><div class="loader"></div></div>
+    <div class="anime-grid" id="searchResult"></div>
+  </div>
 
-    <a href="./romance-top10.html" class="blog-card">
-      <div class="blog-card-thumb">💕</div>
-      <div class="blog-card-body">
-        <span class="blog-tag ranking">ランキング</span>
-        <div class="blog-card-title">泣けるラブコメアニメおすすめ10選【感動保証】</div>
-        <div class="blog-card-desc">笑えて泣けるラブコメを厳選。「君の名は。」以降の恋愛アニメブームを振り返りながら、外せない名作を紹介します。</div>
-        <div class="blog-card-meta">2026年6月 · 読了目安 7分</div>
+  <div id="panel-recommend" class="panel">
+    <div class="search-filter-wrapper" style="text-align:center;">
+      <h3 style="margin-bottom:12px;">あなたに最適なアニメをAIがレコメンド</h3>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">現在のトレンドや高評価作品から、隠れた名作まで厳選して提案します。</p>
+      <button class="search-btn" style="padding:12px 32px;" onclick="generateAiRecommend()">おすすめを生成する</button>
+    </div>
+    <div class="loader-wrap" id="recommendLoader"><div class="loader"></div></div>
+    <div class="anime-grid" id="recommendResult"></div>
+  </div>
+ 
+  <div id="panel-about" class="panel">
+    <div class="text-page-content">
+      <h2>ANIMEDBに込めた思い</h2>
+      <p>数あるWebサイトの中から「ANIMEDB」に足を運んでいただき、本当にありがとうございます。</p>
+      <p>昨今、1クールのアニメ放映が70本前後と多くなっています。私もそうですがアニメ選び。過去の名作を忘れています。またキー局のアニメ枠の拡大により、アニメ被りでリアルタイム視聴も難しくなっております。配信サイトもありますが数日遅れの配信です。現在はその転換点だと感じています。その為に見逃し作品がないよう。ANIMEDBを創りました。データベースを参考に
+  新しい作品との出会い。過去の思い出のアニメ作品の見直しの場になれば開発者としてこれ以上の喜びはありません。その為に数多くのリンク先も創りました。あなたにとって良いアニメライフを！　　　　　　　　© 2026 ANIMEDB. All Rights Reserved.</p>
+    </div>
+  </div>
+
+  <div id="panel-privacy" class="panel">
+    <div class="text-page-content">
+      <h2>プライバシーポリシー</h2>
+      <p>プライバシーポリシーの詳細は以下のページをご覧ください。</p>
+      <div style="text-align: center; margin-top: 32px;">
+        <a href="./privacy.html" class="search-btn" style="text-decoration: none; display: inline-block; padding: 14px 40px; font-size: 1.1rem;">プライバシーポリシーを見る →</a>
       </div>
-    </a>
+    </div>
+  </div>
 
-    <a href="./spring2026-recommend.html" class="blog-card">
-      <div class="blog-card-thumb">⭐</div>
-      <div class="blog-card-body">
-        <span class="blog-tag review">レビュー</span>
-        <div class="blog-card-title">2026年春アニメ おすすめ5選【見逃し厳禁】</div>
-        <div class="blog-card-desc">春クールの中から特に推せる5作品を独自視点でレビュー。配信サービスの情報も合わせて掲載しています。</div>
-        <div class="blog-card-meta">2026年4月 · 読了目安 6分</div>
+  <div id="panel-contact" class="panel">
+    <div class="text-page-content">
+      <h2>お問い合わせ</h2>
+      <p>当サイトに関するご要望、不具合のご報告、その他のお問い合わせは、以下のボタンよりお願いいたします。</p>
+      <div style="text-align: center; margin-top: 32px;">
+       <a href="./contact.html" class="search-btn" style="text-decoration: none; display: inline-block; padding: 14px 40px; font-size: 1.1rem;">お問い合わせ窓口へ →</a>
       </div>
-    </a>
-
-    <a href="./hidden-gems-2025.html" class="blog-card">
-      <div class="blog-card-thumb">💎</div>
-      <div class="blog-card-body">
-        <span class="blog-tag review">レビュー</span>
-        <div class="blog-card-title">2025年に見逃した隠れた名作アニメ5選</div>
-        <div class="blog-card-desc">話題作の陰で見逃されがちだった2025年の良作をピックアップ。知る人ぞ知る作品ばかりです。</div>
-        <div class="blog-card-meta">2026年5月 · 読了目安 6分</div>
-      </div>
-    </a>
-
-    <a href="./battle-anime-top10.html" class="blog-card">
-      <div class="blog-card-thumb">🔥</div>
-      <div class="blog-card-body">
-        <span class="blog-tag ranking">ランキング</span>
-        <div class="blog-card-title">バトルアニメ歴代おすすめランキング10選</div>
-        <div class="blog-card-desc">迫力の戦闘シーンが魅力のバトルアニメを独自ランキングで紹介。名シーン・作画・ストーリーを総合的に評価。</div>
-        <div class="blog-card-meta">2026年5月 · 読了目安 8分</div>
-      </div>
-    </a>
-
+    </div>
   </div>
 </main>
 
 <footer class="site-footer">
   <div class="footer-links">
-    <a href="https://rinkun0220.github.io/" class="footer-link">ホーム</a>
-    <a href="https://rinkun0220.github.io/blog/" class="footer-link">ブログ</a>
-    <a href="https://rinkun0220.github.io/about.html" class="footer-link">ANIMEDBについて</a>
-    <a href="https://rinkun0220.github.io/privacy.html" class="footer-link">プライバシーポリシー</a>
-    <a href="https://rinkun0220.github.io/contact.html" class="footer-link">お問い合わせ</a>
+    <a href="./about.html" class="footer-link" style="text-decoration:none;color:#4a9eff;">開発者の思い</a>
+    <a href="./privacy.html" class="footer-link" style="text-decoration:none;">プライバシーポリシー</a>
+    <a href="./contact.html" class="footer-link" style="text-decoration:none;">お問い合わせ</a>
   </div>
-  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+  <div class="copyright">&copy; 2026 ANIMEDB. All Rights Reserved.</div>
 </footer>
+
+<div id="modalOv" onclick="closeModal()">
+  <div class="modal-body" onclick="event.stopPropagation()">
+    <button class="m-close-btn" onclick="closeModal()">&times;</button>
+    <div class="m-info-block">
+      <div class="m-title" id="mTitle">作品タイトル</div>
+      <div class="m-synopsis" id="mSynopsis"></div>
+      <div class="stream-links-block" id="mStreamSlot"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ==========================================
+// 【アフィリエイト設定】
+// ==========================================
+const A8_ABEMA_URL = "https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP";
+// ★ DMMTVのアフィリエイトリンクを取得したらここに入力してください
+const A8_DMMTV_URL = ""; 
+
+const BACKUP_DATA = {
+  now: [
+    { mal_id: 52991, title: "Sousou no Frieren", title_japanese: "葬送のフリーレン", score: 9.39, year: 2024, season: "fall", images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1015/138075.jpg", large_image_url: "https://cdn.myanimelist.net/images/anime/1015/138075.jpg" } }, synopsis: "魔王を倒した勇者一行のその後を描く、心温まる後日譚ファンタジー。" },
+    { mal_id: 51009, title: "Jujutsu Kaisen 2nd Season", title_japanese: "呪術廻戦 (第2期)", score: 8.82, year: 2023, season: "summer", images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1171/109222.jpg", large_image_url: "https://cdn.myanimelist.net/images/anime/1171/109222.jpg" } }, synopsis: "呪術師と特級呪詛師たちの壮絶な戦い「渋谷事変」を圧倒的作画でアニメ化。" },
+    { mal_id: 38000, title: "Kimetsu no Yaiba", title_japanese: "鬼滅の刃", score: 8.54, year: 2019, season: "spring", images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1286/99889.jpg", large_image_url: "https://cdn.myanimelist.net/images/anime/1286/99889.jpg" } }, synopsis: "家族を殺された少年・炭治郎が、鬼となった妹を人間に戻すため「鬼殺隊」へ入隊する。" },
+    { mal_id: 40028, title: "Shingeki no Kyojin: The Final Season", title_japanese: "進撃の巨人 The Final Season", score: 8.81, year: 2020, season: "winter", images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1000/110531.jpg", large_image_url: "https://cdn.myanimelist.net/images/anime/1000/110531.jpg" } }, synopsis: "壁の向こうの真実が明かされ、自由を求めて世界と戦う主人公たちの最後の物語。" }
+  ],
+  top2026: [
+    { mal_id: 52991, title: "Sousou no Frieren", title_japanese: "葬送のフリーレン", score: 9.39, year: 2024, images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1015/138075.jpg" } } },
+    { mal_id: 51009, title: "Jujutsu Kaisen 2nd Season", title_japanese: "呪術廻戦 (第2期)", score: 8.82, year: 2023, images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1171/109222.jpg" } } }
+  ],
+  topAll: [
+    { mal_id: 5114, title: "Fullmetal Alchemist: Brotherhood", title_japanese: "鋼の錬金術師 FULLMETAL ALCHEMIST", score: 9.10, year: 2009, images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1223/96541.jpg" } } },
+    { mal_id: 52991, title: "Sousou no Frieren", title_japanese: "葬送のフリーレン", score: 9.39, year: 2024, images: { webp: { image_url: "https://cdn.myanimelist.net/images/anime/1015/138075.jpg" } } }
+  ]
+};
+
+// 状態管理
+const STATE = { cache: {}, currentHeroIndex: 0, heroTimer: null };
+const API_BASE = "https://api.jikan.moe/v4";
+const CURRENT_YEAR = 2026;
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupYearDropdown();
+  loadHomeContent();
+  
+  const searchInput = document.getElementById("keywordInput");
+  if(searchInput) {
+    searchInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") executeSearch();
+    });
+  }
+});
+
+function setupYearDropdown() {
+  const select = document.getElementById("yearSelect");
+  if (!select) return;
+  for (let y = CURRENT_YEAR; y >= 1990; y--) {
+    const opt = document.createElement("option");
+    opt.value = y; opt.textContent = `${y}年`;
+    select.appendChild(opt);
+  }
+}
+
+function switchPanel(panelId) {
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  
+  const targetPanel = document.getElementById(`panel-${panelId}`);
+  const targetNav = document.getElementById(`nav-${panelId}`);
+  if (targetPanel) targetPanel.classList.add("active");
+  if (targetNav) targetNav.classList.add("active");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function getJapaneseTitle(anime) {
+  if (anime.title_japanese) return anime.title_japanese;
+  if (anime.titles && Array.isArray(anime.titles)) {
+    const jaTitle = anime.titles.find(t => t.type === 'Japanese');
+    if (jaTitle) return jaTitle.title;
+  }
+  return anime.title;
+}
+
+function generateStreamBadgesHTML(title) {
+  const encoded = encodeURIComponent(title);
+  const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
+  const danimeUrl = `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`;
+  const amazonUrl = `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`;
+  const netflixBadgeUrl = `https://www.netflix.com/search?q=${encoded}`
+  
+  // ★ DMMTVのURLを構築（検索URLが存在しないためトップページへ遷移）
+  const dmmtvUrl = (A8_DMMTV_URL !== "") ? A8_DMMTV_URL : `https://tv.dmm.com/vod/`;
+  
+  return `
+    <div class="card-stream-badges" onclick="event.stopPropagation()">
+      <a href="${abemaUrl}" target="_blank" rel="noopener noreferrer" class="badge abema">ABEMA</a>
+      <a href="${danimeUrl}" target="_blank" rel="noopener noreferrer" class="badge danime">dアニメ</a>
+      <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="badge amazon">Amazon</a>
+      <a href="${netflixBadgeUrl}" target="_blank" rel="noopener noreferrer" class="badge netflix">Netflix</a>
+      <a href="${dmmtvUrl}" target="_blank" rel="noopener noreferrer" class="badge dmmtv">DMM TV</a>
+    </div>
+  `;
+}
+
+async function loadHomeContent() {
+  const rowsContainer = document.getElementById("homeRows");
+  if (!rowsContainer) return;
+  rowsContainer.innerHTML = "";
+
+  // セクション横断で重複を管理するSet
+  const globalSeenIds = new Set();
+
+  // リストから重複を除去するユーティリティ
+  function dedup(list) {
+    const result = [];
+    for (const a of list) {
+      if (!a.mal_id || globalSeenIds.has(a.mal_id)) continue;
+      globalSeenIds.add(a.mal_id);
+      result.push(a);
+    }
+    return result;
+  }
+
+  try {
+    const nowData = await fetchWithCache(`${API_BASE}/seasons/now?limit=25`);
+    if (nowData && nowData.data && nowData.data.length > 0) {
+      const unique = dedup(nowData.data);
+      renderHeroSlider(unique.slice(0, 5));
+      createScrollRow(rowsContainer, "今シーズンの注目アニメ", unique);
+    } else {
+      throw new Error("No Data");
+    }
+  } catch (err) {
+    console.warn("注目アニメの取得に失敗。バックアップを表示します。");
+    const unique = dedup(BACKUP_DATA.now);
+    renderHeroSlider(unique.slice(0, 5));
+    createScrollRow(rowsContainer, "今シーズンの注目アニメ (おすすめ)", unique);
+  }
+
+  try {
+    const top2026 = await fetchWithCache(`${API_BASE}/anime?year=2026&order_by=score&sort=desc&limit=25`);
+    if (top2026 && top2026.data && top2026.data.length > 0) {
+      const unique = dedup(top2026.data);
+      if (unique.length > 0) createScrollRow(rowsContainer, "2026年 高評価ランキング", unique);
+    } else {
+      throw new Error("No Data");
+    }
+  } catch (err) {
+    const unique = dedup(BACKUP_DATA.top2026);
+    if (unique.length > 0) createScrollRow(rowsContainer, "2026年 おすすめ注目作品", unique);
+  }
+
+  try {
+    const topAll = await fetchWithCache(`${API_BASE}/top/anime?limit=25`);
+    if (topAll && topAll.data && topAll.data.length > 0) {
+      const unique = dedup(topAll.data);
+      if (unique.length > 0) createScrollRow(rowsContainer, "歴代最高評価の名作", unique);
+    } else {
+      throw new Error("No Data");
+    }
+  } catch (err) {
+    const unique = dedup(BACKUP_DATA.topAll);
+    if (unique.length > 0) createScrollRow(rowsContainer, "歴代最高評価の名作 (おすすめ)", unique);
+  }
+}
+
+function renderHeroSlider(list) {
+  const slot = document.getElementById("heroSlot");
+  if (!slot) return;
+  slot.innerHTML = "";
+  clearInterval(STATE.heroTimer);
+  
+  list.forEach((anime, idx) => {
+    const item = document.createElement("div");
+    item.className = `hero-item ${idx === 0 ? 'active' : ''}`;
+    
+    const bgImg = anime.images?.webp?.large_image_url || anime.images?.jpg?.large_image_url || '';
+    const title = getJapaneseTitle(anime);
+    const score = anime.score ? `★ ${anime.score.toFixed(2)}` : '評価なし';
+    const sString = anime.season ? translateSeasonString(anime.season) : '';
+    const metaStr = `${anime.year || CURRENT_YEAR}年${sString} / ${score}`;
+    
+    item.innerHTML = `
+      <div class="hero-bg" style="background-image: url('${bgImg}')"></div>
+      <div class="hero-content" onclick="openModal(${anime.mal_id}, '${title.replace(/'/g, "\\'")}')">
+        <div class="hero-tag">TRENDING</div>
+        <h2 class="hero-title">${title}</h2>
+        <div class="hero-meta"><span>${metaStr}</span></div>
+        ${generateStreamBadgesHTML(title)}
+      </div>
+    `;
+    slot.appendChild(item);
+  });
+  
+  STATE.currentHeroIndex = 0;
+  if (list.length > 1) {
+    STATE.heroTimer = setInterval(() => {
+      const items = slot.querySelectorAll(".hero-item");
+      if (!items.length) return;
+      items[STATE.currentHeroIndex].classList.remove("active");
+      STATE.currentHeroIndex = (STATE.currentHeroIndex + 1) % items.length;
+      items[STATE.currentHeroIndex].classList.add("active");
+    }, 5000);
+  }
+}
+
+function createScrollRow(container, heading, list) {
+  // リスト単体の重複も除去（同じmal_idが複数ある場合）
+  const seenLocal = new Set();
+  const uniqueList = list.filter(a => {
+    if (!a.mal_id || seenLocal.has(a.mal_id)) return false;
+    seenLocal.add(a.mal_id);
+    return true;
+  });
+  if (uniqueList.length === 0) return;
+  const section = document.createElement("section");
+  section.innerHTML = `<h3 class="section-title">${heading}</h3>`;
+  const row = document.createElement("div");
+  row.className = "scroll-row";
+  uniqueList.forEach(anime => row.appendChild(createAnimeCard(anime)));
+  section.appendChild(row);
+  container.appendChild(section);
+}
+
+function createAnimeCard(anime) {
+  const card = document.createElement("div");
+  card.className = "anime-card";
+  const title = getJapaneseTitle(anime);
+  card.addEventListener("click", () => openModal(anime.mal_id, title));
+  
+  const imgUrl = anime.images?.webp?.image_url || anime.images?.jpg?.image_url || '';
+  const score = anime.score ? anime.score.toFixed(2) : '--';
+  const sString = anime.season ? translateSeasonString(anime.season) : '';
+  const metaStr = `${anime.year || ''} ${sString}`;
+  
+  card.innerHTML = `
+    <div class="card-img-wrap">
+      <img src="${imgUrl}" class="card-img" alt="${title}" loading="lazy" onerror="this.src='https://via.placeholder.com/225x319/18181c/888898?text=No+Image'">
+      <div class="card-score-badge">★ ${score}</div>
+    </div>
+    <div class="card-info">
+      <div>
+        <div class="card-title">${title}</div>
+        <div class="card-meta">${metaStr}</div>
+      </div>
+      ${generateStreamBadgesHTML(title)}
+    </div>
+  `;
+  return card;
+}
+
+async function executeSearch() {
+  const kw = document.getElementById("keywordInput").value.trim();
+  const year = document.getElementById("yearSelect").value;
+  const season = document.getElementById("seasonSelect").value;
+  const sort = document.getElementById("sortSelect").value;
+  const loader = document.getElementById("searchLoader");
+  const resultSlot = document.getElementById("searchResult");
+  
+  if (!resultSlot) return;
+  resultSlot.innerHTML = "";
+  if (loader) loader.style.display = "flex";
+  
+  let url = `${API_BASE}/anime?limit=24`;
+  if (kw) url += `&q=${encodeURIComponent(kw)}`;
+  
+  if (year) {
+    if (season === "winter") {
+      url += `&start_date=${year}-01-01&end_date=${year}-03-31`;
+    } else if (season === "spring") {
+      url += `&start_date=${year}-04-01&end_date=${year}-06-30`;
+    } else if (season === "summer") {
+      url += `&start_date=${year}-07-01&end_date=${year}-09-30`;
+    } else if (season === "fall") {
+      url += `&start_date=${year}-10-01&end_date=${year}-12-31`;
+    } else {
+      url += `&start_date=${year}-01-01&end_date=${year}-12-31`;
+    }
+  }
+  
+  if (sort === "score") url += `&order_by=score&sort=desc`;
+  else if (sort === "popularity") url += `&order_by=popularity&sort=asc`;
+  
+  try {
+    const res = await fetchWithCache(url);
+    if (loader) loader.style.display = "none";
+    if (res && res.data && res.data.length > 0) {
+      res.data.forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
+    } else {
+      resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">条件に一致する作品が見つかりませんでした。</p>`;
+    }
+  } catch (err) {
+    if (loader) loader.style.display = "none";
+    
+    const allBackup = [...BACKUP_DATA.now, ...BACKUP_DATA.top2026, ...BACKUP_DATA.topAll];
+    const uniqueBackup = Array.from(new Set(allBackup.map(a => a.mal_id))).map(id => allBackup.find(a => a.mal_id === id));
+    
+    let filtered = uniqueBackup;
+    if (kw) {
+      filtered = filtered.filter(a => {
+        const t1 = (a.title_japanese || '').toLowerCase();
+        const t2 = (a.title || '').toLowerCase();
+        return t1.includes(kw.toLowerCase()) || t2.includes(kw.toLowerCase());
+      });
+    }
+    if (year) {
+      filtered = filtered.filter(a => a.year == parseInt(year));
+    }
+    if (season) {
+      filtered = filtered.filter(a => a.season === season);
+    }
+    
+    if (filtered.length > 0) {
+      filtered.forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
+      showToastText("現在サーバー混雑のため、内蔵データから検索しました。");
+    } else {
+      resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">サーバー混み合い中につきデータが取得できません。時間をおいて再度お試しください。</p>`;
+    }
+  }
+}
+
+async function generateAiRecommend() {
+  const loader = document.getElementById("recommendLoader");
+  const resultSlot = document.getElementById("recommendResult");
+  if (!resultSlot) return;
+  resultSlot.innerHTML = "";
+  if (loader) loader.style.display = "flex";
+  const page = [1, 2, 3][Math.floor(Math.random() * 3)];
+  try {
+    const res = await fetchWithCache(`${API_BASE}/top/anime?page=${page}&limit=24`);
+    if (loader) loader.style.display = "none";
+    if (res && res.data) {
+      const shuffled = [...res.data].sort(() => 0.5 - Math.random());
+      shuffled.slice(0, 8).forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
+    }
+  } catch (err) {
+    if (loader) loader.style.display = "none";
+    const allBackup = [...BACKUP_DATA.now, ...BACKUP_DATA.top2026, ...BACKUP_DATA.topAll];
+    const uniqueBackup = Array.from(new Set(allBackup.map(a => a.mal_id))).map(id => allBackup.find(a => a.mal_id === id));
+    const shuffled = uniqueBackup.sort(() => 0.5 - Math.random());
+    shuffled.slice(0, 4).forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
+    showToastText("おすすめの生成に成功しました！");
+  }
+}
+
+async function openModal(id, fallbackTitle = "作品詳細") {
+  const modalOv = document.getElementById("modalOv");
+  const titleSlot = document.getElementById("mTitle");
+  const synSlot = document.getElementById("mSynopsis");
+  const streamSlot = document.getElementById("mStreamSlot");
+  
+  if (!modalOv) return;
+  
+  titleSlot.textContent = fallbackTitle;
+  synSlot.innerHTML = `<div class="loader-wrap" style="display:flex;"><div class="loader"></div></div>`;
+  streamSlot.innerHTML = "";
+  
+  modalOv.classList.add("open");
+  document.body.style.overflow = "hidden";
+  
+  try {
+    const detail = await fetchWithCache(`${API_BASE}/anime/${id}`);
+    if (!detail || !detail.data) throw new Error("No Data");
+    const anime = detail.data;
+    const title = getJapaneseTitle(anime);
+    
+    titleSlot.textContent = title;
+    
+    const score = anime.score ? anime.score.toFixed(2) : '--';
+    const rank = anime.rank ? anime.rank : '--';
+    const pop = anime.popularity ? anime.popularity : '--';
+    
+    let infoHtml = `
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; background:rgba(0,0,0,0.2); padding:12px; border-radius:8px; margin-bottom:14px; font-size:0.85rem; text-align:center;">
+        <div><span style="color:var(--star-color)">★</span> スコア: ${score}</div>
+        <div>🏆 順位: ${rank}</div>
+        <div>🔥 人気: ${pop}</div>
+      </div>
+    `;
+    
+    const synText = anime.synopsis_japanese || anime.synopsis || "あらすじ情報はありません。";
+    const translateBtnHtml = anime.synopsis ? `
+      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="https://translate.google.co.jp/?sl=en&tl=ja&text=${encodeURIComponent(synText)}&op=translate&hl=ja" target="_blank" style="display:inline-block; padding:8px 16px; background:#4285F4; color:#fff; text-decoration:none; border-radius:4px; font-size:0.9rem; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2);">
+          🌍 Google翻訳で読む
+        </a>
+        <a href="https://www.deepl.com/ja/translator#en/ja/${encodeURIComponent(synText)}" target="_blank" style="display:inline-block; padding:8px 16px; background:#0F2B46; color:#fff; text-decoration:none; border-radius:4px; font-size:0.9rem; font-weight:bold; box-shadow:0 2px 4px rgba(0,0,0,0.2);">
+          ✨ DeepL翻訳で読む(おすすめ)
+        </a>
+      </div>
+    ` : '';
+
+    synSlot.innerHTML = infoHtml + `<div style="line-height:1.5;">${synText}</div>` + translateBtnHtml;
+    appendStreamLinks(streamSlot, title);
+    
+  } catch (err) {
+    console.warn("詳細データの取得に失敗しました。リンク救済処理を行います。");
+    synSlot.innerHTML = `<p style="color:var(--text-muted); margin-bottom:14px;">一時的に詳細データを取得できませんでした（API制限中）。以下の配信サイトボタンから直接作品をご視聴いただけます！</p>`;
+    appendStreamLinks(streamSlot, fallbackTitle);
+  }
+}
+
+function closeModal() {
+  const modalOv = document.getElementById('modalOv');
+  if (modalOv) {
+    modalOv.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function appendStreamLinks(container, title) {
+  if (!container || !title) return;
+  const encoded = encodeURIComponent(title);
+  const abemaUrl = (A8_ABEMA_URL !== "") ? A8_ABEMA_URL : `https://abema.tv/search?q=${encoded}`;
+  const dmmtvUrl = (A8_DMMTV_URL !== "") ? A8_DMMTV_URL : `https://tv.dmm.com/vod/`; // ★ DMMTVトップページへ
+  const netflixUrl = `https://www.netflix.com/search?q=${encoded}`;
+  
+  const networks = [
+    { name: "ABEMAプレミアム", url: abemaUrl, cls: "abema" },
+    { name: "dアニメストア", url: `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`, cls: "danime" },
+    { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" },
+    { name: "Netflix", url: netflixUrl, cls: "netflix" },
+    { name: "DMMTV", url: dmmtvUrl, cls: "dmmtv" } // ★ DMMTV
+  ];
+  
+  networks.forEach(net => {
+    const a = document.createElement("a");
+    a.href = net.url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.className = `stream-link ${net.cls}`;
+    a.innerHTML = net.name;
+    container.appendChild(a);
+  });
+}
+
+function translateSeasonString(seasonWord) {
+  if (!seasonWord) return '';
+  const s = seasonWord.toLowerCase();
+  if (s.includes('winter') || s.includes('冬')) return '冬';
+  if (s.includes('spring') || s.includes('春')) return '春';
+  if (s.includes('summer') || s.includes('夏')) return '夏';
+  if (s.includes('fall') || s.includes('autumn') || s.includes('秋')) return '秋';
+  return seasonWord;
+}
+
+function showToastText(message) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => { toast.classList.remove('show'); }, 3000);
+}
+
+async function fetchWithCache(url, retries = 2) {
+  const now = Date.now();
+  if (STATE.cache[url] && (now - STATE.cache[url].timestamp < 10 * 60 * 1000)) {
+    return STATE.cache[url].data;
+  }
+  
+  for (let i = 0; i <= retries; i++) {
+    try {
+      await new Promise(res => setTimeout(res, 400));
+      const response = await fetch(url);
+      if (response.status === 429) {
+        if (i === retries) throw new Error("API_RATE_LIMIT");
+        await new Promise(res => setTimeout(res, 1200));
+        continue;
+      }
+      if (!response.ok) throw new Error(`HTTP_ERROR_${response.status}`);
+      const data = await response.json();
+      STATE.cache[url] = { timestamp: now, data: data };
+      return data;
+    } catch (e) {
+      if (i === retries) throw e;
+    }
+  }
+  throw new Error("FETCH_FAILED");
+}
+</script>
+
+<img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP" alt="" style="display:none;">
+
 </body>
 </html>
