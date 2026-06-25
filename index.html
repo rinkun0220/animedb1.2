@@ -76,18 +76,22 @@ body {
 
 /* ヘッダー */
 header {
-  height: var(--nav-height); background: rgba(11,15,25,0.8); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-color); display: flex; align-items: center;
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,71,87,0.15); display: flex; align-items: center;
   justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4);
 }
 .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; cursor: pointer; }
 .logo-a { color: #fff; } .logo-db { color: var(--accent); }
-.nav-links { display: flex; gap: 20px; }
+.nav-links { display: flex; gap: 4px; }
 .nav-item {
-  color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 500;
-  cursor: pointer; transition: color 0.2s; padding: 8px 12px; border-radius: 6px;
+  color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px;
+  white-space: nowrap; display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid transparent;
 }
-.nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,0.05); }
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: #fff; background: rgba(255,71,87,0.15); border-color: rgba(255,71,87,0.35); color: var(--accent); }
 
 /* メインコンテンツ */
 main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - var(--nav-height) - 150px); max-width: 1400px; margin-left: auto; margin-right: auto; }
@@ -207,10 +211,10 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 <header>
   <div class="logo" onclick="switchPanel('home')"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></div>
   <div class="nav-links">
-    <div class="nav-item active" id="nav-home" onclick="switchPanel('home')">ホーム</div>
-    <div class="nav-item" id="nav-search" onclick="switchPanel('search')">詳細検索</div>
-    <div class="nav-item" id="nav-recommend" onclick="switchPanel('recommend')">AIおすすめ</div>
-    <a href="/blog/" class="nav-item" style="text-decoration:none;">ブログ</a>
+    <div class="nav-item active" id="nav-home" onclick="switchPanel('home')">🏠 ホーム</div>
+    <div class="nav-item" id="nav-search" onclick="switchPanel('search')">🔍 詳細検索</div>
+    <div class="nav-item" id="nav-recommend" onclick="switchPanel('recommend')">✨ AIおすすめ</div>
+    <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
   </div>
 </header>
 
