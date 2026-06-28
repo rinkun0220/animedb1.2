@@ -318,83 +318,113 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
           【独自レビュー】管理人が選ぶ！2026年7月開始おすすめアニメ！
         </h2>
 
-       <!-- =============================================
-  【差し替え用】
-  index.html の中で以下のブロックを丸ごと置き換えてください。
+     <!--
+======================================================
+【修正箇所】index.html
+「display: flex; flex-wrap: wrap; gap: 24px;」と書かれた
+作品を並べる div に、以下の1行を追加するだけです。
 
-  ▼ 探す文字列（ここから）
-  <div style="flex: 1; min-width: 250px;">
-    <a href="https://bleach-anime.com/"  ...
+▼ 探す文字列（7月おすすめ・3カラム共通の flex コンテナ）
+======================================================
+
+【修正方法】
+index.html をGitHub上で編集し、
+7月開始おすすめアニメの flex コンテナ部分：
+
+  <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+
+を以下に変更してください（gap を 24px → 36px に、かつ align-items を追加）：
+
+  <div style="display: flex; flex-wrap: wrap; gap: 36px; align-items: flex-start;">
+
+---
+
+さらに各作品 <div style="flex: 1; min-width: 250px;"> の中で、
+配信ボタンの <div style="display: flex; flex-wrap: wrap; gap: 6px;"> の
+直前に以下の1行を追加すると、本文と配信ボタンの間も自然になります：
+
+  <div style="margin-bottom: 12px;"></div>
+
+---
+
+【もっとシンプルな方法】
+各作品ブロック <div style="flex: 1; min-width: 250px;"> に
+padding-bottom を追加する:
+
+  <div style="flex: 1; min-width: 250px; padding-bottom: 20px;">
+
+これだけで配信ボタンの下に自然な余白ができ、次の作品との間が広がります。
+======================================================
+-->
+
+<!-- ▼▼▼ 7月開始おすすめ・作品列全体の flex ラッパー (変更後) ▼▼▼ -->
+<div style="display: flex; flex-wrap: wrap; gap: 36px; align-items: flex-start;">
+
+  <!-- 作品1: 幼女戦記Ⅱ -->
+  <div style="flex: 1; min-width: 250px; padding-bottom: 8px;">
+    <a href="https://youjo-senki.jp/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+      <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+        1. 幼女戦記Ⅱ
+        <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+      </h3>
+    </a>
+    <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 14px;">
+      <strong style="color: var(--accent);">「ターニャ・デグレチャフ、再び戦場へ！」</strong><br><br>
+      累計750万部超の人気ライトノベル、待望の第2期。転生した元エリートサラリーマンが幼女の姿で帝国軍将校として活躍するダークファンタジー。前期の圧倒的な戦術描写と世界観がさらに深化。悠木碧の怪演が光る唯一無二の作品。アニメ史に残る異色の戦記物。
+    </p>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+      <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
+      <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
+      <a href="https://www.amazon.co.jp/s?k=%E5%B9%BC%E5%A5%B3%E6%88%A6%E8%A8%98&i=instant-video" target="_blank" rel="noopener noreferrer" style="background:#ff9900;color:#000;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Amazon</a>
+      <a href="https://www.netflix.com/jp/" target="_blank" rel="noopener noreferrer" style="background:#e50914;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Netflix</a>
+      <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+    </div>
   </div>
-  ▲ 探す文字列（ここまで）
 
-  ↓ 下のコードに置き換え
-============================================= -->
-
-<div style="flex: 1; min-width: 250px;">
-  <a href="https://youjo-senki.jp/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
-    <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-      1. 幼女戦記Ⅱ
-      <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
-    </h3>
-  </a>
-  <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
-    <strong style="color: var(--accent);">「ターニャ・デグレチャフ、再び戦場へ！」</strong><br>
-    <br>
-    累計1,200万部超の人気ライトノベル、待望の第2期。転生した元エリートサラリーマンが幼女の姿で帝国軍将校として活躍するダークファンタジー。前期の圧倒的な戦術描写と世界観がさらに深化。悠木碧の怪演が光る唯一無二の作品。劇場版から7年。1期から9年半。異世界転生作品黎明期の異色作ついに2期放送へ！戦記作品としても秀逸。
-  </p>
-  <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-    <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
-    <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
-    <a href="https://www.amazon.co.jp/s?k=%E5%B9%BC%E5%A5%B3%E6%88%A6%E8%A8%98&i=instant-video" target="_blank" rel="noopener noreferrer" style="background:#ff9900;color:#000;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Amazon</a>
-    <a href="https://www.netflix.com/jp/" target="_blank" rel="noopener noreferrer" style="background:#e50914;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Netflix</a>
-    <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+  <!-- 作品2: 無職転生Ⅲ -->
+  <div style="flex: 1; min-width: 250px; padding-bottom: 8px;">
+    <a href="https://mushokutensei.jp/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+      <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+        2. 無職転生Ⅲ
+        <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+      </h3>
+    </a>
+    <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 14px;">
+      <strong style="color: var(--accent);">「異世界転生モノの頂点が帰ってくる！」</strong><br><br>
+      無職転生シリーズを作るために会社を興した。StudioBind。その間にもお兄ちゃんはおしまい！花は咲く、修羅の如く、瑠璃の宝石の名作を作り。満を持しての無職転生Ⅲ放送。ルーデウスの成長を見届けてきたファンには待望の続編。多々ある異世界アニメとは一線を画す。
+    </p>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+      <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
+      <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
+      <a href="https://www.amazon.co.jp/s?k=%E7%84%A1%E8%81%B7%E8%BB%A2%E7%94%9F&i=instant-video" target="_blank" rel="noopener noreferrer" style="background:#ff9900;color:#000;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Amazon</a>
+      <a href="https://www.netflix.com/jp/" target="_blank" rel="noopener noreferrer" style="background:#e50914;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Netflix</a>
+      <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+    </div>
   </div>
+
+  <!-- 作品3: ぐらんぶる Season 3 -->
+  <div style="flex: 1; min-width: 250px; padding-bottom: 8px;">
+    <a href="https://grandblue-anime.com/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
+      <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+        3. ぐらんぶる Season 3
+        <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
+      </h3>
+    </a>
+    <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 14px;">
+      <strong style="color: var(--accent);">「俺たちの夏は終わらない！待望のSeason 3！」</strong><br><br>
+      Season 2から1年。ファン待望の続編。今度の舞台はついに海外。パラオ！「銀魂」「男子高校生の日常」「坂本ですが？」の監督を務めた。高松信司監督続投！唯一無二のギャグセンスはそのままに、舞台は海外。パラオへ！豪華声優陣がこんなセリフ言う!?な点にも注目。
+    </p>
+    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+      <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
+      <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
+      <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
+      <a href="https://tv.dmm.com/" target="_blank" rel="noopener noreferrer" style="background:#ff4500;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">DMM TV</a>
+    </div>
+  </div>
+
 </div>
+<!-- ▲▲▲ 7月開始おすすめ・作品列ここまで ▲▲▲ -->
 
-
-          <div style="flex: 1; min-width: 250px;">
-            <a href="https://mushokutensei.jp/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
-              <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                2. 無職転生Ⅲ
-                <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
-              </h3>
-            </a>
-            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
-              <strong style="color: var(--accent);">「異世界転生モノの頂点が帰ってくる！」</strong><br>
-              <br>
-              無職転生シリーズを作るために会社を興した。StudioBind。その間にもお兄ちゃんはおしまい！花は咲く、修羅の如く、瑠璃の宝石の名作を作り。満を持しての無職転生Ⅲ放送。ルーデウスの成長を見届けてきたファンには待望の続編。多々ある異世界転生アニメとは一線を画す。
-            </p>
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-              <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
-              <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
-              <a href="https://www.amazon.co.jp/s?k=%E7%84%A1%E8%81%B7%E8%BB%A2%E7%94%9F&i=instant-video" target="_blank" rel="noopener noreferrer" style="background:#ff9900;color:#000;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Amazon</a>
-              <a href="https://www.netflix.com/jp/" target="_blank" rel="noopener noreferrer" style="background:#e50914;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">Netflix</a>
-              <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
-            </div>
-          </div>
-
-          <div style="flex: 1; min-width: 250px;">
-            <a href="https://grandblue-anime.com/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; display: block;">
-              <h3 style="font-size: 1.05rem; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                3. ぐらんぶる Season 3
-                <span style="font-size: 0.7rem; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">公式サイト →</span>
-              </h3>
-            </a>
-            <p style="color: var(--text-main); font-size: 0.9rem; line-height: 1.6; text-align: justify; margin-bottom: 10px;">
-              <strong style="color: var(--accent);">「俺たちの夏は終わらない！待望のSeason 3！」</strong><br>
-              <br>
-              Season 2から1年。ファン待望の続編。今度の舞台はついに海外。パラオ！「銀魂」「男子高校生の日常」「坂本ですが？」の監督を務めた。高松信司監督続投！唯一無二のギャグセンスはそのままに、舞台は海外。パラオへ！豪華声優陣がこんなセリフ言う!?な点にも注目。
-            </p>
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-              <a href="https://abema.tv/" target="_blank" rel="noopener noreferrer" style="background:#00d4aa;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">ABEMA</a>
-              <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener noreferrer" style="background:#00a0e9;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">dアニメ</a>
-              <a href="https://video.unext.jp/" target="_blank" rel="noopener noreferrer" style="background:#0060c0;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">U-NEXT</a>
-              <a href="https://tv.dmm.com/" target="_blank" rel="noopener noreferrer" style="background:#ff4500;color:#fff;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:4px;text-decoration:none;">DMM TV</a>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- 今期おすすめアニメ -->
       <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px;">
