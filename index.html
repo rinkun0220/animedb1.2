@@ -233,6 +233,88 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
       <!-- 来期おすすめアニメ -->
       <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin-bottom: 20px;">
         <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; color: #fff; border-left: 4px solid var(--accent); padding-left: 10px;">
+          <!-- =============================================
+  【コピペ用】ANIMEDBトップページに追加するバナー
+  「## 【独自レビュー】管理人が選ぶ！2026年7月開始...」の
+  直前にこのコードを貼り付けてください
+============================================= -->
+
+<style>
+.summer-banner {
+  display: block;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a0a2e 45%, #0d1b3e 100%);
+  border: 1px solid #333;
+  border-left: 4px solid #ff4e4e;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin: 24px 0;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.summer-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #ff4e4e, #ff9f00, #ff4e4e);
+}
+.summer-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(255, 78, 78, 0.2);
+  text-decoration: none;
+}
+.summer-banner-badge {
+  display: inline-block;
+  background: #ff0000;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+.summer-banner-title {
+  font-size: 17px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffffff 0%, #ffe0a0 50%, #ff9f6b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.summer-banner-sub {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+.summer-banner-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ff0000;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: background 0.2s;
+}
+.summer-banner:hover .summer-banner-arrow {
+  background: #cc0000;
+}
+</style>
+
+<a class="summer-banner" href="https://rinkun0220.github.io/2026summer-anime/" target="_blank">
+  <div class="summer-banner-badge">🌸 NEW · SUMMER 2026</div>
+  <div class="summer-banner-title">2026年夏アニメ 視聴予定リスト</div>
+  <div class="summer-banner-sub">📺 全14作品 · 各PV動画へ直リンク · 放送日程まとめ</div>
+  <div class="summer-banner-arrow">▶ リストを見る →</div>
+</a>
+
           【独自レビュー】管理人が選ぶ！2026年7月開始おすすめアニメ！
         </h2>
 
