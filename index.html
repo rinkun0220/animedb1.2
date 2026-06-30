@@ -79,24 +79,30 @@ header {
   height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(255,71,87,0.15); display: flex; align-items: center;
   justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
-  box-shadow: 0 1px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
 }
-.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; cursor: pointer; }
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; cursor: pointer; flex-shrink: 0; }
 .logo-a { color: #fff; } .logo-db { color: var(--accent); }
-.nav-links { display: flex; gap: 4px; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
 .nav-item {
   color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600;
   cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px;
   white-space: nowrap; display: inline-flex; align-items: center; gap: 5px;
-  border: 1px solid transparent;
+  border: 1px solid transparent; flex-shrink: 0;
 }
 .nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
 .nav-item.active { color: #fff; background: rgba(255,71,87,0.15); border-color: rgba(255,71,87,0.35); color: var(--accent); }
+@media (max-width: 768px) {
+  header { padding: 0 12px; }
+  .logo { font-size: 1.2rem; }
+  .nav-item { font-size: 0.78rem; padding: 6px 10px; }
+}
 
 /* メインコンテンツ */
-main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - var(--nav-height) - 150px); max-width: 1400px; margin-left: auto; margin-right: auto; }
-.panel { display: none; }
-.panel.active { display: block; animation: fadeIn 0.4s ease-out; }
+main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - var(--nav-height) - 150px); max-width: 1400px; margin-left: auto; margin-right: auto; overflow: visible; }
+.panel { display: none !important; }
+.panel.active { display: block !important; animation: fadeIn 0.4s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ヒーローセクション */
@@ -644,11 +650,17 @@ function setupYearDropdown() {
 function switchPanel(panelId) {
   document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
   document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-  
+
   const targetPanel = document.getElementById(`panel-${panelId}`);
   const targetNav = document.getElementById(`nav-${panelId}`);
   if (targetPanel) targetPanel.classList.add("active");
   if (targetNav) targetNav.classList.add("active");
+
+  // モーダルの overflow:hidden が残ってしまうケースの保険
+  document.body.style.overflow = "";
+  const modalOv = document.getElementById("modalOv");
+  if (modalOv) modalOv.classList.remove("open");
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
