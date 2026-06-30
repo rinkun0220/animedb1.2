@@ -714,17 +714,20 @@ async function loadHomeContent() {
     }
   }
 
+  // 4シーズン前も同様に自動計算して表示
+  const { year: year4, season: season4 } = getSeasonsAgo(4);
   try {
-    const topAll = await fetchWithCache(`${API_BASE}/top/anime?limit=25`);
-    if (topAll && topAll.data && topAll.data.length > 0) {
-      const unique = dedup(topAll.data);
-      if (unique.length > 0) createScrollRow(rowsContainer, "歴代最高評価の名作", unique);
+    const season4Data = await fetchWithCache(`${API_BASE}/seasons/${year4}/${season4}?limit=25`);
+    if (season4Data && season4Data.data && season4Data.data.length > 0) {
+      const sorted = [...season4Data.data].sort((a, b) => (b.score || 0) - (a.score || 0));
+      const unique = dedup(sorted);
+      if (unique.length > 0) createScrollRow(rowsContainer, `4シーズン前 高評価ランキング（${year4}年${translateSeasonString(season4)}）`, unique);
     } else {
       throw new Error("No Data");
     }
   } catch (err) {
     const unique = dedup(BACKUP_DATA.topAll);
-    if (unique.length > 0) createScrollRow(rowsContainer, "歴代最高評価の名作 (おすすめ)", unique);
+    if (unique.length > 0) createScrollRow(rowsContainer, `4シーズン前 おすすめ注目作品`, unique);
   }
 }
 
