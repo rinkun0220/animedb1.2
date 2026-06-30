@@ -4,14 +4,14 @@
 <meta name="google-adsense-account" content="ca-pub-4858195974765934">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ANIMEDB｜2026年アニメランキング・検索・おすすめ完全版</title>
+<title>ANIMEDB｜4クール前までのアニメランキング・配信先まとめ</title>
 <link rel="canonical" href="https://rinkun0220.github.io/">
-<meta name="description" content="2026年最新アニメから1990年までの全シーズン対応。スコアランキング・AIおすすめ・配信先検索。無料で使えるアニメデータベース。">
-<meta name="keywords" content="アニメ,2026春アニメ,ランキング,おすすめ,神アニメ,泣けるアニメ,ANIMEDB,アニメDB,今期アニメ,アニメ一覧,dアニメストア">
+<meta name="description" content="今シーズンの注目アニメから4クール前までの高評価ランキングまで網羅。配信先まで分かる無料のアニメデータベース。">
+<meta name="keywords" content="アニメ,2026夏アニメ,ランキング,神アニメ,泣けるアニメ,ANIMEDB,アニメDB,今期アニメ,アニメ一覧,dアニメストア">
 <meta name="robots" content="index,follow">
 <meta name="author" content="ANIMEDB">
-<meta property="og:title" content="ANIMEDB｜2026アニメランキング・検索・おすすめ">
-<meta property="og:description" content="2026年最新アニメから1990年まで全シーズン対応。AIおすすめ・配信先まで分かるアニメデータベース。">
+<meta property="og:title" content="ANIMEDB｜4クール前までのアニメランキング・配信先まとめ">
+<meta property="og:description" content="今シーズンの注目アニメから4クール前までの高評価ランキングまで網羅。配信先まで分かる無料のアニメデータベース。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://rinkun0220.github.io/">
 <meta property="og:site_name" content="ANIMEDB">
@@ -217,8 +217,6 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
   <div class="logo" onclick="switchPanel('home')"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></div>
   <div class="nav-links">
     <div class="nav-item active" id="nav-home" onclick="switchPanel('home')">🏠 ホーム</div>
-    <div class="nav-item" id="nav-search" onclick="switchPanel('search')">🔍 詳細検索</div>
-    <div class="nav-item" id="nav-recommend" onclick="switchPanel('recommend')">✨ AIおすすめ</div>
     <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
   </div>
 </header>
@@ -230,9 +228,9 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
     </div>
 
     <div class="adsense-seo-content" style="margin-bottom: 40px; animation: fadeIn 0.8s ease-out;">
-      <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">ANIMEDB｜過去の名作から最新アニメまで網羅するデータベース</h1>
+      <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">ANIMEDB｜4クール前までのアニメを網羅するデータベース</h1>
       <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.8;">
-        当サイトは、毎クール70本前後放送されるアニメ作品の中から、あなたに最適な作品を見つけるためのアニメデータベースです。「昔見たあの名作をもう一度見直したい」「今期のトレンドを逃したくない」といった思いに応えるため、詳細検索、AIおすすめ、各種動画配信サービスへのアクセスを一つにまとめました。システムによる自動取得データだけでなく、アニメファンの視点に立った独自の作品レビューも発信しています。<a href="./about.html" style="color:var(--accent);text-decoration:none;margin-left:4px;">開発者の思いを見て頂ければ幸いです。</a>
+        当サイトは、毎クール70本前後放送されるアニメ作品を見つけるためのアニメデータベースです。「今期のトレンドを逃したくない」「今年のトレンドを逃したくない」といった思いに応えるため、4クール前までの各種動画配信サービスへのアクセスを一つにまとめました。システムによる自動取得データだけでなく、管理人独自のブログも作っています。<a href="./about.html" style="color:var(--accent);text-decoration:none;margin-left:4px;">開発者の思いを見て頂ければ幸いです。</a>
       </p>
 
       <!-- 来期おすすめアニメ -->
@@ -504,44 +502,6 @@ padding-bottom を追加する:
     <div id="homeRows"></div>
   </div>
 
-  <div id="panel-search" class="panel">
-    <div class="search-filter-wrapper">
-      <h2 class="section-title" style="margin-top:0;">詳細検索</h2>
-      <div class="search-box-row">
-        <input type="text" id="keywordInput" class="search-input" placeholder="アニメタイトルで検索...">
-        <button class="search-btn" onclick="executeSearch()">検索する</button>
-      </div>
-      <div class="filter-row">
-        <select id="yearSelect" class="filter-select">
-          <option value="">すべての年</option>
-        </select>
-        <select id="seasonSelect" class="filter-select">
-          <option value="">すべての季節</option>
-          <option value="winter">冬</option>
-          <option value="spring">春</option>
-          <option value="summer">夏</option>
-          <option value="fall">秋</option>
-        </select>
-        <select id="sortSelect" class="filter-select">
-          <option value="score">評価が高い順</option>
-          <option value="popularity">人気順</option>
-        </select>
-      </div>
-    </div>
-    <div class="loader-wrap" id="searchLoader"><div class="loader"></div></div>
-    <div class="anime-grid" id="searchResult"></div>
-  </div>
-
-  <div id="panel-recommend" class="panel">
-    <div class="search-filter-wrapper" style="text-align:center;">
-      <h3 style="margin-bottom:12px;">あなたに最適なアニメをAIがレコメンド</h3>
-      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">現在のトレンドや高評価作品から、隠れた名作まで厳選して提案します。</p>
-      <button class="search-btn" style="padding:12px 32px;" onclick="generateAiRecommend()">おすすめを生成する</button>
-    </div>
-    <div class="loader-wrap" id="recommendLoader"><div class="loader"></div></div>
-    <div class="anime-grid" id="recommendResult"></div>
-  </div>
- 
   <div id="panel-about" class="panel">
     <div class="text-page-content">
       <h2>ANIMEDBに込めた思い</h2>
@@ -622,28 +582,31 @@ const BACKUP_DATA = {
 // 状態管理
 const STATE = { cache: {}, currentHeroIndex: 0, heroTimer: null };
 const API_BASE = "https://api.jikan.moe/v4";
-const CURRENT_YEAR = 2026;
+const CURRENT_YEAR = new Date().getFullYear();
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupYearDropdown();
   loadHomeContent();
-  
-  const searchInput = document.getElementById("keywordInput");
-  if(searchInput) {
-    searchInput.addEventListener("keypress", function(e) {
-      if (e.key === "Enter") executeSearch();
-    });
-  }
 });
 
-function setupYearDropdown() {
-  const select = document.getElementById("yearSelect");
-  if (!select) return;
-  for (let y = CURRENT_YEAR; y >= 1990; y--) {
-    const opt = document.createElement("option");
-    opt.value = y; opt.textContent = `${y}年`;
-    select.appendChild(opt);
-  }
+// 「今」を起点に、指定したシーズン数だけ前の {year, season} を自動計算する
+// （手動更新不要。実行された日付から自動でシーズンがズレていく）
+const SEASON_ORDER = ["winter", "spring", "summer", "fall"];
+function getCurrentSeasonInfo() {
+  const now = new Date();
+  const month = now.getMonth(); // 0-11
+  let seasonIndex;
+  if (month <= 2) seasonIndex = 0;      // 1-3月 = 冬
+  else if (month <= 5) seasonIndex = 1; // 4-6月 = 春
+  else if (month <= 8) seasonIndex = 2; // 7-9月 = 夏
+  else seasonIndex = 3;                 // 10-12月 = 秋
+  return { year: now.getFullYear(), seasonIndex };
+}
+function getSeasonsAgo(n) {
+  const { year, seasonIndex } = getCurrentSeasonInfo();
+  const totalIndex = (year * 4 + seasonIndex) - n;
+  const newYear = Math.floor(totalIndex / 4);
+  const newIndex = ((totalIndex % 4) + 4) % 4;
+  return { year: newYear, season: SEASON_ORDER[newIndex] };
 }
 
 function switchPanel(panelId) {
@@ -728,17 +691,24 @@ async function loadHomeContent() {
     createScrollRow(rowsContainer, "今シーズンの注目アニメ (おすすめ)", unique);
   }
 
-  try {
-    const top2026 = await fetchWithCache(`${API_BASE}/anime?year=2026&order_by=score&sort=desc&limit=25`);
-    if (top2026 && top2026.data && top2026.data.length > 0) {
-      const unique = dedup(top2026.data);
-      if (unique.length > 0) createScrollRow(rowsContainer, "2026年 高評価ランキング", unique);
-    } else {
-      throw new Error("No Data");
+  // 1〜3シーズン前の高評価ランキングを自動計算して順に表示
+  // （実行日から自動でシーズンがズレるため、手動更新は不要）
+  const seasonLabels = ["1シーズン前", "2シーズン前", "3シーズン前"];
+  for (let i = 0; i < 3; i++) {
+    const n = i + 1;
+    const { year, season } = getSeasonsAgo(n);
+    try {
+      const seasonTop = await fetchWithCache(`${API_BASE}/anime?year=${year}&season=${season}&order_by=score&sort=desc&limit=25`);
+      if (seasonTop && seasonTop.data && seasonTop.data.length > 0) {
+        const unique = dedup(seasonTop.data);
+        if (unique.length > 0) createScrollRow(rowsContainer, `${seasonLabels[i]} 高評価ランキング（${year}年${translateSeasonString(season)}）`, unique);
+      } else {
+        throw new Error("No Data");
+      }
+    } catch (err) {
+      const unique = dedup(BACKUP_DATA.top2026);
+      if (unique.length > 0) createScrollRow(rowsContainer, `${seasonLabels[i]} おすすめ注目作品`, unique);
     }
-  } catch (err) {
-    const unique = dedup(BACKUP_DATA.top2026);
-    if (unique.length > 0) createScrollRow(rowsContainer, "2026年 おすすめ注目作品", unique);
   }
 
   try {
@@ -838,100 +808,6 @@ function createAnimeCard(anime) {
     </div>
   `;
   return card;
-}
-
-async function executeSearch() {
-  const kw = document.getElementById("keywordInput").value.trim();
-  const year = document.getElementById("yearSelect").value;
-  const season = document.getElementById("seasonSelect").value;
-  const sort = document.getElementById("sortSelect").value;
-  const loader = document.getElementById("searchLoader");
-  const resultSlot = document.getElementById("searchResult");
-  
-  if (!resultSlot) return;
-  resultSlot.innerHTML = "";
-  if (loader) loader.style.display = "flex";
-  
-  let url = `${API_BASE}/anime?limit=24`;
-  if (kw) url += `&q=${encodeURIComponent(kw)}`;
-  
-  if (year) {
-    if (season === "winter") {
-      url += `&start_date=${year}-01-01&end_date=${year}-03-31`;
-    } else if (season === "spring") {
-      url += `&start_date=${year}-04-01&end_date=${year}-06-30`;
-    } else if (season === "summer") {
-      url += `&start_date=${year}-07-01&end_date=${year}-09-30`;
-    } else if (season === "fall") {
-      url += `&start_date=${year}-10-01&end_date=${year}-12-31`;
-    } else {
-      url += `&start_date=${year}-01-01&end_date=${year}-12-31`;
-    }
-  }
-  
-  if (sort === "score") url += `&order_by=score&sort=desc`;
-  else if (sort === "popularity") url += `&order_by=popularity&sort=asc`;
-  
-  try {
-    const res = await fetchWithCache(url);
-    if (loader) loader.style.display = "none";
-    if (res && res.data && res.data.length > 0) {
-      res.data.forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
-    } else {
-      resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">条件に一致する作品が見つかりませんでした。</p>`;
-    }
-  } catch (err) {
-    if (loader) loader.style.display = "none";
-    
-    const allBackup = [...BACKUP_DATA.now, ...BACKUP_DATA.top2026, ...BACKUP_DATA.topAll];
-    const uniqueBackup = Array.from(new Set(allBackup.map(a => a.mal_id))).map(id => allBackup.find(a => a.mal_id === id));
-    
-    let filtered = uniqueBackup;
-    if (kw) {
-      filtered = filtered.filter(a => {
-        const t1 = (a.title_japanese || '').toLowerCase();
-        const t2 = (a.title || '').toLowerCase();
-        return t1.includes(kw.toLowerCase()) || t2.includes(kw.toLowerCase());
-      });
-    }
-    if (year) {
-      filtered = filtered.filter(a => a.year == parseInt(year));
-    }
-    if (season) {
-      filtered = filtered.filter(a => a.season === season);
-    }
-    
-    if (filtered.length > 0) {
-      filtered.forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
-      showToastText("現在サーバー混雑のため、内蔵データから検索しました。");
-    } else {
-      resultSlot.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">サーバー混み合い中につきデータが取得できません。時間をおいて再度お試しください。</p>`;
-    }
-  }
-}
-
-async function generateAiRecommend() {
-  const loader = document.getElementById("recommendLoader");
-  const resultSlot = document.getElementById("recommendResult");
-  if (!resultSlot) return;
-  resultSlot.innerHTML = "";
-  if (loader) loader.style.display = "flex";
-  const page = [1, 2, 3][Math.floor(Math.random() * 3)];
-  try {
-    const res = await fetchWithCache(`${API_BASE}/top/anime?page=${page}&limit=24`);
-    if (loader) loader.style.display = "none";
-    if (res && res.data) {
-      const shuffled = [...res.data].sort(() => 0.5 - Math.random());
-      shuffled.slice(0, 8).forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
-    }
-  } catch (err) {
-    if (loader) loader.style.display = "none";
-    const allBackup = [...BACKUP_DATA.now, ...BACKUP_DATA.top2026, ...BACKUP_DATA.topAll];
-    const uniqueBackup = Array.from(new Set(allBackup.map(a => a.mal_id))).map(id => allBackup.find(a => a.mal_id === id));
-    const shuffled = uniqueBackup.sort(() => 0.5 - Math.random());
-    shuffled.slice(0, 4).forEach(anime => resultSlot.appendChild(createAnimeCard(anime)));
-    showToastText("おすすめの生成に成功しました！");
-  }
 }
 
 async function openModal(id, fallbackTitle = "作品詳細") {
