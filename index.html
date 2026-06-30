@@ -693,14 +693,17 @@ async function loadHomeContent() {
 
   // 1〜3シーズン前の高評価ランキングを自動計算して順に表示
   // （実行日から自動でシーズンがズレるため、手動更新は不要）
+  // Jikan APIは /anime?year=&season= の組み合わせを正しく扱わないため、
+  // 専用の /seasons/{year}/{season} エンドポイントを使い、取得後にスコア順で並び替える
   const seasonLabels = ["1シーズン前", "2シーズン前", "3シーズン前"];
   for (let i = 0; i < 3; i++) {
     const n = i + 1;
     const { year, season } = getSeasonsAgo(n);
     try {
-      const seasonTop = await fetchWithCache(`${API_BASE}/anime?year=${year}&season=${season}&order_by=score&sort=desc&limit=25`);
+      const seasonTop = await fetchWithCache(`${API_BASE}/seasons/${year}/${season}?limit=25`);
       if (seasonTop && seasonTop.data && seasonTop.data.length > 0) {
-        const unique = dedup(seasonTop.data);
+        const sorted = [...seasonTop.data].sort((a, b) => (b.score || 0) - (a.score || 0));
+        const unique = dedup(sorted);
         if (unique.length > 0) createScrollRow(rowsContainer, `${seasonLabels[i]} 高評価ランキング（${year}年${translateSeasonString(season)}）`, unique);
       } else {
         throw new Error("No Data");
