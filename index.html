@@ -558,7 +558,9 @@ padding-bottom を追加する:
 // ==========================================
 // 【アフィリエイト設定】
 // ==========================================
-const A8_ABEMA_URL = "https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP";
+// ABEMA 素材ID:012「すべての作品が見放題【ABEMA】」EPC:4.73（最高値）
+const A8_ABEMA_URL = "https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6";
+const A8_ABEMA_TRACK_IMG = "https://www14.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+60WN6";
 // ★ DMMTVのアフィリエイトリンクを取得したらここに入力してください
 const A8_DMMTV_URL = ""; 
 
@@ -954,5 +956,7 @@ async function fetchWithCache(url, retries = 2) {
 
 <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP" alt="" style="display:none;">
 
+<!-- A8.net ABEMA 計測タグ -->
+<img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" alt="">
 </body>
 </html>
