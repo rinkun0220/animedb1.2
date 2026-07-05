@@ -156,6 +156,7 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 }
 .badge:hover { opacity: 0.8; }
 .badge.abema { background: #33CC66; }
+.badge.colleize { background: linear-gradient(135deg, #ff8c00, #ff6600); color: #fff; }
 .stream-link.colleize { background: linear-gradient(135deg, #ff8c00, #ff6600); color: #fff; font-weight: 700; }
 .badge.danime { background: #ff6600; }
 .badge.amazon { background: #00a8e1; }
@@ -696,6 +697,7 @@ function generateStreamBadgesHTML(title) {
       <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="badge amazon">Amazon</a>
       <a href="${netflixBadgeUrl}" target="_blank" rel="noopener noreferrer" class="badge netflix">Netflix</a>
       <a href="${dmmtvUrl}" target="_blank" rel="noopener noreferrer" class="badge dmmtv">DMM TV</a>
+      <a href="${A8_COLLEIZE_URL}" target="_blank" rel="noopener nofollow" class="badge colleize">🎁 公式グッズ</a>
     </div>
   `;
 }
