@@ -156,6 +156,7 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 }
 .badge:hover { opacity: 0.8; }
 .badge.abema { background: #33CC66; }
+.stream-link.colleize { background: linear-gradient(135deg, #ff8c00, #ff6600); color: #fff; font-weight: 700; }
 .badge.danime { background: #ff6600; }
 .badge.amazon { background: #00a8e1; }
 .badge.netflix { background: #E50914; }
@@ -600,7 +601,10 @@ padding-bottom を追加する:
 const A8_ABEMA_URL = "https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6";
 const A8_ABEMA_TRACK_IMG = "https://www14.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+60WN6";
 // ★ DMMTVのアフィリエイトリンクを取得したらここに入力してください
-const A8_DMMTV_URL = ""; 
+const A8_DMMTV_URL = "";
+// colleize（コレイズ）公式グッズ EPC:5.49・確定率82.88%
+const A8_COLLEIZE_URL = "https://px.a8.net/svt/ejp?a8mat=4B7U0V+35PTBM+4RNG+5YJRM";
+const A8_COLLEIZE_TRACK_IMG = "https://www19.a8.net/0.gif?a8mat=4B7U0V+35PTBM+4RNG+5YJRM";
 
 const BACKUP_DATA = {
   now: [
@@ -933,7 +937,8 @@ function appendStreamLinks(container, title) {
     { name: "dアニメストア", url: `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`, cls: "danime" },
     { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" },
     { name: "Netflix", url: netflixUrl, cls: "netflix" },
-    { name: "DMMTV", url: dmmtvUrl, cls: "dmmtv" } // ★ DMMTV
+    { name: "DMMTV", url: dmmtvUrl, cls: "dmmtv" },
+    { name: "🎁 公式グッズ", url: A8_COLLEIZE_URL, cls: "colleize" }
   ];
   
   networks.forEach(net => {
@@ -996,5 +1001,7 @@ async function fetchWithCache(url, retries = 2) {
 
 <!-- A8.net ABEMA 計測タグ -->
 <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" alt="">
+<!-- A8.net colleize 計測タグ -->
+<img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B7U0V+35PTBM+4RNG+5YJRM" alt="">
 </body>
 </html>
