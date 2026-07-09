@@ -157,7 +157,9 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .badge:hover { opacity: 0.8; }
 .badge.abema { background: #33CC66; }
 .badge.colleize { background: linear-gradient(135deg, #ff8c00, #ff6600); color: #fff; }
+.badge.amnibus { background: linear-gradient(135deg, #6a0dad, #9b30ff); color: #fff; }
 .stream-link.colleize { background: linear-gradient(135deg, #ff8c00, #ff6600); color: #fff; font-weight: 700; }
+.stream-link.amnibus { background: linear-gradient(135deg, #6a0dad, #9b30ff); color: #fff; font-weight: 700; }
 .badge.danime { background: #ff6600; }
 .badge.amazon { background: #00a8e1; }
 .badge.netflix { background: #E50914; }
@@ -606,6 +608,9 @@ const A8_DMMTV_URL = "";
 // colleize（コレイズ）公式グッズ EPC:5.49・確定率82.88%
 const A8_COLLEIZE_URL = "https://px.a8.net/svt/ejp?a8mat=4B7U0V+35PTBM+4RNG+5YJRM";
 const A8_COLLEIZE_TRACK_IMG = "https://www19.a8.net/0.gif?a8mat=4B7U0V+35PTBM+4RNG+5YJRM";
+// AMNIBUS コラボグッズ 素材012 EPC:50以上・クリック率5%以上
+const A8_AMNIBUS_URL = "https://px.a8.net/svt/ejp?a8mat=4B7WD8+7KOJUA+41ZK+60WN6";
+const A8_AMNIBUS_TRACK_IMG = "https://www10.a8.net/0.gif?a8mat=4B7WD8+7KOJUA+41ZK+60WN6";
 
 const BACKUP_DATA = {
   now: [
@@ -698,6 +703,7 @@ function generateStreamBadgesHTML(title) {
       <a href="${netflixBadgeUrl}" target="_blank" rel="noopener noreferrer" class="badge netflix">Netflix</a>
       <a href="${dmmtvUrl}" target="_blank" rel="noopener noreferrer" class="badge dmmtv">DMM TV</a>
       <a href="${A8_COLLEIZE_URL}" target="_blank" rel="noopener nofollow" class="badge colleize">🎁 公式グッズ</a>
+      <a href="${A8_AMNIBUS_URL}" target="_blank" rel="noopener nofollow" class="badge amnibus">🛍️ コラボグッズ</a>
     </div>
   `;
 }
@@ -940,7 +946,8 @@ function appendStreamLinks(container, title) {
     { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" },
     { name: "Netflix", url: netflixUrl, cls: "netflix" },
     { name: "DMMTV", url: dmmtvUrl, cls: "dmmtv" },
-    { name: "🎁 公式グッズ", url: A8_COLLEIZE_URL, cls: "colleize" }
+    { name: "🎁 公式グッズ", url: A8_COLLEIZE_URL, cls: "colleize" },
+    { name: "🛍️ コラボグッズ", url: A8_AMNIBUS_URL, cls: "amnibus" }
   ];
   
   networks.forEach(net => {
@@ -1005,5 +1012,7 @@ async function fetchWithCache(url, retries = 2) {
 <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" alt="">
 <!-- A8.net colleize 計測タグ -->
 <img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B7U0V+35PTBM+4RNG+5YJRM" alt="">
+<!-- A8.net AMNIBUS 計測タグ -->
+<img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B7WD8+7KOJUA+41ZK+60WN6" alt="">
 </body>
 </html>
