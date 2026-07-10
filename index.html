@@ -771,6 +771,7 @@ async function loadHomeContent() {
   }
 
   // 4シーズン前も同様に自動計算して表示
+  await new Promise(r => setTimeout(r, 500)); // レート制限対策
   const { year: year4, season: season4 } = getSeasonsAgo(4);
   try {
     const season4Data = await fetchWithCache(`${API_BASE}/seasons/${year4}/${season4}?limit=25`);
