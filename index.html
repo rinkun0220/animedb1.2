@@ -744,10 +744,8 @@ async function loadHomeContent() {
   }
 
   // 1〜3シーズン前の高評価ランキングを自動計算して順に表示
-  // （実行日から自動でシーズンがズレるため、手動更新は不要）
-  // Jikan APIは /anime?year=&season= の組み合わせを正しく扱わないため、
-  // 専用の /seasons/{year}/{season} エンドポイントを使い、取得後にスコア順で並び替える
-  // レート制限対策：各シーズンの呼び出しに1.5秒の間隔を設ける
+  // レート制限対策：/seasons/nowの後に2秒待ってから開始、各呼び出し間も1.5秒待機
+  await new Promise(r => setTimeout(r, 2000)); // nowData取得後の待機
   const seasonLabels = ["1シーズン前", "2シーズン前", "3シーズン前"];
   const fallbackKeys = ["top2026", "topAll", "now"]; // 各シーズンで別のバックアップを使う
   for (let i = 0; i < 3; i++) {
