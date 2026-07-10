@@ -747,11 +747,11 @@ async function loadHomeContent() {
   // （実行日から自動でシーズンがズレるため、手動更新は不要）
   // Jikan APIは /anime?year=&season= の組み合わせを正しく扱わないため、
   // 専用の /seasons/{year}/{season} エンドポイントを使い、取得後にスコア順で並び替える
-  // レート制限対策：各シーズンの呼び出しに間隔を設ける
+  // レート制限対策：各シーズンの呼び出しに1.5秒の間隔を設ける
   const seasonLabels = ["1シーズン前", "2シーズン前", "3シーズン前"];
   const fallbackKeys = ["top2026", "topAll", "now"]; // 各シーズンで別のバックアップを使う
   for (let i = 0; i < 3; i++) {
-    if (i > 0) await new Promise(r => setTimeout(r, 500)); // 0.5秒待機
+    if (i > 0) await new Promise(r => setTimeout(r, 1500)); // 1.5秒待機
     const n = i + 1;
     const { year, season } = getSeasonsAgo(n);
     try {
@@ -771,7 +771,7 @@ async function loadHomeContent() {
   }
 
   // 4シーズン前も同様に自動計算して表示
-  await new Promise(r => setTimeout(r, 500)); // レート制限対策
+  await new Promise(r => setTimeout(r, 1500)); // レート制限対策
   const { year: year4, season: season4 } = getSeasonsAgo(4);
   try {
     const season4Data = await fetchWithCache(`${API_BASE}/seasons/${year4}/${season4}?limit=25`);
@@ -996,7 +996,7 @@ async function fetchWithCache(url, retries = 2) {
       const response = await fetch(url);
       if (response.status === 429) {
         if (i === retries) throw new Error("API_RATE_LIMIT");
-        await new Promise(res => setTimeout(res, 1200));
+        await new Promise(res => setTimeout(res, 2000));
         continue;
       }
       if (!response.ok) throw new Error(`HTTP_ERROR_${response.status}`);
