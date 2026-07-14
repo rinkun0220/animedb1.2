@@ -36,7 +36,9 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
 .creator-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
 .creator-name{font-size:1.4rem;font-weight:800;color:#fff}
 .creator-badge{background:var(--accent);color:#fff;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:10px}
-.creator-intro{font-size:.92rem;color:var(--text-muted);margin-bottom:20px;line-height:1.9}
+.creator-intro{font-size:.92rem;color:var(--text-muted);margin-bottom:12px;line-height:1.9}
+.official-link{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;font-weight:700;color:#fff;background:rgba(255,255,255,0.08);border:1px solid var(--border-color);padding:6px 14px;border-radius:20px;text-decoration:none;margin-bottom:20px;transition:background .2s}
+.official-link:hover{background:rgba(255,255,255,0.16)}
 .gem-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:24px 28px;margin:16px 0}
 .gem-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
 .gem-num{background:var(--accent);color:#fff;font-size:.85rem;font-weight:800;min-width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
@@ -106,6 +108,7 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
     <div class="creator-block" id="pawoks">
       <div class="creator-head"><span class="creator-name">P.A.WORKS</span><span class="creator-badge">★ 一番好きな制作会社</span></div>
       <p class="creator-intro">富山を拠点とする制作会社で、地方の風景描写と「お仕事もの」「群像劇」に強みを持つ。美術・背景の作り込みが群を抜いていて、日常の空気を映像として説得力のあるものにしてくれる。管理人がアニメを見るとき、真っ先にクレジットを確認してしまう制作会社。</p>
+      <a href="https://www.pa-works.jp/" target="_blank" rel="noopener" class="official-link">🔗 P.A.WORKS 公式サイト</a>
 
       <div class="gem-card">
         <div class="gem-header">
@@ -131,6 +134,10 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">温泉旅館を舞台にした青春群像劇。地方の風景描写と人間関係の丁寧な積み重ねが、P.A.WORKS作品らしさの原点になった一作。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
 
       <div class="gem-card">
@@ -142,6 +149,10 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">P.A.WORKS単独制作の初期作品。富山を舞台にした青春の切なさが、この制作会社の方向性を決定づけた。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
 
       <div class="gem-card">
@@ -153,26 +164,17 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">過疎地の町おこしを題材にしたお仕事もの。地方の魅力と厳しさを両方描く、P.A.WORKSらしいテーマ設定。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
-
-      <ul class="more-list">
-        <li class="more-title">その他の代表作（チェック用）</li>
-        <li><strong>CANAAN</strong></li>
-        <li><strong>another</strong></li>
-        <li><strong>TARI TARI</strong></li>
-        <li><strong>有頂天家族</strong></li>
-        <li><strong>凪のあすから</strong></li>
-        <li><strong>空の青さを知る人よ</strong></li>
-        <li><strong>さよならの朝に約束の花をかざろう</strong></li>
-        <li><strong>白い砂のアクアトープ</strong></li>
-        <li><strong>群青のファンファーレ</strong></li>
-        <li><strong>色づく世界の明日から</strong></li>
-      </ul>
     </div>
 
     <div class="creator-block" id="kyoani">
       <div class="creator-head"><span class="creator-name">京都アニメーション</span></div>
       <p class="creator-intro">緻密な作画と日常芝居のクオリティで長年業界を牽引してきた制作会社。感情表現の繊細さは他の追随を許さない。</p>
+      <a href="https://www.kyotoanimation.co.jp/" target="_blank" rel="noopener" class="official-link">🔗 京都アニメーション 公式サイト</a>
 
       <div class="gem-card">
         <div class="gem-header">
@@ -183,6 +185,10 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">吹奏楽部の部活動を、人間関係のリアルさも含めて丁寧に描いた作品。京アニ作画の緻密さが存分に活きている。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
 
       <div class="gem-card">
@@ -208,24 +214,17 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">家族の物語として深く刺さる展開が、京アニの底力を証明した名作。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
-
-      <ul class="more-list">
-        <li class="more-title">その他の代表作（チェック用）</li>
-        <li><strong>けいおん!</strong></li>
-        <li><strong>らき☆すた</strong></li>
-        <li><strong>涼宮ハルヒの憂鬱</strong></li>
-        <li><strong>氷菓</strong></li>
-        <li><strong>中二病でも恋がしたい!</strong></li>
-        <li><strong>Free!</strong></li>
-        <li><strong>小林さんちのメイドラゴン</strong></li>
-        <li><strong>リズと青い鳥</strong></li>
-      </ul>
     </div>
 
     <div class="creator-block" id="cloverworks">
       <div class="creator-head"><span class="creator-name">CloverWorks</span></div>
       <p class="creator-intro">A-1 Picturesの一部門から2018年に独立したスタジオ。ドラマ性の強い作品からポップなコメディまで、幅広く高品質な作品を送り出している。</p>
+      <a href="https://cloverworks.co.jp/" target="_blank" rel="noopener" class="official-link">🔗 CloverWorks 公式サイト</a>
 
       <div class="gem-card">
         <div class="gem-header">
@@ -250,6 +249,10 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">独特な演出センスとバンドものの熱量を融合させ、社会現象級のヒットとなった作品。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
 
       <div class="gem-card">
@@ -265,20 +268,12 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
         </div>
       </div>
-
-      <ul class="more-list">
-        <li class="more-title">その他の代表作（チェック用）</li>
-        <li><strong>蜘蛛ですが、なにか?</strong></li>
-        <li><strong>明日ちゃんのセーラー服</strong></li>
-        <li><strong>SPY×FAMILY</strong>（共同制作）</li>
-        <li><strong>平家物語</strong></li>
-        <li><strong>ダーウィンズゲーム</strong></li>
-      </ul>
     </div>
 
     <div class="creator-block" id="a1">
       <div class="creator-head"><span class="creator-name">A-1 Pictures</span></div>
       <p class="creator-intro">ソニー・ミュージック系列の大手スタジオ。原作もののクオリティが安定しており、話題作を継続的に輩出している。</p>
+      <a href="https://a1p.jp/" target="_blank" rel="noopener" class="official-link">🔗 A-1 Pictures 公式サイト</a>
 
       <div class="gem-card">
         <div class="gem-header">
@@ -303,6 +298,10 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">ピアノという音楽表現を、映像美で見せきったA-1 Picturesの感動作。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
 
       <div class="gem-card">
@@ -314,21 +313,17 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">長井龍雪監督・岡田麿里脚本による青春作品。A-1 Picturesの制作力とスタッフの噛み合いが光る一作。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
-
-      <ul class="more-list">
-        <li class="more-title">その他の代表作（チェック用）</li>
-        <li><strong>Fate/stay night [Unlimited Blade Works]</strong></li>
-        <li><strong>Fate/stay night [Heaven's Feel]</strong>（劇場版）</li>
-        <li><strong>亜人ちゃんは語りたい</strong></li>
-        <li><strong>ノーゲーム・ノーライフ</strong></li>
-        <li><strong>グランブルーファンタジー・ジ・アニメーション</strong></li>
-      </ul>
     </div>
 
     <div class="creator-block" id="wit">
       <div class="creator-head"><span class="creator-name">wit studio</span></div>
       <p class="creator-intro">Production I.Gからスピンオフした制作会社。アクション作画とダークな世界観の表現力に定評がある。</p>
+      <a href="https://www.witstudio.co.jp/" target="_blank" rel="noopener" class="official-link">🔗 wit studio 公式サイト</a>
 
       <div class="gem-card">
         <div class="gem-header">
@@ -367,15 +362,11 @@ header{height:var(--nav-height);background:rgba(11,15,25,0.9);backdrop-filter:bl
           </div>
         </div>
         <div class="gem-body">和風×ゾンビ×蒸気機関という独特の世界観をアクション作画で見せる、wit studioらしいオリジナル作品。</div>
+        <div class="streaming-row">
+          <a href="https://px.a8.net/svt/ejp?a8mat=4B3VR9+BK60MQ+4EKC+60WN6" target="_blank" rel="noopener nofollow" class="badge abema">ABEMA</a>
+          <a href="https://animestore.docomo.ne.jp/" target="_blank" rel="noopener" class="badge danime">dアニメ</a>
+        </div>
       </div>
-
-      <ul class="more-list">
-        <li class="more-title">その他の代表作（チェック用）</li>
-        <li><strong>地縛少年花子くん</strong></li>
-        <li><strong>王様ランキング</strong></li>
-        <li><strong>SPY×FAMILY</strong>（共同制作）</li>
-        <li><strong>薬屋のひとりごと</strong>（共同制作）</li>
-      </ul>
     </div>
 
     <h2>まとめ</h2>
