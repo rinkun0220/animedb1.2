@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rinkun0220.github.io/animedb1.2/sitemap.xml
+Sitemap: https://anime-db.jp/sitemap.xml
