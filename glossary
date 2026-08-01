@@ -1,1 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X4M05SEYCE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X4M05SEYCE');
+</script>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>アニメ初心者向け用語集｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/glossary.html">
+<meta name="description" content="「1話切り」「なろう系」「シリーズ構成」など、アニメサイトやSNSでよく見る言葉をやさしく解説する用語集。深夜アニメを見始めたばかりの方にもわかるようにまとめました。">
+<meta name="keywords" content="アニメ用語集,1話切り,なろう系,シリーズ構成,見放題,深夜アニメ,初心者,アニメ用語">
+<meta name="robots" content="index,follow">
+<meta name="author" content="ANIMEDB">
+<meta property="og:title" content="アニメ初心者向け用語集｜ANIMEDB">
+<meta property="og:description" content="アニメサイトやSNSでよく見る言葉をやさしく解説する用語集。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anime-db.jp/glossary.html">
+<meta property="og:site_name" content="ANIMEDB">
+<meta property="og:locale" content="ja_JP">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0b0f19;
+  --bg-card: #161f30;
+  --bg-darker: #070a10;
+  --accent: #ff4757;
+  --accent-hover: #ff6b81;
+  --text-main: #f1f2f6;
+  --text-muted: #a4b0be;
+  --star-color: #ffa502;
+  --border-color: rgba(255,255,255,0.08);
+  --nav-height: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+header {
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,71,87,0.15); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; flex-shrink: 0; }
+.logo-a { color: #fff; } .logo-db { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-item {
+  color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px;
+  white-space: nowrap; display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid transparent; flex-shrink: 0;
+}
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: #fff; background: rgba(255,71,87,0.15); border-color: rgba(255,71,87,0.35); color: var(--accent); }
+@media (max-width: 768px) {
+  header { padding: 0 12px; }
+  .logo { font-size: 1.2rem; }
+  .nav-item { font-size: 0.78rem; padding: 6px 10px; }
+}
+main { margin-top: var(--nav-height); padding: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 32px 0 8px; }
+.page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 14px; }
+.page-title { font-size: 1.9rem; font-weight: 800; margin-bottom: 10px; line-height: 1.4; }
+.page-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 32px; line-height: 1.8; }
+.intro-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 22px 24px; margin-bottom: 36px; font-size: 0.92rem; line-height: 1.9; color: var(--text-muted); }
+.intro-box strong { color: var(--accent); }
+.cat-title { font-size: 1.2rem; font-weight: 700; margin: 40px 0 16px; padding-left: 12px; border-left: 4px solid var(--accent); }
+.term-grid { display: grid; gap: 14px; }
+.term-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 18px 22px; }
+.term-name { font-size: 1.02rem; font-weight: 700; color: #fff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.term-yomi { font-size: 0.78rem; color: var(--text-muted); font-weight: 400; }
+.term-desc { font-size: 0.9rem; color: var(--text-main); line-height: 1.85; }
+.term-example { font-size: 0.82rem; color: var(--text-muted); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
+.term-example strong { color: var(--star-color); }
+.link-row { margin-top: 40px; padding: 20px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; text-align: center; }
+.link-row a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.link-row a:hover { text-decoration: underline; }
+footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 40px; }
+.footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+.footer-link:hover { color: #fff; }
+.copyright { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
 
+<header>
+  <a href="/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
+    <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
+    <a href="/glossary.html" class="nav-item active" style="text-decoration:none;">📖 用語集</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <span class="page-tag">📖 初心者向け</span>
+    <h1 class="page-title">アニメ初心者向け用語集</h1>
+    <p class="page-desc">アニメのレビューサイトやSNSでよく見かけるけど、ちゃんと意味を説明されたことがない言葉。このページでは、中学生の頃から深夜アニメを見始めた方にもわかるように、できるだけやさしい言葉で解説しています。</p>
+  </div>
+
+  <div class="intro-box">
+    <strong>💡 このページの使い方</strong><br>
+    ANIMEDBのブログ記事を読んでいて「この言葉、意味がよくわからない」と思ったら、このページで検索（Ctrl+Fやスマホの「ページ内検索」）してみてください。専門用語というより、アニメファンの間でなんとなく使われている「業界っぽい言葉」を中心にまとめています。
+  </div>
+
+  <h2 class="cat-title">🎬 作品づくりに関する言葉</h2>
+  <div class="term-grid">
+
+    <div class="term-card">
+      <div class="term-name">シリーズ構成 <span class="term-yomi">しりーずこうせい</span></div>
+      <div class="term-desc">アニメ全体の「話の組み立て方」を決める人のこと。原作のどのエピソードを、どの順番で、何話に分けてアニメにするかを設計する仕事です。脚本家が兼任することも多いポジションです。</div>
+      <div class="term-example"><strong>例：</strong>「シリーズ構成が上手いから、原作にないオリジナル回でも違和感がない」</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">脚本 <span class="term-yomi">きゃくほん</span></div>
+      <div class="term-desc">各話ごとの台詞や場面の流れを文章で書く仕事、またはその文章そのもの。同じ話でも、脚本を書く人によって台詞のニュアンスや間の取り方が変わります。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">監督 <span class="term-yomi">かんとく</span></div>
+      <div class="term-desc">アニメ全体の映像面をまとめるリーダー。カメラワークのようなカット割りや、間の取り方、色使いなど、「画面の雰囲気」を決める人です。同じ脚本でも監督が違うと印象が大きく変わります。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">制作会社 <span class="term-yomi">せいさくがいしゃ</span></div>
+      <div class="term-desc">実際にアニメの映像（作画・撮影・編集など）を作っているスタジオのこと。P.A.WORKSや京都アニメーションなど、会社ごとに得意な絵柄や作風の傾向があります。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">作画崩壊 <span class="term-yomi">さくがほうかい</span></div>
+      <div class="term-desc">キャラクターの顔や体のバランスが、その回だけ極端に崩れて見えてしまうこと。制作スケジュールが厳しいときに起こりやすいと言われています。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">尺 <span class="term-yomi">しゃく</span></div>
+      <div class="term-desc">1話あたりの時間の長さのこと。「尺が足りない」は、伝えたい内容に対して放送時間が短すぎる、という意味で使われます。</div>
+    </div>
+
+  </div>
+
+  <h2 class="cat-title">📺 放送・配信に関する言葉</h2>
+  <div class="term-grid">
+
+    <div class="term-card">
+      <div class="term-name">クール</div>
+      <div class="term-desc">アニメの放送期間を数える単位で、1クール＝約3ヶ月（12〜13話）が基本です。「2クール」なら約6ヶ月、24〜26話ということになります。「今クール」は「今の季節に放送中の作品」という意味で使われます。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">深夜アニメ <span class="term-yomi">しんやあにめ</span></div>
+      <div class="term-desc">主に深夜0時以降に放送されるアニメのこと。子ども向けの夕方アニメと違い、大人向けの複雑なストーリーや過激な表現が使われることも多いジャンルです。ANIMEDBが主に扱っているのもこの深夜アニメです。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">見放題 <span class="term-yomi">みほうだい</span></div>
+      <div class="term-desc">月額料金の中に含まれていて、追加料金なしで何度でも見られる配信方式のこと。これに対して「レンタル」は1本ごとに別料金がかかる方式です。ANIMEDBの配信バッジは、基本的にこの見放題のサービスを優先して紹介しています。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">独占配信 <span class="term-yomi">どくせんはいしん</span></div>
+      <div class="term-desc">その作品が、特定の配信サービス1つでしか見られない状態のこと。「Netflix独占」と書かれている作品は、他のどのサービスに登録しても見ることができません。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">一挙配信 <span class="term-yomi">いっきょはいしん</span></div>
+      <div class="term-desc">まだ放送されていない話、または既に放送された話を、まとめて一気に配信すること。「一挙放送」とも呼ばれます。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">円盤 <span class="term-yomi">えんばん</span></div>
+      <div class="term-desc">Blu-rayやDVDのこと。ネット配信が主流になった今でも、「円盤の売上」はアニメの人気度を測る指標の一つとして使われ続けています。</div>
+    </div>
+
+  </div>
+
+  <h2 class="cat-title">🎭 ジャンル・作品タイプに関する言葉</h2>
+  <div class="term-grid">
+
+    <div class="term-card">
+      <div class="term-name">なろう系</div>
+      <div class="term-desc">小説投稿サイト「小説家になろう」発の作品によく見られる、お決まりの設定やパターンを指す言葉。「異世界転生」「主人公が最強」「ハーレム」などの要素が組み合わさった作品を指すことが多いです。もともとは特定サイトの名前ですが、今ではジャンル名のように使われています。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">原作 <span class="term-yomi">げんさく</span></div>
+      <div class="term-desc">アニメの元になった漫画・小説・ゲームなどの作品のこと。「原作つき」はこうした元ネタがある作品、「オリジナルアニメ」は最初からアニメとして作られた作品を指します。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">二次創作 <span class="term-yomi">にじそうさく</span></div>
+      <div class="term-desc">ファンが元の作品（一次創作）を元に、自分で作ったイラストや小説などのこと。同人誌やファンアートなどが該当します。</div>
+    </div>
+
+  </div>
+
+  <h2 class="cat-title">💬 感想・評価でよく見る言葉</h2>
+  <div class="term-grid">
+
+    <div class="term-card">
+      <div class="term-name">1話切り <span class="term-yomi">いっわぎり</span></div>
+      <div class="term-desc">1話を見た時点で「自分には合わない」と判断し、それ以降を見るのをやめること。毎クール大量のアニメが放送されるため、全部を最後まで見るのは現実的に難しく、多くの視聴者がこの取捨選択をしています。</div>
+      <div class="term-example"><strong>関連記事：</strong>ANIMEDBでは<a href="/blog/rating-criteria.html" style="color:var(--star-color)">管理人の1話切り基準</a>も紹介しています。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">神アニメ <span class="term-yomi">かみあにめ</span></div>
+      <div class="term-desc">「非常に完成度が高い」「感動した」など、視聴者から絶賛されているアニメを指すネットスラング。あくまで口コミベースの評価で、公式な賞などではありません。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">覇権アニメ <span class="term-yomi">はけんあにめ</span></div>
+      <div class="term-desc">その季節に放送されている作品の中で、話題性・人気ともに一番盛り上がっている作品を指す言葉。円盤の売上や配信の再生数などが根拠として語られることが多いです。</div>
+    </div>
+
+    <div class="term-card">
+      <div class="term-name">虚無枠 <span class="term-yomi">きょむわく</span></div>
+      <div class="term-desc">似たような設定の作品が多すぎて、特に印象に残らないまま埋もれてしまう作品のことを指す言葉。ANIMEDBの<a href="/blog/worst-anime-honest.html" style="color:var(--star-color)">正直しんどかったアニメの記事</a>でも触れています。</div>
+    </div>
+
+  </div>
+
+  <div class="link-row">
+    ほかにも気になる言葉があれば、<a href="/contact.html">お問い合わせフォーム</a>から教えてください。随時追加していきます。
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/" class="footer-link">ホーム</a>
+    <a href="/blog/" class="footer-link">ブログ</a>
+    <a href="/privacy.html" class="footer-link">プライバシーポリシー</a>
+    <a href="/contact.html" class="footer-link">お問い合わせ</a>
+  </div>
+  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
