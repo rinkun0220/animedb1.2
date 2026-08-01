@@ -17,7 +17,7 @@
       --text-muted: #888898;
       --radius: 10px;
     }
-    * { box-shrink: 0; box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
       color: var(--text);
@@ -146,6 +146,18 @@
     }
     .btn-submit:hover { background: #c42d3e; }
     .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .error-msg {
+      display: none;
+      background: rgba(232,54,74,0.1);
+      border: 1px solid rgba(232,54,74,0.3);
+      border-radius: 6px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: var(--accent2);
+      margin-bottom: 20px;
+    }
 
     /* Success message */
     .success-msg {
@@ -186,6 +198,8 @@
     <p class="subtitle">ご意見・ご要望・不具合報告などお気軽にどうぞ。通常2〜3営業日以内にご返信いたします。</p>
 
     <div class="form-card">
+      <div class="error-msg" id="errorMsg">送信に失敗しました。時間をおいて再度お試しいただくか、しばらくしてから再度ご連絡ください。</div>
+
       <form id="contactForm">
         <div class="form-group">
           <label for="name">お名前<span class="required">*</span></label>
@@ -218,7 +232,7 @@
           送信いただいた情報は、お問い合わせ対応のみに使用します。詳しくは<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。
         </div>
 
-        <button type="submit" class="btn-submit">送信する</button>
+        <button type="submit" class="btn-submit" id="submitBtn">送信する</button>
       </form>
 
       <div class="success-msg" id="successMsg">
@@ -239,15 +253,38 @@
   </footer>
 
   <script>
-    // 💡 クローラーがテスト送信の挙動を確認してもエラーが出ないよう、綺麗なイベント処理に整理
     const form = document.getElementById('contactForm');
     const successMsg = document.getElementById('successMsg');
-    form.addEventListener('submit', function(e) {
+    const errorMsg = document.getElementById('errorMsg');
+    const submitBtn = document.getElementById('submitBtn');
+    const FORM_ENDPOINT = 'https://formspree.io/f/xrenwabq';
+
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      form.style.display = 'none';
-      successMsg.style.display = 'block';
+      errorMsg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送信中...';
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.style.display = 'none';
+          successMsg.style.display = 'block';
+        } else {
+          throw new Error('送信エラー');
+        }
+      } catch (err) {
+        errorMsg.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = '送信する';
+      }
     });
   </script>
 </body>
 </html>
-
