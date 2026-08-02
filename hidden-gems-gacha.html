@@ -79,6 +79,7 @@ main { margin-top: var(--nav-height); padding: 24px; max-width: 640px; margin-le
 .result-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .result-link { background: var(--accent); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; }
 .again-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); border-radius: 8px; padding: 12px 24px; font-size: 0.9rem; cursor: pointer; font-family: inherit; }
+.share-btn { background: #000; color: #fff; border: 1px solid #333; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; }
 
 .pool-note { text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; }
 
@@ -189,6 +190,8 @@ function pullGacha() {
     const item = pool[idx];
 
     const badgesHtml = item.badges.map(b => `<span class="stream-badge ${b}">${badgeLabels[b]}</span>`).join('');
+    const shareText = encodeURIComponent(`ガチャで「${item.title}」が出ました！ #ANIMEDB埋もれた名作ガチャ`);
+    const shareUrl = encodeURIComponent('https://anime-db.jp/hidden-gems-gacha.html');
     resultCard.innerHTML = `
       <div class="result-badge">🎉 今日のあなたに提案する1本</div>
       <div class="result-title">${item.title}</div>
@@ -196,6 +199,7 @@ function pullGacha() {
       <div class="result-badges">${badgesHtml}</div>
       <div class="result-btns">
         <a href="${item.link}" class="result-link">詳しく見る →</a>
+        <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener" class="share-btn">𝕏 結果をシェア</a>
         <button class="again-btn" onclick="pullGacha()">もう一回引く</button>
       </div>
     `;
