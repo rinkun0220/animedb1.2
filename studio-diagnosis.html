@@ -101,6 +101,7 @@ main { margin-top: var(--nav-height); padding: 24px; max-width: 680px; margin-le
 .result-btn { display: inline-block; padding: 12px 26px; border-radius: 8px; font-size: 0.92rem; font-weight: 700; text-decoration: none; }
 .result-btn.primary { background: var(--accent); color: #fff; }
 .result-btn.secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; }
+.result-btn.share { background: #000; color: #fff; border: 1px solid #333; }
 
 .other-studios-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; text-align: left; }
 .other-studios-title { font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
@@ -389,6 +390,9 @@ function showResult() {
   const primaryBtnHtml = r.anchor
     ? `<a href="/blog/studio-favorites.html#${r.anchor}" class="result-btn primary">代表作をもっと見る →</a>`
     : `<a href="${r.official}" target="_blank" rel="noopener" class="result-btn primary">公式サイトを見る →</a>`;
+  const shareText = encodeURIComponent(`私に合う制作会社は「${r.name}」でした！ #ANIMEDB制作会社診断`);
+  const shareUrl = encodeURIComponent('https://anime-db.jp/studio-diagnosis.html');
+  const shareHtml = `<a href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener" class="result-btn share">𝕏 結果をシェア</a>`;
   document.getElementById('resultScreen').innerHTML = `
     <div class="result-card">
       <div class="result-label">あなたにおすすめの制作会社は…</div>
@@ -397,6 +401,7 @@ function showResult() {
       <div class="result-works">${r.works}</div>
       <div class="result-btns">
         ${primaryBtnHtml}
+        ${shareHtml}
         <button class="result-btn secondary" onclick="restartQuiz()">もう一度診断する</button>
       </div>
     </div>
