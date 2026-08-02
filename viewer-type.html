@@ -83,6 +83,7 @@ main { margin-top: var(--nav-height); padding: 24px; max-width: 680px; margin-le
 .result-btn { display: inline-block; padding: 12px 26px; border-radius: 8px; font-size: 0.92rem; font-weight: 700; text-decoration: none; }
 .result-btn.primary { background: var(--accent); color: #fff; }
 .result-btn.secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; font-family: inherit; }
+.result-btn.share { background: #000; color: #fff; border: 1px solid #333; }
 
 .mix-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 16px; }
 
@@ -274,6 +275,8 @@ function showResult() {
   const r = results[topKey];
   const r2 = results[secondKey];
   const isMixed = scores[topKey] - scores[secondKey] <= 1;
+  const shareText = encodeURIComponent(`私の視聴タイプは「${r.emoji} ${r.name}」でした！ #ANIMEDB視聴傾向診断`);
+  const shareUrl = encodeURIComponent('https://anime-db.jp/viewer-type.html');
 
   document.getElementById('resultScreen').innerHTML = `
     <div class="result-card">
@@ -284,6 +287,7 @@ function showResult() {
       <div class="result-tip">${r.tip}</div>
       ${isMixed ? `<div class="mix-note">僅差で「${r2.emoji} ${r2.name}」の要素も強く出ています。2つのタイプを併せ持つバランス型かもしれません。</div>` : ''}
       <div class="result-btns" style="margin-top:20px;">
+        <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener" class="result-btn share">𝕏 結果をシェア</a>
         <button class="result-btn secondary" onclick="restartQuiz()">もう一度診断する</button>
       </div>
     </div>
