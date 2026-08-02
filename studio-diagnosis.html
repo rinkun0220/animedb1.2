@@ -143,7 +143,7 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
 
   <div id="startScreen">
     <div class="q-card">
-      <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:24px; line-height:1.9;">P.A.WORKS・京都アニメーション・CloverWorks・A-1 Pictures・wit studio・MAPPA。<br>あなたの"好き"は、どの制作会社に近いでしょうか？</p>
+      <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:24px; line-height:1.9;">王道の大手スタジオから、こだわりの光る個性派スタジオまで。<br>あなたの"好き"は、どの制作会社に近いでしょうか？</p>
       <button class="start-btn" onclick="startQuiz()">診断をはじめる →</button>
     </div>
   </div>
@@ -169,18 +169,24 @@ const questions = [
     text: "好きなアニメのジャンルは？",
     options: [
       { label: "日常・青春もの", scores: { pawoks: 3, kyoani: 2 } },
-      { label: "感動系のヒューマンドラマ", scores: { kyoani: 3, pawoks: 2 } },
+      { label: "感動系のヒューマンドラマ", scores: { kyoani: 3, pawoks: 2, ghibli: 2 } },
       { label: "ダークファンタジー・シリアスなバトル", scores: { wit: 3, mappa: 2 } },
-      { label: "熱いバトル・アクション", scores: { mappa: 3, a1: 2 } }
+      { label: "熱いバトル・アクション", scores: { mappa: 3, a1: 2, ufotable: 1, bones: 1 } },
+      { label: "王道少年漫画・長編バトル", scores: { toei: 3, bones: 2 } },
+      { label: "ロボット・メカアクション", scores: { sunrise: 3 } },
+      { label: "音楽・アイドル/パフォーマンスもの", scores: { kai: 3, saru: 1 } }
     ]
   },
   {
     text: "アニメを見るときに一番惹かれるのは？",
     options: [
-      { label: "キャラクターの繊細な感情表現", scores: { kyoani: 3, cloverworks: 1 } },
-      { label: "圧倒的な作画・演出のクオリティ", scores: { kyoani: 2, wit: 2, mappa: 2 } },
-      { label: "王道で派手なストーリー展開", scores: { a1: 3 } },
-      { label: "今っぽい、洗練された雰囲気", scores: { cloverworks: 3 } }
+      { label: "キャラクターの繊細な感情表現", scores: { kyoani: 3, cloverworks: 1, bind: 1 } },
+      { label: "圧倒的な作画・演出のクオリティ", scores: { kyoani: 2, wit: 2, mappa: 2, ufotable: 2 } },
+      { label: "王道で派手なストーリー展開", scores: { a1: 3, toei: 2 } },
+      { label: "今っぽい、洗練された雰囲気", scores: { cloverworks: 3, trigger: 1 } },
+      { label: "超絶技巧の戦闘エフェクト作画", scores: { ufotable: 3, bones: 2 } },
+      { label: "規格外でぶっ飛んだ独創的な演出", scores: { trigger: 3, saru: 2 } },
+      { label: "原作の世界観を丁寧に作り込む誠実さ", scores: { bind: 3, madhouse: 1 } }
     ]
   },
   {
@@ -188,26 +194,35 @@ const questions = [
     options: [
       { label: "地方の田舎町・小さなコミュニティ", scores: { pawoks: 3 } },
       { label: "学校・青春の日常", scores: { kyoani: 2, cloverworks: 2 } },
-      { label: "異世界・ファンタジー世界", scores: { a1: 2, wit: 2 } },
-      { label: "過酷な戦場・サバイバル", scores: { wit: 3, mappa: 2 } }
+      { label: "異世界・ファンタジー世界", scores: { a1: 2, wit: 2, bind: 2 } },
+      { label: "過酷な戦場・サバイバル", scores: { wit: 3, mappa: 2 } },
+      { label: "自然豊かな幻想的世界", scores: { ghibli: 3, madhouse: 1 } },
+      { label: "宇宙・巨大ロボが戦う戦場", scores: { sunrise: 3, ufotable: 1 } },
+      { label: "現実と地続きの不思議な世界", scores: { saru: 3, madhouse: 2 } }
     ]
   },
   {
     text: "一番刺さる展開はどれですか？",
     options: [
       { label: "静かな余韻を残すラスト", scores: { pawoks: 3, kyoani: 2 } },
-      { label: "予測不能などんでん返し", scores: { mappa: 2, wit: 2 } },
-      { label: "スカッとする爽快な勝利", scores: { a1: 3 } },
-      { label: "スタイリッシュでおしゃれな演出", scores: { cloverworks: 3 } }
+      { label: "予測不能などんでん返し", scores: { mappa: 2, wit: 2, madhouse: 3 } },
+      { label: "スカッとする爽快な勝利", scores: { a1: 3, toei: 2 } },
+      { label: "スタイリッシュでおしゃれな演出", scores: { cloverworks: 3, trigger: 1 } },
+      { label: "涙腺崩壊の努力・友情・勝利", scores: { toei: 3, bones: 2 } },
+      { label: "常識を超えた規格外の展開", scores: { trigger: 3, saru: 1 } },
+      { label: "じっくり積み上げた末の納得のラスト", scores: { bind: 3, kai: 1 } }
     ]
   },
   {
     text: "あなたにとってアニメとは？",
     options: [
-      { label: "心を癒してくれるもの", scores: { pawoks: 3 } },
-      { label: "芸術として楽しむもの", scores: { kyoani: 3 } },
-      { label: "熱狂できるエンタメ", scores: { mappa: 2, a1: 2 } },
-      { label: "新しい価値観に触れるもの", scores: { cloverworks: 2, wit: 2 } }
+      { label: "心を癒してくれるもの", scores: { pawoks: 3, ghibli: 2 } },
+      { label: "芸術として楽しむもの", scores: { kyoani: 3, madhouse: 2, saru: 1 } },
+      { label: "熱狂できるエンタメ", scores: { mappa: 2, a1: 2, toei: 1 } },
+      { label: "新しい価値観に触れるもの", scores: { cloverworks: 2, wit: 2 } },
+      { label: "子供の頃からの原体験・思い出", scores: { ghibli: 3, toei: 2, sunrise: 1 } },
+      { label: "圧倒的な画面クオリティに浸るもの", scores: { ufotable: 2, madhouse: 1, bones: 2 } },
+      { label: "好きな作品世界にどっぷり浸かれるもの", scores: { sunrise: 2, bind: 2, kai: 2 } }
     ]
   }
 ];
@@ -254,17 +269,77 @@ const results = {
     works: "代表作：呪術廻戦／チェンソーマン／進撃の巨人 The Final Season",
     anchor: "mappa",
     official: "https://www.mappa.co.jp/"
+  },
+  ghibli: {
+    name: "スタジオジブリ",
+    desc: "あなたに一番近いのはスタジオジブリです。自然や日常の中にある温かさ、手描きならではの豊かな質感を大切にする制作会社。世代を超えて愛される、心を癒す物語に惹かれるタイプです。",
+    works: "代表作：となりのトトロ／千と千尋の神隠し／もののけ姫　など",
+    official: "https://www.ghibli.jp/"
+  },
+  toei: {
+    name: "東映アニメーション",
+    desc: "あなたに一番近いのは東映アニメーションです。長く愛される王道の少年漫画・ファミリー向け作品を作り続けてきた老舗。努力・友情・勝利のわかりやすい熱さに心動かされるタイプです。",
+    works: "代表作：ドラゴンボール／ONE PIECE／プリキュアシリーズ　など",
+    official: "https://www.toei-anim.co.jp/"
+  },
+  ufotable: {
+    name: "ufotable",
+    desc: "あなたに一番近いのはufotableです。デジタル作画による圧倒的なエフェクトとアクション演出で魅せる制作会社。息をのむような戦闘シーンのクオリティに強く惹かれるタイプです。",
+    works: "代表作：鬼滅の刃／Fateシリーズ　など",
+    official: "https://ufotable.com/"
+  },
+  sunrise: {
+    name: "バンダイナムコフィルムワークス（サンライズ）",
+    desc: "あなたに一番近いのはバンダイナムコフィルムワークス（旧サンライズ）です。半世紀近く続くロボット・メカアニメの系譜を作り続けてきた制作会社。壮大な世界観と長く愛せる作品世界に浸りたいタイプです。",
+    works: "代表作：機動戦士ガンダムシリーズ　など",
+    official: "https://www.bnfw.co.jp/"
+  },
+  bones: {
+    name: "BONES",
+    desc: "あなたに一番近いのはBONESです。スタイリッシュなキャラクターデザインと、格好良さを追求したアクション演出が持ち味の制作会社。かっこよさと熱さを両立した作品に惹かれるタイプです。",
+    works: "代表作：僕のヒーローアカデミア／鋼の錬金術師／モブサイコ100　など",
+    official: "https://www.bones.co.jp/"
+  },
+  madhouse: {
+    name: "MADHOUSE",
+    desc: "あなたに一番近いのはMADHOUSEです。ジャンルを問わない実験精神と、心理的などんでん返しを得意とする老舗制作会社。予測を裏切る展開や、芸術性の高い作品に惹かれるタイプです。",
+    works: "代表作：DEATH NOTE／葬送のフリーレン／パーフェクトブルー　など",
+    official: "https://madhouse.co.jp/"
+  },
+  trigger: {
+    name: "TRIGGER",
+    desc: "あなたに一番近いのはTRIGGERです。常識を軽々と飛び越える規格外のテンションと、独創的な演出が持ち味の制作会社。予定調和を壊す展開にワクワクするタイプです。",
+    works: "代表作：キルラキル／プロメア／SSSS.GRIDMAN　など",
+    official: "https://www.st-trigger.co.jp/"
+  },
+  saru: {
+    name: "サイエンスSARU",
+    desc: "あなたに一番近いのはサイエンスSARUです。現実と地続きの不思議な世界観と、実験的で自由な絵作りを追求する制作会社。他にはない独創的な映像表現に惹かれるタイプです。",
+    works: "代表作：平家物語／きみの色／夜は短し歩けよ乙女　など",
+    official: "https://sciencesaru.com/"
+  },
+  kai: {
+    name: "スタジオKAI",
+    desc: "あなたに一番近いのはスタジオKAIです。音楽・アイドル・パフォーマンス系の作品を中心に、ライブ感あふれる映像を手掛ける制作会社。作品世界にどっぷり浸れるエンタメを求めるタイプです。",
+    works: "代表作：ウマ娘 プリティーダービー シリーズ　など",
+    official: "https://st-kai.jp/"
+  },
+  bind: {
+    name: "スタジオバインド",
+    desc: "あなたに一番近いのはスタジオバインドです。原作の世界観を長期的・計画的に、丁寧に作り込む誠実な姿勢が持ち味の制作会社。じっくり積み上げた末の納得感を大事にするタイプです。",
+    works: "代表作：無職転生 〜異世界行ったら本気だす〜　など",
+    official: "https://st-bind.jp/"
   }
 };
 
 let currentQ = 0;
-let scores = { pawoks: 0, kyoani: 0, cloverworks: 0, a1: 0, wit: 0, mappa: 0 };
+let scores = { pawoks: 0, kyoani: 0, cloverworks: 0, a1: 0, wit: 0, mappa: 0, ghibli: 0, toei: 0, ufotable: 0, sunrise: 0, bones: 0, madhouse: 0, trigger: 0, saru: 0, kai: 0, bind: 0 };
 
 function startQuiz() {
   document.getElementById('startScreen').classList.add('hidden');
   document.getElementById('quizScreen').classList.remove('hidden');
   currentQ = 0;
-  scores = { pawoks: 0, kyoani: 0, cloverworks: 0, a1: 0, wit: 0, mappa: 0 };
+  scores = { pawoks: 0, kyoani: 0, cloverworks: 0, a1: 0, wit: 0, mappa: 0, ghibli: 0, toei: 0, ufotable: 0, sunrise: 0, bones: 0, madhouse: 0, trigger: 0, saru: 0, kai: 0, bind: 0 };
   renderQuestion();
 }
 
@@ -301,7 +376,7 @@ function showResult() {
   document.getElementById('quizScreen').classList.add('hidden');
   const ranked = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
   const topKey = ranked[0];
-  const otherKeys = ranked.slice(1, 4);
+  const otherKeys = ranked.slice(1);
   const r = results[topKey];
   const othersHtml = otherKeys.map(k => {
     const o = results[k];
@@ -310,6 +385,9 @@ function showResult() {
       <span class="other-studio-arrow">公式サイト →</span>
     </a>`;
   }).join('');
+  const primaryBtnHtml = r.anchor
+    ? `<a href="/blog/studio-favorites.html#${r.anchor}" class="result-btn primary">代表作をもっと見る →</a>`
+    : `<a href="${r.official}" target="_blank" rel="noopener" class="result-btn primary">公式サイトを見る →</a>`;
   document.getElementById('resultScreen').innerHTML = `
     <div class="result-card">
       <div class="result-label">あなたにおすすめの制作会社は…</div>
@@ -317,7 +395,7 @@ function showResult() {
       <div class="result-desc">${r.desc}</div>
       <div class="result-works">${r.works}</div>
       <div class="result-btns">
-        <a href="/blog/studio-favorites.html#${r.anchor}" class="result-btn primary">代表作をもっと見る →</a>
+        ${primaryBtnHtml}
         <button class="result-btn secondary" onclick="restartQuiz()">もう一度診断する</button>
       </div>
     </div>
