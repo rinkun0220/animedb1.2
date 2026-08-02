@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X4M05SEYCE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X4M05SEYCE');
+</script>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>視聴傾向診断「あなたは何派？」｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/viewer-type.html">
+<meta name="description" content="5つの質問であなたのアニメ視聴タイプを診断。脚本派・演出派・キャラ萌え派・考察派・雰囲気派の中から、あなたがどのタイプか分かります。">
+<meta name="keywords" content="視聴傾向診断,脚本派,演出派,キャラ萌え派,考察派,雰囲気派,アニメ診断">
+<meta name="robots" content="index,follow">
+<meta name="author" content="ANIMEDB">
+<meta property="og:title" content="視聴傾向診断「あなたは何派？」｜ANIMEDB">
+<meta property="og:description" content="5つの質問であなたのアニメ視聴タイプを診断します。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anime-db.jp/viewer-type.html">
+<meta property="og:site_name" content="ANIMEDB">
+<meta property="og:locale" content="ja_JP">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
+  --accent: #ff4757; --accent-hover: #ff6b81;
+  --text-main: #f1f2f6; --text-muted: #a4b0be; --star-color: #ffa502;
+  --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+header {
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,71,87,0.15); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; flex-shrink: 0; }
+.logo-a { color: #fff; } .logo-db { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; border: 1px solid transparent; flex-shrink: 0; }
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: var(--accent); background: rgba(255,71,87,0.15); border-color: rgba(255,71,87,0.35); }
+@media (max-width: 768px) { header { padding: 0 12px; } .logo { font-size: 1.2rem; } .nav-item { font-size: 0.78rem; padding: 6px 10px; } }
+
+main { margin-top: var(--nav-height); padding: 24px; max-width: 680px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 32px 0 8px; text-align: center; }
+.page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 14px; }
+.page-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 10px; }
+.page-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 32px; line-height: 1.8; }
+
+.progress-wrap { background: var(--bg-card); border-radius: 20px; height: 8px; margin-bottom: 32px; overflow: hidden; }
+.progress-bar { background: var(--accent); height: 100%; width: 0%; transition: width 0.4s ease; border-radius: 20px; }
+
+.q-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px 24px; margin-bottom: 20px; }
+.q-num { font-size: 0.78rem; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+.q-text { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 22px; line-height: 1.6; }
+.q-options { display: grid; gap: 10px; }
+.q-opt { background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 18px; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; text-align: left; color: var(--text-main); }
+.q-opt:hover { border-color: var(--accent); background: rgba(255,71,87,0.06); }
+
+#startScreen, #resultScreen { text-align: center; }
+.start-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 700; padding: 16px 44px; cursor: pointer; transition: background 0.2s; font-family: inherit; }
+.start-btn:hover { background: var(--accent-hover); }
+
+.result-card { background: var(--bg-card); border: 2px solid var(--accent); border-radius: 18px; padding: 36px 28px; margin-bottom: 24px; }
+.result-emoji { font-size: 3rem; margin-bottom: 10px; }
+.result-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+.result-name { font-size: 1.7rem; font-weight: 800; color: #fff; margin-bottom: 16px; }
+.result-desc { font-size: 0.94rem; color: var(--text-main); line-height: 1.9; margin-bottom: 20px; text-align: left; }
+.result-tip { font-size: 0.82rem; color: var(--text-muted); background: var(--bg-darker); border-radius: 8px; padding: 12px 16px; text-align: left; margin-bottom: 20px; }
+.result-tip strong { color: var(--star-color); }
+.result-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.result-btn { display: inline-block; padding: 12px 26px; border-radius: 8px; font-size: 0.92rem; font-weight: 700; text-decoration: none; }
+.result-btn.primary { background: var(--accent); color: #fff; }
+.result-btn.secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; font-family: inherit; }
+
+.mix-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 16px; }
+
+.hidden { display: none !important; }
+
+footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 40px; }
+.footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+.footer-link:hover { color: #fff; }
+.copyright { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
+    <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
+    <a href="/glossary.html" class="nav-item" style="text-decoration:none;">📖 用語集</a>
+    <a href="/directory.html" class="nav-item" style="text-decoration:none;">🗂️ 名鑑</a>
+    <a href="/changelog.html" class="nav-item" style="text-decoration:none;">🛠️ 更新履歴</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <span class="page-tag">🧭 視聴傾向診断</span>
+    <h1 class="page-title">あなたは何派？</h1>
+    <p class="page-desc">脚本派、演出派、キャラ萌え派、考察派、雰囲気派——あなたがアニメのどこに一番惹かれているタイプか、5つの質問で診断します。</p>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div id="startScreen">
+    <div class="q-card">
+      <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:24px; line-height:1.9;">ANIMEDB管理人は「脚本派」を公言しています。<br>あなたはどのタイプでしょうか？</p>
+      <button class="start-btn" onclick="startQuiz()">診断をはじめる →</button>
+    </div>
+  </div>
+
+  <div id="quizScreen" class="hidden"></div>
+
+  <div id="resultScreen" class="hidden"></div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/" class="footer-link">ホーム</a>
+    <a href="/blog/" class="footer-link">ブログ</a>
+    <a href="/privacy.html" class="footer-link">プライバシーポリシー</a>
+    <a href="/contact.html" class="footer-link">お問い合わせ</a>
+  </div>
+  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+</footer>
+
+<script>
+const questions = [
+  {
+    text: "アニメを見て一番「うまい」と感じるのはどんな時？",
+    options: [
+      { label: "伏線が綺麗に回収された瞬間", scores: { script: 3, kousatsu: 2 } },
+      { label: "作画・演出が特別すごかったカット", scores: { enshutsu: 3 } },
+      { label: "キャラクターの表情や仕草に萌えた瞬間", scores: { chara: 3 } },
+      { label: "何気ないシーンの空気感がよかった時", scores: { funiki: 3 } },
+      { label: "テーマの裏にある意味に気づいた時", scores: { kousatsu: 3, script: 1 } }
+    ]
+  },
+  {
+    text: "友達にアニメを勧めるとき、まず何を話す？",
+    options: [
+      { label: "「脚本の構成が本当に上手い」", scores: { script: 3 } },
+      { label: "「作画がとにかく綺麗」", scores: { enshutsu: 3 } },
+      { label: "「キャラが最高に可愛い/かっこいい」", scores: { chara: 3 } },
+      { label: "「見た後にいろいろ考えさせられる」", scores: { kousatsu: 3 } },
+      { label: "「雰囲気が独特で癒される」", scores: { funiki: 3 } }
+    ]
+  },
+  {
+    text: "1話切りするとしたら、一番の決め手は？",
+    options: [
+      { label: "台詞や展開がテンプレすぎる", scores: { script: 3 } },
+      { label: "作画・演出のクオリティが低い", scores: { enshutsu: 3 } },
+      { label: "キャラクターに魅力を感じない", scores: { chara: 3 } },
+      { label: "雰囲気や世界観が合わない", scores: { funiki: 3 } },
+      { label: "テーマ性が浅く感じる", scores: { kousatsu: 3 } }
+    ]
+  },
+  {
+    text: "見終わった後、真っ先にすることは？",
+    options: [
+      { label: "脚本家・シリーズ構成をチェックする", scores: { script: 3 } },
+      { label: "作画が良かったシーンを見返す", scores: { enshutsu: 3 } },
+      { label: "推しキャラのグッズや二次創作を探す", scores: { chara: 3 } },
+      { label: "考察サイトやSNSで感想を探す", scores: { kousatsu: 3 } },
+      { label: "余韻に浸って何もしない", scores: { funiki: 3 } }
+    ]
+  },
+  {
+    text: "理想のアニメ視聴環境は？",
+    options: [
+      { label: "話の展開に集中できる静かな環境", scores: { script: 2, kousatsu: 2 } },
+      { label: "大画面・良い音響でしっかり浸る", scores: { enshutsu: 3 } },
+      { label: "推しの登場シーンで一時停止できる環境", scores: { chara: 3 } },
+      { label: "リラックスして、ながら見できる環境", scores: { funiki: 3 } }
+    ]
+  }
+];
+
+const results = {
+  script: {
+    emoji: "✍️",
+    name: "脚本派",
+    desc: "あなたは脚本派です。話の構成、伏線の張り方、台詞の一つひとつに注目するタイプ。「なぜこの展開になったのか」を理解して初めて満足できる、物語の設計そのものを楽しむ視聴者です。",
+    tip: "ANIMEDB管理人も脚本派を公言しています。<a href='/blog/rating-criteria.html' style='color:var(--star-color)'>評価基準の記事</a>で詳しく語っているので、共感できる部分が多いはずです。"
+  },
+  enshutsu: {
+    emoji: "🎬",
+    name: "演出派",
+    desc: "あなたは演出派です。カット割り、色使い、動きの気持ちよさなど、画面そのものが持つ表現力に強く反応するタイプ。同じ脚本でも「魅せ方」で評価が大きく変わる、映像作品としてのアニメを見ている視聴者です。",
+    tip: "演出のこだわりが強い制作会社が気になるなら、<a href='/studio-diagnosis.html' style='color:var(--star-color)'>制作会社診断</a>も試してみてください。"
+  },
+  chara: {
+    emoji: "💖",
+    name: "キャラ萌え派",
+    desc: "あなたはキャラ萌え派です。ストーリーの巧拙よりも、キャラクターの魅力・関係性・声優の演技に強く惹かれるタイプ。「このキャラがいるから見続けられる」という原動力を大事にしている視聴者です。",
+    tip: "好きなキャラを演じている声優を辿ってみるのもおすすめです。<a href='/directory.html' style='color:var(--star-color)'>声優・スタッフ名鑑</a>から探してみてください。"
+  },
+  kousatsu: {
+    emoji: "🔍",
+    name: "考察派",
+    desc: "あなたは考察派です。表面的なストーリーよりも、その奥にあるテーマやメタファー、伏線の意図を読み解くことに喜びを感じるタイプ。見終わった後も頭の中で反芻し続ける視聴者です。",
+    tip: "<a href='/blog/worst-anime-honest.html' style='color:var(--star-color)'>虚無枠問題を扱った記事</a>も、考察派の視点で読むと面白いはずです。"
+  },
+  funiki: {
+    emoji: "🌙",
+    name: "雰囲気派",
+    desc: "あなたは雰囲気派です。ストーリーの起伏よりも、作品全体が持つ空気感・音楽・間の取り方に浸ることを大切にするタイプ。「なんとなく好き」という感覚を大事にできる視聴者です。",
+    tip: "<a href='/hidden-gems-gacha.html' style='color:var(--star-color)'>埋もれた名作ガチャ</a>で、雰囲気重視の日常系作品に偶然出会ってみるのもおすすめです。"
+  }
+};
+
+let currentQ = 0;
+let scores = { script: 0, enshutsu: 0, chara: 0, kousatsu: 0, funiki: 0 };
+
+function startQuiz() {
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+  currentQ = 0;
+  scores = { script: 0, enshutsu: 0, chara: 0, kousatsu: 0, funiki: 0 };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('progressBar').style.width = ((currentQ) / questions.length * 100) + '%';
+  const optsHtml = q.options.map((opt, i) =>
+    `<button class="q-opt" onclick="selectOption(${i})">${opt.label}</button>`
+  ).join('');
+  document.getElementById('quizScreen').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Q${currentQ + 1} / ${questions.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">${optsHtml}</div>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  const opt = questions[currentQ].options[i];
+  for (const key in opt.scores) {
+    scores[key] += opt.scores[key];
+  }
+  currentQ++;
+  if (currentQ < questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('quizScreen').classList.add('hidden');
+  const ranked = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+  const topKey = ranked[0];
+  const secondKey = ranked[1];
+  const r = results[topKey];
+  const r2 = results[secondKey];
+  const isMixed = scores[topKey] - scores[secondKey] <= 1;
+
+  document.getElementById('resultScreen').innerHTML = `
+    <div class="result-card">
+      <div class="result-emoji">${r.emoji}</div>
+      <div class="result-label">あなたの視聴タイプは…</div>
+      <div class="result-name">${r.name}</div>
+      <div class="result-desc">${r.desc}</div>
+      <div class="result-tip">${r.tip}</div>
+      ${isMixed ? `<div class="mix-note">僅差で「${r2.emoji} ${r2.name}」の要素も強く出ています。2つのタイプを併せ持つバランス型かもしれません。</div>` : ''}
+      <div class="result-btns" style="margin-top:20px;">
+        <button class="result-btn secondary" onclick="restartQuiz()">もう一度診断する</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('resultScreen').classList.remove('hidden');
+}
+
+function restartQuiz() {
+  document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('progressBar').style.width = '0%';
+  startQuiz();
+}
+</script>
+
+</body>
+</html>
