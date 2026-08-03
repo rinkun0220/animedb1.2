@@ -205,8 +205,8 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 .loader-wrap { display: none; justify-content: center; align-items: center; padding: 40px 0; }
 .loader { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-radius: 50%; border-top-color: var(--accent); animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-#toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(255,71,87,0.95); color: #fff; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; z-index: 10000; opacity: 0; transition: transform 0.3s, opacity 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); pointer-events: none;}
-#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(230,72,90,0.95); color: #fff; padding: 12px 24px; border-radius: 30px; font-weight: 600; font-size: 0.9rem; z-index: 10000; opacity: 0; transition: transform 0.3s, opacity 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); pointer-events: none;}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 .site-footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 40px; }
 .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
 .footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; cursor: pointer; transition: color 0.2s; }
@@ -229,7 +229,7 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 <body>
 
 <header>
-  <div class="logo" onclick="switchPanel('home')"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></div>
+  <div class="logo" onclick="switchPanel('home');easterEggClick()"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></div>
   <div class="nav-links">
     <div class="nav-item active" id="nav-home" onclick="switchPanel('home')">🏠 ホーム</div>
     <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
@@ -1043,6 +1043,23 @@ function showToastText(message) {
   toast.textContent = message;
   toast.classList.add('show');
   setTimeout(() => { toast.classList.remove('show'); }, 3000);
+}
+
+let _eggClickCount = 0;
+let _eggClickTimer = null;
+function easterEggClick() {
+  _eggClickCount++;
+  clearTimeout(_eggClickTimer);
+  _eggClickTimer = setTimeout(() => { _eggClickCount = 0; }, 1500);
+  if (_eggClickCount >= 5) {
+    _eggClickCount = 0;
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.innerHTML = '🥚 隠しゲームを発見！ <a href="/pixel-quest.html" style="color:#fff;text-decoration:underline;font-weight:800;">スタジオランナーで遊ぶ →</a>';
+    toast.classList.add('show');
+    clearTimeout(window._eggToastTimer);
+    window._eggToastTimer = setTimeout(() => { toast.classList.remove('show'); }, 6000);
+  }
 }
 
 async function fetchWithCache(url, retries = 2) {
