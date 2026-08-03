@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X4M05SEYCE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X4M05SEYCE');
+</script>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>スタジオランナー【隠しゲーム】｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/pixel-quest.html">
+<meta name="description" content="ANIMEDBの隠しミニゲーム「スタジオランナー」。制作会社を擬人化したキャラクターで横スクロールを駆け抜けよう。">
+<meta name="robots" content="noindex,follow">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
+  --accent: #e6485a; --text-main: #f1f2f6; --text-muted: #a4b0be;
+  --star-color: #d99a3d; --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
+header {
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(230,72,90,0.15); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; flex-shrink: 0; }
+.logo-a { color: #fff; } .logo-db { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; border: 1px solid transparent; flex-shrink: 0; }
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: var(--accent); background: rgba(230,72,90,0.12); border-color: rgba(230,72,90,0.3); }
+@media (max-width: 768px) { header { padding: 0 12px; } .logo { font-size: 1.2rem; } .nav-item { font-size: 0.78rem; padding: 6px 10px; } }
+
+main { margin-top: var(--nav-height); padding: 20px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 20px 0 8px; text-align: center; }
+.page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; display: inline-block; margin-bottom: 12px; }
+.page-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+.page-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.7; }
+
+.char-select { display: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px; margin-bottom: 16px; text-align: center; }
+.char-select.active { display: block; }
+.char-select-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 16px; color: #fff; }
+.char-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+.char-option { background: var(--bg-darker); border: 2px solid var(--border-color); border-radius: 12px; padding: 10px 6px; cursor: pointer; transition: border-color 0.2s; }
+.char-option.selected { border-color: var(--accent); }
+.char-avatar { width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 6px; }
+.char-name { font-size: 0.68rem; color: var(--text-muted); }
+.start-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; padding: 14px 40px; cursor: pointer; font-family: inherit; }
+
+.game-wrap { display: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 14px; margin-bottom: 16px; }
+.game-wrap.active { display: block; }
+.game-hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 4px; }
+.hud-score { font-size: 0.95rem; font-weight: 800; color: #fff; }
+.hud-best { font-size: 0.78rem; color: var(--text-muted); }
+#gameCanvas { width: 100%; display: block; border-radius: 10px; background: linear-gradient(180deg, #1a2138, #0f1424); touch-action: manipulation; }
+.game-hint { text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 10px; }
+
+.gameover-box { display: none; background: var(--bg-card); border: 2px solid var(--accent); border-radius: 16px; padding: 28px 24px; text-align: center; margin-bottom: 16px; }
+.gameover-box.active { display: block; }
+.go-title { font-size: 1.3rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+.go-score { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; }
+.go-score strong { color: var(--star-color); font-size: 1.2rem; }
+.go-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.go-btn { padding: 12px 24px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; font-family: inherit; }
+.go-btn.primary { background: var(--accent); color: #fff; }
+.go-btn.secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); }
+
+footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 24px; text-align: center; margin-top: 30px; }
+.footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; }
+.copyright { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
+    <a href="/games.html" class="nav-item active" style="text-decoration:none;">🎮 診断・視聴傾向・ガチャ・シミュレーター</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <span class="page-tag">🥚 隠しゲーム発見</span>
+    <h1 class="page-title">スタジオランナー</h1>
+    <p class="page-desc">制作会社を擬人化したキャラクターで、障害物を飛び越えながらどこまでも走ろう。タップ／スペースキーでジャンプ。</p>
+  </div>
+
+  <div class="char-select active" id="charSelect">
+    <div class="char-select-title">キャラクターを選んでスタート</div>
+    <div class="char-grid" id="charGrid"></div>
+    <button class="start-btn" onclick="startGame()">スタート →</button>
+  </div>
+
+  <div class="game-wrap" id="gameWrap">
+    <div class="game-hud">
+      <span class="hud-score" id="hudScore">SCORE: 0</span>
+      <span class="hud-best" id="hudBest">BEST: 0</span>
+    </div>
+    <canvas id="gameCanvas" width="600" height="300"></canvas>
+    <div class="game-hint">タップ / クリック / スペースキーでジャンプ</div>
+  </div>
+
+  <div class="gameover-box" id="gameoverBox">
+    <div class="go-title">💥 ゲームオーバー</div>
+    <div class="go-score">スコア：<strong id="finalScore">0</strong></div>
+    <div class="go-btns">
+      <button class="go-btn primary" onclick="retryGame()">もう一度遊ぶ</button>
+      <a href="/games.html" class="go-btn secondary">診断・ガチャ一覧へ</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/" class="footer-link">ホーム</a>
+    <a href="/blog/" class="footer-link">ブログ</a>
+    <a href="/games.html" class="footer-link">診断・ガチャ一覧</a>
+  </div>
+  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+</footer>
+
+<script>
+const characters = [
+  { name: "P.A.WORKS", color: "#e07a35", accent: "#fff" },
+  { name: "京都アニメーション", color: "#5a9fd6", accent: "#fff" },
+  { name: "CloverWorks", color: "#4ec9b0", accent: "#fff" },
+  { name: "A-1 Pictures", color: "#e6485a", accent: "#fff" },
+  { name: "wit studio", color: "#7a7a8c", accent: "#fff" },
+  { name: "MAPPA", color: "#d99a3d", accent: "#111" },
+  { name: "TRIGGER", color: "#c94ed6", accent: "#fff" },
+  { name: "サイエンスSARU", color: "#5cc95c", accent: "#fff" }
+];
+
+let selectedChar = 0;
+const charGrid = document.getElementById('charGrid');
+characters.forEach((c, i) => {
+  const el = document.createElement('div');
+  el.className = 'char-option' + (i === 0 ? ' selected' : '');
+  el.innerHTML = `<div class="char-avatar" style="background:${c.color}"></div><div class="char-name">${c.name}</div>`;
+  el.onclick = () => {
+    document.querySelectorAll('.char-option').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedChar = i;
+  };
+  charGrid.appendChild(el);
+});
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const GROUND_Y = 240;
+let player, obstacles, score, best, speed, running, animId, spawnTimer;
+
+function loadBest() {
+  try { return parseInt(localStorage.getItem('animedb_runner_best') || '0'); } catch(e) { return 0; }
+}
+function saveBest(v) {
+  try { localStorage.setItem('animedb_runner_best', v); } catch(e) {}
+}
+best = 0; // in-memory only fallback if storage unavailable
+try { best = loadBest(); } catch(e) { best = 0; }
+document.getElementById('hudBest').textContent = 'BEST: ' + best;
+
+function resetGame() {
+  const c = characters[selectedChar];
+  player = { x: 60, y: GROUND_Y - 30, w: 30, h: 30, vy: 0, jumping: false, color: c.color, accent: c.accent };
+  obstacles = [];
+  score = 0;
+  speed = 4.5;
+  spawnTimer = 0;
+  running = true;
+}
+
+function jump() {
+  if (!running) return;
+  if (!player.jumping) {
+    player.vy = -11;
+    player.jumping = true;
+  }
+}
+
+function spawnObstacle() {
+  const h = 24 + Math.random() * 20;
+  obstacles.push({ x: canvas.width + 10, y: GROUND_Y - h, w: 18, h: h });
+}
+
+function update() {
+  if (!running) return;
+
+  // physics
+  player.vy += 0.55;
+  player.y += player.vy;
+  if (player.y >= GROUND_Y - player.h) {
+    player.y = GROUND_Y - player.h;
+    player.vy = 0;
+    player.jumping = false;
+  }
+
+  spawnTimer -= 1;
+  if (spawnTimer <= 0) {
+    spawnObstacle();
+    spawnTimer = 60 + Math.random() * 50 - Math.min(speed * 3, 40);
+  }
+
+  obstacles.forEach(o => o.x -= speed);
+  obstacles = obstacles.filter(o => o.x + o.w > -10);
+
+  // collision
+  for (const o of obstacles) {
+    if (player.x < o.x + o.w && player.x + player.w > o.x &&
+        player.y < o.y + o.h && player.y + player.h > o.y) {
+      endGame();
+      return;
+    }
+  }
+
+  score += 1;
+  speed += 0.0025;
+
+  draw();
+  animId = requestAnimationFrame(update);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // ground
+  ctx.fillStyle = '#252d45';
+  ctx.fillRect(0, GROUND_Y, canvas.width, canvas.height - GROUND_Y);
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.beginPath();
+  ctx.moveTo(0, GROUND_Y);
+  ctx.lineTo(canvas.width, GROUND_Y);
+  ctx.stroke();
+
+  // obstacles
+  ctx.fillStyle = '#e6485a';
+  obstacles.forEach(o => {
+    ctx.fillRect(o.x, o.y, o.w, o.h);
+  });
+
+  // player (simple chibi blob mascot)
+  ctx.fillStyle = player.color;
+  const cx = player.x + player.w / 2;
+  const cy = player.y + player.h / 2;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, player.w / 2, player.h / 2, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // eyes
+  ctx.fillStyle = player.accent;
+  ctx.beginPath();
+  ctx.ellipse(cx - 6, cy - 3, 3, 4, 0, 0, Math.PI * 2);
+  ctx.ellipse(cx + 6, cy - 3, 3, 4, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#111';
+  ctx.beginPath();
+  ctx.arc(cx - 6, cy - 2, 1.5, 0, Math.PI * 2);
+  ctx.arc(cx + 6, cy - 2, 1.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  document.getElementById('hudScore').textContent = 'SCORE: ' + Math.floor(score / 5);
+}
+
+function endGame() {
+  running = false;
+  cancelAnimationFrame(animId);
+  const finalScore = Math.floor(score / 5);
+  if (finalScore > best) {
+    best = finalScore;
+    saveBest(best);
+  }
+  document.getElementById('hudBest').textContent = 'BEST: ' + best;
+  document.getElementById('finalScore').textContent = finalScore;
+  document.getElementById('gameWrap').classList.remove('active');
+  document.getElementById('gameoverBox').classList.add('active');
+}
+
+function startGame() {
+  document.getElementById('charSelect').classList.remove('active');
+  document.getElementById('gameWrap').classList.add('active');
+  document.getElementById('gameoverBox').classList.remove('active');
+  resetGame();
+  animId = requestAnimationFrame(update);
+}
+
+function retryGame() {
+  document.getElementById('gameoverBox').classList.remove('active');
+  document.getElementById('gameWrap').classList.add('active');
+  resetGame();
+  animId = requestAnimationFrame(update);
+}
+
+canvas.addEventListener('mousedown', jump);
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, { passive: false });
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); jump(); }
+});
+</script>
+
+</body>
+</html>
