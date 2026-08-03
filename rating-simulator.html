@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X4M05SEYCE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X4M05SEYCE');
+</script>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>このアニメ、何点つける？評価シミュレーター｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/rating-simulator.html">
+<meta name="description" content="脚本・作画演出・キャラ・音楽の4項目をスライダーで調整すると、ANIMEDBの評価基準でS〜Cの判定が返ってくる体験型シミュレーター。自分の評価基準を客観視できます。">
+<meta name="keywords" content="アニメ評価シミュレーター,S評価,採点,ANIMEDB,評価基準">
+<meta name="robots" content="index,follow">
+<meta name="author" content="ANIMEDB">
+<meta property="og:title" content="このアニメ、何点つける？評価シミュレーター｜ANIMEDB">
+<meta property="og:description" content="脚本・作画演出・キャラ・音楽をスライダーで調整すると、ANIMEDBの評価基準でS〜Cの判定が返ってきます。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anime-db.jp/rating-simulator.html">
+<meta property="og:site_name" content="ANIMEDB">
+<meta property="og:locale" content="ja_JP">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
+  --accent: #e6485a; --text-main: #f1f2f6; --text-muted: #a4b0be;
+  --star-color: #e6a94a; --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+header {
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(230,72,90,0.15); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; flex-shrink: 0; }
+.logo-a { color: #fff; } .logo-db { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; border: 1px solid transparent; flex-shrink: 0; }
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: var(--accent); background: rgba(230,72,90,0.12); border-color: rgba(230,72,90,0.3); }
+@media (max-width: 768px) { header { padding: 0 12px; } .logo { font-size: 1.2rem; } .nav-item { font-size: 0.78rem; padding: 6px 10px; } }
+
+main { margin-top: var(--nav-height); padding: 24px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 32px 0 8px; text-align: center; }
+.page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 14px; }
+.page-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
+.page-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 28px; line-height: 1.8; }
+
+.sim-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px 26px; margin-bottom: 20px; }
+.slider-group { margin-bottom: 26px; }
+.slider-group:last-child { margin-bottom: 0; }
+.slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.slider-name { font-size: 0.95rem; font-weight: 700; color: #fff; }
+.slider-value { font-size: 0.95rem; font-weight: 800; color: var(--accent); }
+.slider-input { width: 100%; height: 8px; border-radius: 6px; appearance: none; background: var(--bg-darker); outline: none; }
+.slider-input::-webkit-slider-thumb { appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid var(--bg-card); box-shadow: 0 0 0 1px var(--border-color); }
+.slider-input::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 3px solid var(--bg-card); }
+.slider-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; }
+
+.result-box { background: var(--bg-card); border: 2px solid var(--accent); border-radius: 16px; padding: 28px 24px; text-align: center; margin-top: 20px; }
+.result-rank { font-size: 3rem; font-weight: 800; margin-bottom: 6px; }
+.result-rank.s { color: #e6485a; } .result-rank.a { color: #e6a94a; } .result-rank.b { color: #5a9fd6; } .result-rank.c { color: var(--text-muted); }
+.result-score { font-size: 1rem; color: var(--text-muted); margin-bottom: 14px; }
+.result-comment { font-size: 0.92rem; color: var(--text-main); line-height: 1.85; text-align: left; background: var(--bg-darker); border-radius: 10px; padding: 16px 18px; }
+
+.sim-note { text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 20px; line-height: 1.8; }
+.sim-note a { color: var(--star-color); text-decoration: none; }
+
+footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 40px; }
+.footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+.footer-link:hover { color: #fff; }
+.copyright { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
+    <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
+    <a href="/glossary.html" class="nav-item" style="text-decoration:none;">📖 用語集</a>
+    <a href="/directory.html" class="nav-item" style="text-decoration:none;">🗂️ 名鑑</a>
+    <a href="/games.html" class="nav-item active" style="text-decoration:none;">🎮 診断・ガチャ・視聴傾向</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <span class="page-tag">🎚️ 体験型シミュレーター</span>
+    <h1 class="page-title">このアニメ、何点つける？</h1>
+    <p class="page-desc">脚本・作画演出・キャラ・音楽の4項目を、見た作品のイメージでスライダーに合わせてみてください。ANIMEDBの<a href="/blog/rating-criteria.html" style="color:var(--star-color);text-decoration:none;">評価基準</a>に沿って、S〜Cの判定を返します。</p>
+  </div>
+
+  <div class="sim-card">
+    <div class="slider-group">
+      <div class="slider-label"><span class="slider-name">✍️ 脚本・構成</span><span class="slider-value" id="val-script">5</span></div>
+      <input type="range" min="0" max="10" value="5" class="slider-input" id="slider-script" oninput="updateSim()">
+      <div class="slider-desc">話の構成、伏線の張り方、台詞の説得力</div>
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span class="slider-name">🎬 作画・演出</span><span class="slider-value" id="val-visual">5</span></div>
+      <input type="range" min="0" max="10" value="5" class="slider-input" id="slider-visual" oninput="updateSim()">
+      <div class="slider-desc">映像のクオリティ、カット割り、動きの気持ちよさ</div>
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span class="slider-name">💖 キャラクター</span><span class="slider-value" id="val-chara">5</span></div>
+      <input type="range" min="0" max="10" value="5" class="slider-input" id="slider-chara" oninput="updateSim()">
+      <div class="slider-desc">キャラクターの魅力、関係性、声優の演技</div>
+    </div>
+    <div class="slider-group">
+      <div class="slider-label"><span class="slider-name">🎵 音楽・主題歌</span><span class="slider-value" id="val-music">5</span></div>
+      <input type="range" min="0" max="10" value="5" class="slider-input" id="slider-music" oninput="updateSim()">
+      <div class="slider-desc">劇伴のクオリティ、OP・EDとの相性</div>
+    </div>
+  </div>
+
+  <div class="result-box" id="resultBox"></div>
+
+  <div class="sim-note">脚本を最重視した加重平均で判定しています。詳しい配点の考え方は<a href="/blog/rating-criteria.html">評価基準の記事</a>で解説しています。</div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/" class="footer-link">ホーム</a>
+    <a href="/blog/" class="footer-link">ブログ</a>
+    <a href="/privacy.html" class="footer-link">プライバシーポリシー</a>
+    <a href="/contact.html" class="footer-link">お問い合わせ</a>
+    <a href="/changelog.html" class="footer-link">更新履歴</a>
+  </div>
+  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+</footer>
+
+<script>
+function updateSim() {
+  const script = parseInt(document.getElementById('slider-script').value);
+  const visual = parseInt(document.getElementById('slider-visual').value);
+  const chara = parseInt(document.getElementById('slider-chara').value);
+  const music = parseInt(document.getElementById('slider-music').value);
+
+  document.getElementById('val-script').textContent = script;
+  document.getElementById('val-visual').textContent = visual;
+  document.getElementById('val-chara').textContent = chara;
+  document.getElementById('val-music').textContent = music;
+
+  // 脚本を最重視した加重平均（脚本40% / 演出25% / キャラ25% / 音楽10%）
+  const weighted = (script * 0.4 + visual * 0.25 + chara * 0.25 + music * 0.1);
+  const score = Math.round(weighted * 10) / 10;
+
+  let rank, rankClass, comment;
+  if (score >= 9.0) {
+    rank = 'S'; rankClass = 's';
+    comment = 'ANIMEDB基準だとS評価です。脚本・演出・キャラのどれかが突き抜けている、積極的に人に薦めたくなるタイプの作品ですね。';
+  } else if (score >= 8.0) {
+    rank = 'A'; rankClass = 'a';
+    comment = 'ANIMEDB基準だとA評価です。大きな欠点がなく安定して面白い、ジャンルが好きな人に自信を持って薦められる作品ですね。';
+  } else if (score >= 7.0) {
+    rank = 'B'; rankClass = 'b';
+    comment = 'ANIMEDB基準だとB評価です。楽しめるけれど、どこか気になる点がある。ファン向け・原作既読者向けになりやすいタイプです。';
+  } else {
+    rank = 'C'; rankClass = 'c';
+    comment = 'ANIMEDB基準だとC評価です。視聴は続けられるけれど、積極的に薦める理由が見つからない、という判定です。ただしC評価だからといって悪い作品というわけではありません。';
+  }
+
+  if (script <= 3 && (visual >= 8 || chara >= 8)) {
+    comment += ' 脚本の評価が低めなので、演出やキャラの魅力だけでは点数が伸びにくい配点になっています。これはANIMEDB管理人が「脚本派」を公言しているためです。';
+  }
+
+  document.getElementById('resultBox').innerHTML = `
+    <div class="result-rank ${rankClass}">${rank}</div>
+    <div class="result-score">加重スコア：${score.toFixed(1)} / 10.0</div>
+    <div class="result-comment">${comment}</div>
+  `;
+}
+updateSim();
+</script>
+
+</body>
+</html>
