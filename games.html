@@ -31,8 +31,8 @@
 <style>
 :root {
   --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
-  --accent: #ff4757; --text-main: #f1f2f6; --text-muted: #a4b0be;
-  --star-color: #ffa502; --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
+  --accent: #e6485a; --text-main: #f1f2f6; --text-muted: #a4b0be;
+  --star-color: #d99a3d; --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
@@ -82,7 +82,7 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
     <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
     <a href="/glossary.html" class="nav-item" style="text-decoration:none;">📖 用語集</a>
     <a href="/directory.html" class="nav-item" style="text-decoration:none;">🗂️ 名鑑</a>
-    <a href="/games.html" class="nav-item active" style="text-decoration:none;">🎮 診断・ガチャ</a>
+    <a href="/games.html" class="nav-item active" style="text-decoration:none;">🎮 診断・ガチャ・視聴傾向</a>
   </div>
 </header>
 
@@ -118,6 +118,15 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
     </div>
     <div class="game-title">埋もれた名作ガチャ</div>
     <div class="game-desc">今日は何を見るか迷ったら、ボタン一つで1本ご提案します。<span class="game-arrow">ガチャを引く →</span></div>
+  </a>
+
+  <a href="/rating-simulator.html" class="game-card">
+    <div class="game-top">
+      <span class="game-badge">🎚️ 体験型シミュレーター</span>
+      <span class="game-meta">所要時間 約1分</span>
+    </div>
+    <div class="game-title">このアニメ、何点つける？</div>
+    <div class="game-desc">脚本・作画演出・キャラ・音楽をスライダーで調整すると、ANIMEDB基準でS〜Cの判定が返ってきます。<span class="game-arrow">試してみる →</span></div>
   </a>
 </main>
 
