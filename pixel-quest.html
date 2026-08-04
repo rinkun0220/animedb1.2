@@ -102,6 +102,7 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
   <div class="char-select active" id="charSelect">
     <div class="char-select-title">キャラクターを選んでスタート</div>
     <div class="char-grid" id="charGrid"></div>
+    <div id="kojimaIntro" style="display:none;font-size:.8rem;color:var(--accent);font-style:italic;margin-bottom:14px;line-height:1.7;"></div>
     <button class="start-btn" onclick="startGame()">スタート →</button>
   </div>
 
@@ -117,6 +118,7 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
   <div class="gameover-box" id="gameoverBox">
     <div class="go-title">💥 ゲームオーバー</div>
     <div class="go-score">スコア：<strong id="finalScore">0</strong></div>
+    <div id="kojimaOutro" style="display:none;font-size:.82rem;color:var(--accent);font-style:italic;margin-bottom:18px;line-height:1.8;padding:12px 16px;background:rgba(230,72,90,0.08);border-radius:10px;text-align:left;"></div>
     <div class="go-btns">
       <button class="go-btn primary" onclick="retryGame()">もう一度遊ぶ</button>
       <a href="/games.html" class="go-btn secondary">診断・ガチャ一覧へ</a>
@@ -142,7 +144,8 @@ const characters = [
   { name: "wit studio", color: "#7a7a8c", accent: "#fff" },
   { name: "MAPPA", color: "#d99a3d", accent: "#111" },
   { name: "TRIGGER", color: "#c94ed6", accent: "#fff" },
-  { name: "サイエンスSARU", color: "#5cc95c", accent: "#fff" }
+  { name: "サイエンスSARU", color: "#5cc95c", accent: "#fff" },
+  { name: "コジマプロダクション", color: "#1a1a1a", accent: "#e6485a", special: true, url: "https://www.kojimaproductions.jp/ja" }
 ];
 
 let selectedChar = 0;
@@ -150,14 +153,45 @@ const charGrid = document.getElementById('charGrid');
 characters.forEach((c, i) => {
   const el = document.createElement('div');
   el.className = 'char-option' + (i === 0 ? ' selected' : '');
-  el.innerHTML = `<div class="char-avatar" style="background:${c.color}"></div><div class="char-name">${c.name}</div>`;
+  const badge = c.special ? '<div style="font-size:.55rem;color:#e6485a;font-weight:800;margin-bottom:2px;">🎬 特別出演</div>' : '';
+  el.innerHTML = `${badge}<div class="char-avatar" style="background:${c.color}${c.special ? ';border:2px solid #e6485a' : ''}"></div><div class="char-name">${c.name}</div>`;
   el.onclick = () => {
     document.querySelectorAll('.char-option').forEach(x => x.classList.remove('selected'));
     el.classList.add('selected');
     selectedChar = i;
+    if (c.special) showKojimaIntro();
   };
   charGrid.appendChild(el);
 });
+
+const kojimaLines = [
+  "……この先は、ゲームではない。人生だ。",
+  "隠れるなら、ダンボールが一番だぞ。",
+  "つながりは、見えないところにこそある……（Strand）",
+  "コーデック、応答せよ……応答せよ……（ノイズ）",
+  "監督のカメオ出演です。クレジットは後で。"
+];
+function showKojimaIntro() {
+  const toast = document.getElementById('hudBest');
+  // 一瞬だけ演出テキストを表示（ゲーム開始前の小さな小ネタ）
+  const line = kojimaLines[Math.floor(Math.random() * kojimaLines.length)];
+  const introEl = document.getElementById('kojimaIntro');
+  if (introEl) {
+    introEl.textContent = '🎬 ' + line;
+    introEl.style.display = 'block';
+    clearTimeout(window._kojimaIntroTimer);
+    window._kojimaIntroTimer = setTimeout(() => { introEl.style.display = 'none'; }, 2600);
+  }
+}
+
+const kojimaGameOverLines = [
+  "あれ、ここ選びました？　実は管理人、小島秀夫信者です。",
+  "「Kept you waiting, huh」……もう一回、待たせてしまったな。",
+  "ダンボールに隠れていれば、この結果は避けられたかもしれない。",
+  "STRAND……人と人、いや、キャラとプレイヤーのつながりがまた一つ生まれた。",
+  "監督ならこう言うだろう。「これはゲームオーバーではない。始まりだ。」",
+  "エンドロールが流れそうな余韻だが、まだ流れない。もう一回どうぞ。"
+];
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -284,6 +318,21 @@ function endGame() {
   }
   document.getElementById('hudBest').textContent = 'BEST: ' + best;
   document.getElementById('finalScore').textContent = finalScore;
+
+  const outroEl = document.getElementById('kojimaOutro');
+  if (characters[selectedChar].special) {
+    let line;
+    if (finalScore >= 50) {
+      line = "……見事だ。だが、これは『エンディング』ではない。次のミッションへの『プロローグ』だ。（THE END？ いや、まだだ）";
+    } else {
+      line = kojimaGameOverLines[Math.floor(Math.random() * kojimaGameOverLines.length)];
+    }
+    outroEl.innerHTML = '🎬 ' + line + '<br><a href="' + characters[selectedChar].url + '" target="_blank" rel="noopener" style="color:var(--star-color);font-size:.78rem;">→ KOJIMA PRODUCTIONS 公式サイト</a>';
+    outroEl.style.display = 'block';
+  } else {
+    outroEl.style.display = 'none';
+  }
+
   document.getElementById('gameWrap').classList.remove('active');
   document.getElementById('gameoverBox').classList.add('active');
 }
