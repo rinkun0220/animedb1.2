@@ -229,7 +229,7 @@ main { margin-top: var(--nav-height); padding: 24px; min-height: calc(100vh - va
 <body>
 
 <header>
-  <div class="logo" onclick="switchPanel('home');easterEggClick()"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></div>
+  <div class="logo" onclick="try{switchPanel('home');}catch(e){} easterEggClick();" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent;"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></div>
   <div class="nav-links">
     <div class="nav-item active" id="nav-home" onclick="switchPanel('home')">🏠 ホーム</div>
     <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
@@ -1052,7 +1052,7 @@ let _eggClickTimer = null;
 function easterEggClick() {
   _eggClickCount++;
   clearTimeout(_eggClickTimer);
-  _eggClickTimer = setTimeout(() => { _eggClickCount = 0; }, 1500);
+  _eggClickTimer = setTimeout(() => { _eggClickCount = 0; }, 2500);
   if (_eggClickCount >= 5) {
     _eggClickCount = 0;
     const toast = document.getElementById('toast');
@@ -1063,6 +1063,23 @@ function easterEggClick() {
     window._eggToastTimer = setTimeout(() => { toast.classList.remove('show'); }, 6000);
   }
 }
+// モバイルでonclickが安定して発火しない端末向けの保険（touchendでも同じ処理を発火、二重カウント防止つき）
+(function() {
+  const logoEl = document.querySelector('header .logo');
+  if (!logoEl) return;
+  let lastTrigger = 0;
+  function safeTrigger(e) {
+    const now = Date.now();
+    if (now - lastTrigger < 350) return; // click/touchendの二重発火を防止
+    lastTrigger = now;
+    try { switchPanel('home'); } catch (err) {}
+    easterEggClick();
+  }
+  logoEl.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    safeTrigger(e);
+  }, { passive: false });
+})();
 
 async function fetchWithCache(url, retries = 2) {
   const now = Date.now();
