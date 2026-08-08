@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X4M05SEYCE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X4M05SEYCE');
+</script>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>あなたに合う監督診断｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/director-diagnosis.html">
+<meta name="description" content="5つの質問に答えるだけで、あなたの好みに近いアニメ監督を診断。長井龍雪・石原立也・石立太一・水島努の中から結果が出ます。">
+<meta name="keywords" content="監督診断,アニメ診断,長井龍雪,石原立也,石立太一,水島努">
+<meta name="robots" content="index,follow">
+<meta name="author" content="ANIMEDB">
+<meta property="og:title" content="あなたに合う監督診断｜ANIMEDB">
+<meta property="og:description" content="5つの質問に答えるだけで、あなたの好みに近いアニメ監督がわかります。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anime-db.jp/director-diagnosis.html">
+<meta property="og:site_name" content="ANIMEDB">
+<meta property="og:locale" content="ja_JP">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
+  --accent: #e6485a; --text-main: #f1f2f6; --text-muted: #a4b0be;
+  --star-color: #d99a3d; --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+header {
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(230,72,90,0.15); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; flex-shrink: 0; }
+.logo-a { color: #fff; } .logo-db { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; border: 1px solid transparent; flex-shrink: 0; }
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: var(--accent); background: rgba(230,72,90,0.12); border-color: rgba(230,72,90,0.3); }
+@media (max-width: 768px) { header { padding: 0 12px; } .logo { font-size: 1.2rem; } .nav-item { font-size: 0.78rem; padding: 6px 10px; } }
+
+main { margin-top: var(--nav-height); padding: 24px; max-width: 680px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 32px 0 8px; text-align: center; }
+.page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 14px; }
+.page-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 10px; }
+.page-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 32px; line-height: 1.8; }
+
+.progress-wrap { background: var(--bg-card); border-radius: 20px; height: 8px; margin-bottom: 32px; overflow: hidden; }
+.progress-bar { background: var(--accent); height: 100%; width: 0%; transition: width 0.4s ease; border-radius: 20px; }
+
+.q-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px 24px; margin-bottom: 20px; }
+.q-num { font-size: 0.78rem; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+.q-text { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 22px; line-height: 1.6; }
+.q-options { display: grid; gap: 10px; }
+.q-opt { background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 18px; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; text-align: left; color: var(--text-main); font-family: inherit; }
+.q-opt:hover { border-color: var(--accent); background: rgba(230,72,90,0.06); }
+
+#startScreen, #resultScreen { text-align: center; }
+.start-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 700; padding: 16px 44px; cursor: pointer; transition: background 0.2s; font-family: inherit; }
+
+.result-card { background: var(--bg-card); border: 2px solid var(--accent); border-radius: 18px; padding: 36px 28px; margin-bottom: 24px; }
+.result-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+.result-name { font-size: 1.7rem; font-weight: 800; color: #fff; margin-bottom: 16px; }
+.result-desc { font-size: 0.94rem; color: var(--text-main); line-height: 1.9; margin-bottom: 20px; text-align: left; }
+.result-works { font-size: 0.82rem; color: var(--text-muted); background: var(--bg-darker); border-radius: 8px; padding: 12px 16px; text-align: left; margin-bottom: 20px; }
+.result-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.result-btn { display: inline-block; padding: 12px 26px; border-radius: 8px; font-size: 0.92rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; font-family: inherit; }
+.result-btn.primary { background: var(--accent); color: #fff; }
+.result-btn.secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; }
+.result-btn.share { background: #000; color: #fff; border: 1px solid #333; }
+
+.other-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; text-align: left; }
+.other-title { font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
+.other-list { display: grid; gap: 8px; }
+.other-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 16px; text-decoration: none; transition: border-color 0.2s; }
+.other-item:hover { border-color: var(--star-color); }
+.other-name { font-size: 0.9rem; font-weight: 700; color: var(--text-main); }
+.other-arrow { font-size: 0.78rem; color: var(--star-color); font-weight: 600; }
+
+.hidden { display: none !important; }
+
+footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 40px; }
+.footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+.footer-link:hover { color: #fff; }
+.copyright { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
+    <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
+    <a href="/glossary.html" class="nav-item" style="text-decoration:none;">📖 用語集</a>
+    <a href="/directory.html" class="nav-item" style="text-decoration:none;">🗂️ 名鑑</a>
+    <a href="/games.html" class="nav-item active" style="text-decoration:none;">🎮 【ガチャ・診断・ゲーム？】</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <span class="page-tag">🎬 診断コンテンツ</span>
+    <h1 class="page-title">あなたに合う監督診断</h1>
+    <p class="page-desc">5つの質問に答えるだけで、あなたの好みに一番近いアニメ監督がわかります。所要時間は約1分です。</p>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div id="startScreen">
+    <div class="q-card">
+      <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:24px; line-height:1.9;">感情を爆発させる演出、日常芝居の緻密さ、音楽と美術の調和、ジャンルを超えた振れ幅。監督ごとの"画面の作り方"は驚くほど違います。あなたの"好き"はどの監督に近いでしょうか？</p>
+      <button class="start-btn" onclick="startQuiz()">診断をはじめる →</button>
+    </div>
+  </div>
+
+  <div id="quizScreen" class="hidden"></div>
+
+  <div id="resultScreen" class="hidden"></div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/" class="footer-link">ホーム</a>
+    <a href="/blog/" class="footer-link">ブログ</a>
+    <a href="/privacy.html" class="footer-link">プライバシーポリシー</a>
+    <a href="/contact.html" class="footer-link">お問い合わせ</a>
+    <a href="/changelog.html" class="footer-link">更新履歴</a>
+  </div>
+  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+</footer>
+
+<script>
+const questions = [
+  {
+    text: "好きな演出は？",
+    options: [
+      { label: "感情が爆発するシーンの強い演出", scores: { nagai: 3 } },
+      { label: "日常芝居の緻密さ、笑いとシリアスのバランス", scores: { ishihara: 3 } },
+      { label: "音楽・美術を活かした繊細な画作り", scores: { ishidate: 3 } },
+      { label: "ジャンルを問わないテンポの良さ", scores: { mizushima: 3 } }
+    ]
+  },
+  {
+    text: "好きなジャンルは？",
+    options: [
+      { label: "青春の痛みを描く作品", scores: { nagai: 3 } },
+      { label: "日常系・京都アニメーション系の作品", scores: { ishihara: 3 } },
+      { label: "音楽もの・映像美が際立つ作品", scores: { ishidate: 3 } },
+      { label: "コメディからミリタリー、業界ものまで幅広く", scores: { mizushima: 3 } }
+    ]
+  },
+  {
+    text: "一番刺さる瞬間は？",
+    options: [
+      { label: "感情が爆発する瞬間の演出", scores: { nagai: 3 } },
+      { label: "笑いとシリアスの絶妙なバランス", scores: { ishihara: 3 } },
+      { label: "繊細な感情表現の積み重ね", scores: { ishidate: 3 } },
+      { label: "テンポよく物語が転がっていく瞬間", scores: { mizushima: 3 } }
+    ]
+  },
+  {
+    text: "監督に求めるものは？",
+    options: [
+      { label: "脚本と一体化した感情の演出力", scores: { nagai: 3 } },
+      { label: "緻密な日常芝居の積み上げ", scores: { ishihara: 3 } },
+      { label: "音楽・美術との調和", scores: { ishidate: 3 } },
+      { label: "ジャンルを超えた振れ幅の広さ", scores: { mizushima: 3 } }
+    ]
+  },
+  {
+    text: "好きな画作りは？",
+    options: [
+      { label: "感情を爆発させる強いカット割り", scores: { nagai: 3 } },
+      { label: "笑いとシリアスの緩急がついた画面", scores: { ishihara: 3 } },
+      { label: "音楽・美術が引き立つ美しい画面", scores: { ishidate: 3 } },
+      { label: "テンポよく展開する軽快な画面", scores: { mizushima: 3 } }
+    ]
+  }
+];
+
+const results = {
+  nagai: {
+    name: "長井龍雪",
+    desc: "あなたに一番近いのは長井龍雪です。脚本の岡田麿里とのタッグ作品を中心に、青春の痛みを真正面から描く監督。感情の爆発シーンの演出に強く惹かれるタイプです。",
+    works: "代表作：あの日見た花の名前を僕達はまだ知らない。　など",
+    anchor: "nagai"
+  },
+  ishihara: {
+    name: "石原立也",
+    desc: "あなたに一番近いのは石原立也です。京都アニメーションの土台を作った世代の監督。日常芝居の緻密さと、笑いとシリアスのバランス感覚に長けている作風に惹かれるタイプです。",
+    works: "代表作：涼宮ハルヒの憂鬱　など",
+    anchor: "ishihara"
+  },
+  ishidate: {
+    name: "石立太一",
+    desc: "あなたに一番近いのは石立太一です。京都アニメーションの次世代を担う監督。繊細な感情表現と、音楽・美術を活かした画作りの美しさに強く惹かれるタイプです。",
+    works: "代表作：ヴァイオレット・エヴァーガーデン　など",
+    anchor: "ishidate"
+  },
+  mizushima: {
+    name: "水島努",
+    desc: "あなたに一番近いのは水島努です。ジャンルを問わない振れ幅の広さが持ち味。コメディからミリタリー、業界ものまで幅広く手掛け、どの作品もテンポの良さが光る作風に惹かれるタイプです。",
+    works: "代表作：SHIROBAKO　など",
+    anchor: "mizushima",
+    official: "https://x.com/tsuki_akari"
+  }
+};
+
+let currentQ = 0;
+let scores = { nagai: 0, ishihara: 0, ishidate: 0, mizushima: 0 };
+
+function startQuiz() {
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+  currentQ = 0;
+  scores = { nagai: 0, ishihara: 0, ishidate: 0, mizushima: 0 };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('progressBar').style.width = ((currentQ) / questions.length * 100) + '%';
+  const optsHtml = q.options.map((opt, i) =>
+    `<button class="q-opt" onclick="selectOption(${i})">${opt.label}</button>`
+  ).join('');
+  document.getElementById('quizScreen').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Q${currentQ + 1} / ${questions.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">${optsHtml}</div>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  const opt = questions[currentQ].options[i];
+  for (const key in opt.scores) {
+    scores[key] += opt.scores[key];
+  }
+  currentQ++;
+  if (currentQ < questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('quizScreen').classList.add('hidden');
+  const ranked = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+  const topKey = ranked[0];
+  const otherKeys = ranked.slice(1);
+  const r = results[topKey];
+  const othersHtml = otherKeys.map(k => {
+    const o = results[k];
+    return `<a href="/blog/director-favorites.html#${o.anchor}" class="other-item">
+      <span class="other-name">${o.name}</span>
+      <span class="other-arrow">代表作を見る →</span>
+    </a>`;
+  }).join('');
+
+  const shareText = encodeURIComponent(`私に合う監督は「${r.name}」でした！ #ANIMEDB監督診断`);
+  const shareUrl = encodeURIComponent('https://anime-db.jp/director-diagnosis.html');
+
+  document.getElementById('resultScreen').innerHTML = `
+    <div class="result-card">
+      <div class="result-label">あなたに合う監督は…</div>
+      <div class="result-name">${r.name}</div>
+      <div class="result-desc">${r.desc}</div>
+      <div class="result-works">${r.works}</div>
+      <div class="result-btns">
+        <a href="/blog/director-favorites.html#${r.anchor}" class="result-btn primary">代表作をもっと見る →</a>
+        <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener" class="result-btn share">𝕏 結果をシェア</a>
+        <button class="result-btn secondary" onclick="restartQuiz()">もう一度診断する</button>
+      </div>
+    </div>
+    <div class="other-card">
+      <div class="other-title">🎬 この監督を選んだあなたには、こちらもおすすめ</div>
+      <div class="other-list">${othersHtml}</div>
+    </div>
+  `;
+  document.getElementById('resultScreen').classList.remove('hidden');
+}
+
+function restartQuiz() {
+  document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('progressBar').style.width = '0%';
+  startQuiz();
+}
+</script>
+
+</body>
+</html>
