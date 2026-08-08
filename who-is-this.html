@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X4M05SEYCE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X4M05SEYCE');
+</script>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>この人は誰？声優・スタッフ当てクイズ｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/who-is-this.html">
+<meta name="description" content="代表作のヒントだけで、声優・脚本家・監督・制作会社・アーティストを当てる4択クイズ。ANIMEDBの名鑑データ全47件から出題します。">
+<meta name="keywords" content="声優クイズ,当てクイズ,声優名鑑,ANIMEDB,アニメクイズ">
+<meta name="robots" content="index,follow">
+<meta name="author" content="ANIMEDB">
+<meta property="og:title" content="この人は誰？声優・スタッフ当てクイズ｜ANIMEDB">
+<meta property="og:description" content="代表作のヒントだけで、声優・脚本家・監督・制作会社・アーティストを当てる4択クイズ。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anime-db.jp/who-is-this.html">
+<meta property="og:site_name" content="ANIMEDB">
+<meta property="og:locale" content="ja_JP">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
+  --accent: #e6485a; --text-main: #f1f2f6; --text-muted: #a4b0be;
+  --star-color: #d99a3d; --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+header {
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(230,72,90,0.15); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; flex-shrink: 0; }
+.logo-a { color: #fff; } .logo-db { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; border: 1px solid transparent; flex-shrink: 0; }
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: var(--accent); background: rgba(230,72,90,0.12); border-color: rgba(230,72,90,0.3); }
+@media (max-width: 768px) { header { padding: 0 12px; } .logo { font-size: 1.2rem; } .nav-item { font-size: 0.78rem; padding: 6px 10px; } }
+
+main { margin-top: var(--nav-height); padding: 20px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 24px 0 8px; text-align: center; }
+.page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; display: inline-block; margin-bottom: 12px; }
+.page-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+.page-desc { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 24px; line-height: 1.8; }
+
+.progress-wrap { background: var(--bg-card); border-radius: 20px; height: 8px; margin-bottom: 24px; overflow: hidden; }
+.progress-bar { background: var(--accent); height: 100%; width: 0%; transition: width 0.3s ease; border-radius: 20px; }
+
+#startScreen, #resultScreen { text-align: center; }
+.start-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 26px 24px; margin-bottom: 16px; }
+.start-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 700; padding: 15px 44px; cursor: pointer; font-family: inherit; }
+
+.q-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 26px 24px; margin-bottom: 16px; }
+.q-num { font-size: 0.78rem; color: var(--accent); font-weight: 700; margin-bottom: 10px; }
+.q-category { display: inline-block; background: rgba(230,72,90,0.12); color: var(--accent); font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+.q-hint-title { font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+.q-hint-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
+.q-hint-role { font-size: 0.95rem; color: var(--star-color); font-weight: 700; margin-bottom: 20px; }
+.q-prompt { font-size: 0.9rem; color: var(--text-main); margin-bottom: 16px; font-weight: 700; }
+.q-options { display: grid; gap: 10px; }
+.q-opt { background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 18px; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; text-align: left; color: var(--text-main); font-family: inherit; }
+.q-opt:hover:not(:disabled) { border-color: var(--accent); background: rgba(230,72,90,0.06); }
+.q-opt.correct { border-color: #4ade80; background: rgba(74,222,128,0.12); color: #4ade80; font-weight: 700; }
+.q-opt.wrong { border-color: #e6485a; background: rgba(230,72,90,0.1); color: #e6485a; }
+.q-opt:disabled { cursor: default; opacity: 0.7; }
+.q-feedback { margin-top: 14px; font-size: 0.85rem; color: var(--text-muted); min-height: 20px; }
+.next-btn { display: none; margin-top: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 12px 30px; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+
+.result-card { background: var(--bg-card); border: 2px solid var(--accent); border-radius: 18px; padding: 32px 24px; margin-bottom: 20px; }
+.result-emoji { font-size: 2.6rem; margin-bottom: 10px; }
+.result-score { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+.result-comment { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 22px; line-height: 1.8; }
+.result-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.result-btn { padding: 12px 26px; border-radius: 8px; font-size: 0.9rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; font-family: inherit; }
+.result-btn.primary { background: var(--accent); color: #fff; }
+.result-btn.secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); }
+
+.hidden { display: none !important; }
+
+footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 24px; text-align: center; margin-top: 30px; }
+.footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; }
+.copyright { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
+    <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
+    <a href="/glossary.html" class="nav-item" style="text-decoration:none;">📖 用語集</a>
+    <a href="/directory.html" class="nav-item" style="text-decoration:none;">🗂️ 名鑑</a>
+    <a href="/games.html" class="nav-item active" style="text-decoration:none;">🎮 診断・視聴傾向・ガチャ・シミュレーター</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <span class="page-tag">❓ クイズ企画</span>
+    <h1 class="page-title">この人は誰？</h1>
+    <p class="page-desc">代表作のヒントだけで、声優・脚本家・監督・制作会社・アーティストを当てる4択クイズ。ANIMEDBの名鑑データ全47件から出題します。</p>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div id="startScreen">
+    <div class="start-card">
+      <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:22px; line-height:1.9;">全10問。作品タイトルとジャンルだけをヒントに、正体を当ててください。</p>
+      <button class="start-btn" onclick="startQuiz()">クイズをはじめる →</button>
+    </div>
+  </div>
+
+  <div id="quizScreen" class="hidden"></div>
+
+  <div id="resultScreen" class="hidden"></div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/" class="footer-link">ホーム</a>
+    <a href="/blog/" class="footer-link">ブログ</a>
+    <a href="/directory.html" class="footer-link">声優・スタッフ名鑑</a>
+    <a href="/games.html" class="footer-link">診断・ガチャ一覧</a>
+    <a href="/changelog.html" class="footer-link">更新履歴</a>
+  </div>
+  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+</footer>
+
+<script>
+const pool = [
+  {
+    "name": "中村悠一",
+    "id": "nakamura",
+    "category": "声優",
+    "work": "CLANNAD",
+    "genre": "恋愛・ドラマ",
+    "role": "岡崎朋也役",
+    "link": "male-seiyuu-favorites.html"
+  },
+  {
+    "name": "杉田智和",
+    "id": "sugita",
+    "category": "声優",
+    "work": "電脳冒険記ウェブダイバー",
+    "genre": "SF・冒険",
+    "role": "グラディオン役",
+    "link": "male-seiyuu-favorites.html"
+  },
+  {
+    "name": "津田健次郎",
+    "id": "tsuda",
+    "category": "声優",
+    "work": "ID:INVADED イド:インヴェイデッド",
+    "genre": "SFミステリー",
+    "role": "鳴瓢秋人役",
+    "link": "male-seiyuu-favorites.html"
+  },
+  {
+    "name": "梶裕貴",
+    "id": "kaji",
+    "category": "声優",
+    "work": "進撃の巨人",
+    "genre": "ダークファンタジー・バトル",
+    "role": "エレン・イェーガー役",
+    "link": "male-seiyuu-favorites.html"
+  },
+  {
+    "name": "松岡禎丞",
+    "id": "matsuoka",
+    "category": "声優",
+    "work": "ソードアート・オンライン",
+    "genre": "SF・ファンタジー",
+    "role": "キリト役",
+    "link": "male-seiyuu-favorites.html"
+  },
+  {
+    "name": "内田雄馬",
+    "id": "uchida",
+    "category": "声優",
+    "work": "シャングリラ・フロンティア",
+    "genre": "ゲーム・冒険",
+    "role": "サンラク／陽務楽郎役",
+    "link": "male-seiyuu-favorites.html"
+  },
+  {
+    "name": "花澤香菜",
+    "id": "hanazawa",
+    "category": "声優",
+    "work": "PSYCHO-PASS サイコパス",
+    "genre": "SFサスペンス",
+    "role": "常守朱役",
+    "link": "female-seiyuu-favorites.html"
+  },
+  {
+    "name": "早見沙織",
+    "id": "hayami",
+    "category": "声優",
+    "work": "赤髪の白雪姫",
+    "genre": "ファンタジー・恋愛",
+    "role": "白雪役",
+    "link": "female-seiyuu-favorites.html"
+  },
+  {
+    "name": "佐倉綾音",
+    "id": "sakura",
+    "category": "声優",
+    "work": "夢喰いメリー",
+    "genre": "ファンタジー",
+    "role": "メリー・ナイトメア役",
+    "link": "female-seiyuu-favorites.html"
+  },
+  {
+    "name": "種﨑敦美",
+    "id": "tanezaki",
+    "category": "声優",
+    "work": "ドラゴンクエスト ダイの大冒険",
+    "genre": "ファンタジー・冒険",
+    "role": "ダイ役",
+    "link": "female-seiyuu-favorites.html"
+  },
+  {
+    "name": "水瀬いのり",
+    "id": "minase",
+    "category": "声優",
+    "work": "心が叫びたがってるんだ。",
+    "genre": "青春・ドラマ",
+    "role": "成瀬順役",
+    "link": "female-seiyuu-favorites.html"
+  },
+  {
+    "name": "大塚芳忠",
+    "id": "otsuka",
+    "category": "声優",
+    "work": "幼女戦記",
+    "genre": "ダークファンタジー・戦記",
+    "role": "ハンス・フォン・ゼートゥーア役",
+    "link": "legend-seiyuu-favorites.html"
+  },
+  {
+    "name": "石田彰",
+    "id": "ishida",
+    "category": "声優",
+    "work": "文豪ストレイドッグス",
+    "genre": "異能バトル",
+    "role": "フョードル・D役",
+    "link": "legend-seiyuu-favorites.html"
+  },
+  {
+    "name": "三木眞一郎",
+    "id": "miki",
+    "category": "声優",
+    "work": "機動戦士ガンダム00",
+    "genre": "SF・ロボット",
+    "role": "ロックオン・ストラトス役",
+    "link": "legend-seiyuu-favorites.html"
+  },
+  {
+    "name": "井上喜久子",
+    "id": "inoue",
+    "category": "声優",
+    "work": "ハッピーシュガーライフ",
+    "genre": "サイコホラー",
+    "role": "さとうの叔母役",
+    "link": "legend-seiyuu-favorites.html"
+  },
+  {
+    "name": "林原めぐみ",
+    "id": "hayashibara",
+    "category": "声優",
+    "work": "名探偵コナン",
+    "genre": "推理・サスペンス",
+    "role": "灰原哀役",
+    "link": "legend-seiyuu-favorites.html"
+  },
+  {
+    "name": "沢城みゆき",
+    "id": "sawashiro",
+    "category": "声優",
+    "work": "Fate/Apocrypha",
+    "genre": "ダークファンタジー・バトル",
+    "role": "赤のセイバー／モードレッド役",
+    "link": "legend-seiyuu-favorites.html"
+  },
+  {
+    "name": "悠木碧",
+    "id": "yuki",
+    "category": "声優",
+    "work": "魔法少女まどか☆マギカ",
+    "genre": "ダークファンタジー",
+    "role": "鹿目まどか役",
+    "link": "nextgen-seiyuu-favorites.html"
+  },
+  {
+    "name": "羊宮妃那",
+    "id": "youmiya",
+    "category": "声優",
+    "work": "僕の心のヤバイやつ",
+    "genre": "ラブコメ・青春",
+    "role": "山田杏奈役",
+    "link": "nextgen-seiyuu-favorites.html"
+  },
+  {
+    "name": "鈴代紗弓",
+    "id": "suzushiro",
+    "category": "声優",
+    "work": "ぼっち・ざ・ろっく！",
+    "genre": "音楽・コメディ",
+    "role": "伊地知虹夏役",
+    "link": "nextgen-seiyuu-favorites.html"
+  },
+  {
+    "name": "夏吉ゆうこ",
+    "id": "natsuyoshi",
+    "category": "声優",
+    "work": "超かぐや姫！",
+    "genre": "コメディ・ファンタジー",
+    "role": "かぐや役",
+    "link": "nextgen-seiyuu-favorites.html"
+  },
+  {
+    "name": "大塚剛央",
+    "id": "otsuka",
+    "category": "声優",
+    "work": "【推しの子】",
+    "genre": "エンタメ業界・サスペンス",
+    "role": "アクア役",
+    "link": "nextgen-seiyuu-favorites.html"
+  },
+  {
+    "name": "関根明良",
+    "id": "sekine",
+    "category": "声優",
+    "work": "天幕のジャードゥーガル",
+    "genre": "歴史群像劇",
+    "role": "シタラ役",
+    "link": "nextgen-seiyuu-favorites.html"
+  },
+  {
+    "name": "千葉翔也",
+    "id": "chiba",
+    "category": "声優",
+    "work": "アオのハコ",
+    "genre": "スポーツ・青春",
+    "role": "猪股大喜役",
+    "link": "nextgen-seiyuu-favorites.html"
+  },
+  {
+    "name": "吉田玲子",
+    "id": "yoshida",
+    "category": "脚本家",
+    "work": "けいおん!",
+    "genre": "日常・音楽",
+    "role": null,
+    "link": "scriptwriter-favorites.html"
+  },
+  {
+    "name": "岡田麿里",
+    "id": "okada",
+    "category": "脚本家",
+    "work": "あの日見た花の名前を僕達はまだ知らない。",
+    "genre": "青春・ドラマ",
+    "role": null,
+    "link": "scriptwriter-favorites.html"
+  },
+  {
+    "name": "花田十輝",
+    "id": "hanada",
+    "category": "脚本家",
+    "work": "宇宙よりも遠い場所",
+    "genre": "青春・冒険",
+    "role": null,
+    "link": "scriptwriter-favorites.html"
+  },
+  {
+    "name": "横手美智子",
+    "id": "yokote",
+    "category": "脚本家",
+    "work": "SHIROBAKO",
+    "genre": "業界もの・お仕事",
+    "role": null,
+    "link": "scriptwriter-favorites.html"
+  },
+  {
+    "name": "あおしまたかし",
+    "id": "aoshima",
+    "category": "脚本家",
+    "work": "みつどもえ",
+    "genre": "コメディ",
+    "role": null,
+    "link": "scriptwriter-favorites.html"
+  },
+  {
+    "name": "長井龍雪",
+    "id": "nagai",
+    "category": "監督",
+    "work": "あの日見た花の名前を僕達はまだ知らない。",
+    "genre": "青春・ドラマ",
+    "role": null,
+    "link": "director-favorites.html"
+  },
+  {
+    "name": "石原立也",
+    "id": "ishihara",
+    "category": "監督",
+    "work": "CLANNAD / CLANNAD AFTER STORY",
+    "genre": "恋愛・ドラマ",
+    "role": null,
+    "link": "director-favorites.html"
+  },
+  {
+    "name": "石立太一",
+    "id": "ishidate",
+    "category": "監督",
+    "work": "境界の彼方",
+    "genre": "ファンタジー・アクション",
+    "role": null,
+    "link": "director-favorites.html"
+  },
+  {
+    "name": "水島努",
+    "id": "mizushima",
+    "category": "監督",
+    "work": "ガールズ&パンツァー",
+    "genre": "部活・ミリタリー",
+    "role": null,
+    "link": "director-favorites.html"
+  },
+  {
+    "name": "P.A.WORKS",
+    "id": "pawoks",
+    "category": "制作会社",
+    "work": "SHIROBAKO",
+    "genre": "業界もの・お仕事",
+    "role": null,
+    "link": "studio-favorites.html"
+  },
+  {
+    "name": "京都アニメーション",
+    "id": "kyoani",
+    "category": "制作会社",
+    "work": "響け!ユーフォニアム",
+    "genre": "青春・音楽",
+    "role": null,
+    "link": "studio-favorites.html"
+  },
+  {
+    "name": "CloverWorks",
+    "id": "cloverworks",
+    "category": "制作会社",
+    "work": "約束のネバーランド",
+    "genre": "サスペンス・ダークファンタジー",
+    "role": null,
+    "link": "studio-favorites.html"
+  },
+  {
+    "name": "A-1 Pictures",
+    "id": "a1",
+    "category": "制作会社",
+    "work": "ソードアート・オンライン",
+    "genre": "SF・ファンタジー",
+    "role": null,
+    "link": "studio-favorites.html"
+  },
+  {
+    "name": "wit studio",
+    "id": "wit",
+    "category": "制作会社",
+    "work": "進撃の巨人（1〜3期）",
+    "genre": "ダークファンタジー・バトル",
+    "role": null,
+    "link": "studio-favorites.html"
+  },
+  {
+    "name": "MAPPA",
+    "id": "mappa",
+    "category": "制作会社",
+    "work": "呪術廻戦",
+    "genre": "ダークファンタジー・バトル",
+    "role": null,
+    "link": "studio-favorites.html"
+  },
+  {
+    "name": "米津玄師",
+    "id": "yonezu",
+    "category": "アーティスト",
+    "work": "チェンソーマン",
+    "genre": "ダークファンタジー",
+    "role": null,
+    "link": "artist-anime-favorites.html"
+  },
+  {
+    "name": "中島美嘉",
+    "id": "nakashima",
+    "category": "アーティスト",
+    "work": "機動戦士ガンダムSEED",
+    "genre": "SF・ロボット",
+    "role": null,
+    "link": "artist-anime-favorites.html"
+  },
+  {
+    "name": "Mrs. GREEN APPLE",
+    "id": "mrsgreenapple",
+    "category": "アーティスト",
+    "work": "炎炎ノ消防隊",
+    "genre": "ダークバトルファンタジー",
+    "role": null,
+    "link": "artist-anime-favorites.html"
+  },
+  {
+    "name": "Official髭男dism",
+    "id": "higedan",
+    "category": "アーティスト",
+    "work": "SPY×FAMILY（第1期）",
+    "genre": "コメディ・スパイアクション",
+    "role": null,
+    "link": "artist-anime-favorites.html"
+  },
+  {
+    "name": "YOASOBI（幾田りらソロ含む）",
+    "id": "yoasobi",
+    "category": "アーティスト",
+    "work": "【推しの子】",
+    "genre": "エンタメ業界・サスペンス",
+    "role": null,
+    "link": "artist-anime-favorites.html"
+  },
+  {
+    "name": "Aimer",
+    "id": "aimer",
+    "category": "アーティスト",
+    "work": "鬼滅の刃 遊郭編",
+    "genre": "バトル・時代劇",
+    "role": null,
+    "link": "artist-anime-favorites.html"
+  },
+  {
+    "name": "LiSA",
+    "id": "lisa",
+    "category": "アーティスト",
+    "work": "鬼滅の刃（第1期）",
+    "genre": "バトル・時代劇",
+    "role": null,
+    "link": "artist-anime-favorites.html"
+  },
+  {
+    "name": "King Gnu",
+    "id": "kinggnu",
+    "category": "アーティスト",
+    "work": "呪術廻戦 渋谷事変",
+    "genre": "ダークファンタジー・バトル",
+    "role": null,
+    "link": "artist-anime-favorites.html"
+  }
+];
+
+const categoryPrompt = {
+  "声優": "この役を演じている声優は？",
+  "脚本家": "この作品の脚本を手がけたのは？",
+  "監督": "この作品を監督したのは？",
+  "制作会社": "この作品を制作したのは？",
+  "アーティスト": "この作品の主題歌を担当したのは？"
+};
+
+const TOTAL_QUESTIONS = 10;
+let quizSet = [];
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildQuizSet() {
+  quizSet = shuffle(pool).slice(0, TOTAL_QUESTIONS);
+}
+
+function getDistractors(correct, count) {
+  const sameCat = pool.filter(p => p.category === correct.category && p.name !== correct.name);
+  const others = pool.filter(p => p.category !== correct.category && p.name !== correct.name);
+  const candidates = shuffle(sameCat).concat(shuffle(others));
+  const picked = [];
+  const usedNames = new Set([correct.name]);
+  for (const c of candidates) {
+    if (picked.length >= count) break;
+    if (usedNames.has(c.name)) continue;
+    usedNames.add(c.name);
+    picked.push(c);
+  }
+  return picked;
+}
+
+function startQuiz() {
+  buildQuizSet();
+  currentQ = 0;
+  score = 0;
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  document.getElementById('progressBar').style.width = (currentQ / TOTAL_QUESTIONS * 100) + '%';
+  const q = quizSet[currentQ];
+  const distractors = getDistractors(q, 3);
+  const options = shuffle([q, ...distractors]);
+
+  const optsHtml = options.map((opt, i) =>
+    `<button class="q-opt" id="opt-${i}" onclick="selectAnswer(${i}, '${opt.name.replace(/'/g, "\\'")}')">${opt.name}</button>`
+  ).join('');
+
+  const roleHtml = q.role ? `<div class="q-hint-role">${q.role}</div>` : '';
+
+  document.getElementById('quizScreen').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Q${currentQ + 1} / ${TOTAL_QUESTIONS}　（正解数：${score}）</div>
+      <span class="q-category">${q.category}</span>
+      <div class="q-hint-title">${q.work}</div>
+      <div class="q-hint-sub">${q.genre}</div>
+      ${roleHtml}
+      <div class="q-prompt">${categoryPrompt[q.category]}</div>
+      <div class="q-options" id="qOptions">${optsHtml}</div>
+      <div class="q-feedback" id="qFeedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">次の問題へ →</button>
+    </div>
+  `;
+  window._currentOptions = options;
+}
+
+function selectAnswer(idx, name) {
+  if (answered) return;
+  answered = true;
+  const q = quizSet[currentQ];
+  const isCorrect = name === q.name;
+  const buttons = document.querySelectorAll('.q-opt');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (window._currentOptions[i].name === q.name) {
+      btn.classList.add('correct');
+    } else if (i === idx && !isCorrect) {
+      btn.classList.add('wrong');
+    }
+  });
+  const feedback = document.getElementById('qFeedback');
+  if (isCorrect) {
+    score++;
+    feedback.innerHTML = `✅ 正解！ <a href="/blog/${q.link}#${q.id}" target="_blank" rel="noopener" style="color:var(--star-color);">→ ${q.name}の代表作をもっと見る</a>`;
+  } else {
+    feedback.innerHTML = `❌ 不正解。正解は「${q.name}」でした。 <a href="/blog/${q.link}#${q.id}" target="_blank" rel="noopener" style="color:var(--star-color);">→ もっと見る</a>`;
+  }
+  document.getElementById('nextBtn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ < TOTAL_QUESTIONS) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('quizScreen').classList.add('hidden');
+  let emoji, comment;
+  const rate = score / TOTAL_QUESTIONS;
+  if (rate >= 0.9) { emoji = '🏆'; comment = 'ほぼ全問正解！ANIMEDBマスター認定です。'; }
+  else if (rate >= 0.7) { emoji = '🎉'; comment = 'かなりの正解率！名鑑をよく見ていますね。'; }
+  else if (rate >= 0.4) { emoji = '👍'; comment = 'まずまずの結果。名鑑を見返せばもっと伸ばせます。'; }
+  else { emoji = '📖'; comment = 'これを機に名鑑をチェックしてみましょう。'; }
+
+  const shareText = encodeURIComponent(`「この人は誰？」クイズで${score}/${TOTAL_QUESTIONS}問正解でした！ #ANIMEDBクイズ`);
+  const shareUrl = encodeURIComponent('https://anime-db.jp/who-is-this.html');
+
+  document.getElementById('resultScreen').innerHTML = `
+    <div class="result-card">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score">${score} / ${TOTAL_QUESTIONS} 問正解</div>
+      <div class="result-comment">${comment}</div>
+      <div class="result-btns">
+        <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener" class="result-btn" style="background:#000;color:#fff;border:1px solid #333;">𝕏 結果をシェア</a>
+        <button class="result-btn primary" onclick="startQuiz()">もう一度挑戦する</button>
+        <a href="/directory.html" class="result-btn secondary">名鑑を見る</a>
+      </div>
+    </div>
+  `;
+  document.getElementById('resultScreen').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>
