@@ -169,7 +169,12 @@ const kojimaLines = [
   "隠れるなら、ダンボールが一番だぞ。",
   "つながりは、見えないところにこそある……（Strand）",
   "コーデック、応答せよ……応答せよ……（ノイズ）",
-  "監督のカメオ出演です。クレジットは後で。"
+  "監督のカメオ出演です。クレジットは後で。",
+  "⚠️ 忠告しておく。これは『隠しキャラ』だ。難易度は、他の追随を許さない。",
+  "ハシゴ……登るなら、心してかかれ。（例のアレ）",
+  "このゲーム、実質ムービーパートが8割です（ウソです）",
+  "赤ちゃん（BB）は落とさないように。……あ、いや、これはただのアクションゲームだった。",
+  "Metal Gear? いいえ、Metal Jump です。"
 ];
 function showKojimaIntro() {
   const toast = document.getElementById('hudBest');
@@ -177,10 +182,10 @@ function showKojimaIntro() {
   const line = kojimaLines[Math.floor(Math.random() * kojimaLines.length)];
   const introEl = document.getElementById('kojimaIntro');
   if (introEl) {
-    introEl.textContent = '🎬 ' + line;
+    introEl.innerHTML = '🎬 ' + line + '<br><span style="color:#d99a3d;font-weight:800;">⚠️ このキャラだけ難易度が上昇します</span>';
     introEl.style.display = 'block';
     clearTimeout(window._kojimaIntroTimer);
-    window._kojimaIntroTimer = setTimeout(() => { introEl.style.display = 'none'; }, 2600);
+    window._kojimaIntroTimer = setTimeout(() => { introEl.style.display = 'none'; }, 3200);
   }
 }
 
@@ -190,7 +195,11 @@ const kojimaGameOverLines = [
   "ダンボールに隠れていれば、この結果は避けられたかもしれない。",
   "STRAND……人と人、いや、キャラとプレイヤーのつながりがまた一つ生まれた。",
   "監督ならこう言うだろう。「これはゲームオーバーではない。始まりだ。」",
-  "エンドロールが流れそうな余韻だが、まだ流れない。もう一回どうぞ。"
+  "エンドロールが流れそうな余韻だが、まだ流れない。もう一回どうぞ。",
+  "本編は実は6時間くらいカットシーンが続く予定でした（大嘘）。",
+  "ハシゴ、登り方を間違えましたね。次は気をつけて。",
+  "「戦争、それは……」いや、これはただのジャンプゲームでした。",
+  "プレビュー版よりさらに難しくしておきました。文句は監督へ（管理人へ）。"
 ];
 
 const canvas = document.getElementById('gameCanvas');
@@ -210,32 +219,42 @@ document.getElementById('hudBest').textContent = 'BEST: ' + best;
 
 function resetGame() {
   const c = characters[selectedChar];
+  const isKojima = !!c.special;
   player = { x: 60, y: GROUND_Y - 30, w: 30, h: 30, vy: 0, jumping: false, color: c.color, accent: c.accent };
   obstacles = [];
   score = 0;
-  speed = 4.5;
+  speed = isKojima ? 6.2 : 5.8;
   spawnTimer = 0;
   running = true;
+  window._hardMode = isKojima;
 }
 
 function jump() {
   if (!running) return;
   if (!player.jumping) {
-    player.vy = -11;
+    player.vy = -11.5;
     player.jumping = true;
   }
 }
 
 function spawnObstacle() {
-  const h = 24 + Math.random() * 20;
-  obstacles.push({ x: canvas.width + 10, y: GROUND_Y - h, w: 18, h: h });
+  const hard = window._hardMode;
+  const h = hard ? (30 + Math.random() * 34) : (26 + Math.random() * 26);
+  obstacles.push({ x: canvas.width + 10, y: GROUND_Y - h, w: hard ? 22 : 18, h: h });
+  // 二連続障害物（ダブルジャンプ判断が必要な配置）。難易度が上がるほど出現しやすい
+  const doubleChance = hard ? 0.35 : 0.22;
+  if (speed > 7 && Math.random() < doubleChance) {
+    const gap = hard ? (60 + Math.random() * 20) : (75 + Math.random() * 25);
+    const h2 = hard ? (26 + Math.random() * 30) : (24 + Math.random() * 22);
+    obstacles.push({ x: canvas.width + 10 + (hard ? 22 : 18) + gap, y: GROUND_Y - h2, w: hard ? 22 : 18, h: h2 });
+  }
 }
 
 function update() {
   if (!running) return;
 
   // physics
-  player.vy += 0.55;
+  player.vy += 0.58;
   player.y += player.vy;
   if (player.y >= GROUND_Y - player.h) {
     player.y = GROUND_Y - player.h;
@@ -243,10 +262,13 @@ function update() {
     player.jumping = false;
   }
 
+  const hard = window._hardMode;
   spawnTimer -= 1;
   if (spawnTimer <= 0) {
     spawnObstacle();
-    spawnTimer = 60 + Math.random() * 50 - Math.min(speed * 3, 40);
+    const baseMin = hard ? 34 : 42;
+    const baseRand = hard ? 34 : 42;
+    spawnTimer = baseMin + Math.random() * baseRand - Math.min(speed * (hard ? 3.6 : 3.0), hard ? 30 : 34);
   }
 
   obstacles.forEach(o => o.x -= speed);
@@ -262,7 +284,7 @@ function update() {
   }
 
   score += 1;
-  speed += 0.0025;
+  speed += hard ? 0.0055 : 0.0042;
 
   draw();
   animId = requestAnimationFrame(update);
