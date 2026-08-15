@@ -125,6 +125,17 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
   <div class="timeline">
 
     <div class="log-entry">
+      <div class="log-date">2026年8月14日</div>
+      <div class="log-card">
+        <div class="log-tags"><span class="log-tag fix">FIX</span></div>
+        <ul class="log-list">
+          <li>TOPページのロゴ（隠しミニゲーム発見トリガー）が、PC・スマートフォンともにほぼ反応しない重大な不具合を修正しました</li>
+          <li>原因は、クリック処理とタッチ処理が二重に設定されており、端末によっては互いを打ち消し合っていたことでした。タップ判定を1本化し、テキスト選択によるタップ阻害も防止する対策を追加しました</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="log-entry">
       <div class="log-date">2026年8月10日</div>
       <div class="log-card">
         <div class="log-tags"><span class="log-tag improve">IMPROVE</span><span class="log-tag new">NEW</span></div>
