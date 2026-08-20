@@ -154,7 +154,8 @@ characters.forEach((c, i) => {
   const el = document.createElement('div');
   el.className = 'char-option' + (i === 0 ? ' selected' : '');
   const badge = c.special ? '<div style="font-size:.55rem;color:#e6485a;font-weight:800;margin-bottom:2px;">🎬 特別出演</div>' : '';
-  el.innerHTML = `${badge}<div class="char-avatar" style="background:${c.color}${c.special ? ';border:2px solid #e6485a' : ''}"></div><div class="char-name">${c.name}</div>`;
+  const emoji = c.special ? '🕴️' : '✨';
+  el.innerHTML = `${badge}<div class="char-avatar" style="background:${c.color}${c.special ? ';border:2px solid #e6485a' : ''};display:flex;align-items:center;justify-content:center;font-size:18px;">${emoji}</div><div class="char-name">${c.name}</div>`;
   el.onclick = () => {
     document.querySelectorAll('.char-option').forEach(x => x.classList.remove('selected'));
     el.classList.add('selected');
@@ -308,26 +309,179 @@ function draw() {
     ctx.fillRect(o.x, o.y, o.w, o.h);
   });
 
-  // player (simple chibi blob mascot)
-  ctx.fillStyle = player.color;
+  // player
   const cx = player.x + player.w / 2;
   const cy = player.y + player.h / 2;
+  const isOssan = characters[selectedChar] && characters[selectedChar].special;
+
+  if (isOssan) {
+    drawOssan(cx, cy, player);
+  } else {
+    drawMagicalGirl(cx, cy, player);
+  }
+
+  document.getElementById('hudScore').textContent = 'SCORE: ' + Math.floor(score / 5);
+}
+
+function drawMagicalGirl(cx, cy, player) {
+  const r = player.w / 2;
+
+  // 後ろに広がる魔法陣っぽい星（背景アクセント）
+  ctx.save();
+  ctx.globalAlpha = 0.35;
+  ctx.fillStyle = player.color;
+  drawStar(cx, cy - 2, r * 1.5, 5);
+  ctx.restore();
+
+  // ケープ／スカートの裾（体の下に広がる三角）
+  ctx.fillStyle = player.color;
   ctx.beginPath();
-  ctx.ellipse(cx, cy, player.w / 2, player.h / 2, 0, 0, Math.PI * 2);
+  ctx.moveTo(cx - r * 0.9, cy + r * 0.3);
+  ctx.lineTo(cx - r * 1.4, cy + r * 1.6);
+  ctx.lineTo(cx, cy + r * 0.9);
+  ctx.lineTo(cx + r * 1.4, cy + r * 1.6);
+  ctx.lineTo(cx + r * 0.9, cy + r * 0.3);
+  ctx.closePath();
   ctx.fill();
-  // eyes
+
+  // 顔・体（丸）
+  ctx.fillStyle = player.color;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, r, r, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 頬のハイライト
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  ctx.beginPath();
+  ctx.ellipse(cx - r * 0.4, cy - r * 0.3, r * 0.35, r * 0.3, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 頭のリボン
   ctx.fillStyle = player.accent;
   ctx.beginPath();
-  ctx.ellipse(cx - 6, cy - 3, 3, 4, 0, 0, Math.PI * 2);
-  ctx.ellipse(cx + 6, cy - 3, 3, 4, 0, 0, Math.PI * 2);
+  ctx.moveTo(cx - 3, cy - r - 2);
+  ctx.lineTo(cx - r * 0.7, cy - r - 8);
+  ctx.lineTo(cx - r * 0.15, cy - r + 1);
+  ctx.closePath();
+  ctx.moveTo(cx + 3, cy - r - 2);
+  ctx.lineTo(cx + r * 0.7, cy - r - 8);
+  ctx.lineTo(cx + r * 0.15, cy - r + 1);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(cx, cy - r - 1, 3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 目
+  ctx.fillStyle = player.accent;
+  ctx.beginPath();
+  ctx.ellipse(cx - 6, cy - 2, 3.2, 4.2, 0, 0, Math.PI * 2);
+  ctx.ellipse(cx + 6, cy - 2, 3.2, 4.2, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = '#111';
   ctx.beginPath();
-  ctx.arc(cx - 6, cy - 2, 1.5, 0, Math.PI * 2);
-  ctx.arc(cx + 6, cy - 2, 1.5, 0, Math.PI * 2);
+  ctx.arc(cx - 6, cy - 1, 1.6, 0, Math.PI * 2);
+  ctx.arc(cx + 6, cy - 1, 1.6, 0, Math.PI * 2);
+  ctx.fill();
+  // きらっとハイライト
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.arc(cx - 5, cy - 3, 0.8, 0, Math.PI * 2);
+  ctx.arc(cx + 7, cy - 3, 0.8, 0, Math.PI * 2);
   ctx.fill();
 
-  document.getElementById('hudScore').textContent = 'SCORE: ' + Math.floor(score / 5);
+  // ステッキ（キャラの横に小さく）
+  ctx.strokeStyle = player.accent;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx + r + 2, cy + 4);
+  ctx.lineTo(cx + r + 8, cy - 10);
+  ctx.stroke();
+  ctx.fillStyle = '#fff8dc';
+  drawStar(cx + r + 8, cy - 12, 4, 5);
+}
+
+function drawStar(cx, cy, r, points) {
+  ctx.beginPath();
+  for (let i = 0; i < points * 2; i++) {
+    const rad = (i % 2 === 0) ? r : r * 0.45;
+    const ang = (Math.PI / points) * i - Math.PI / 2;
+    const x = cx + Math.cos(ang) * rad;
+    const y = cy + Math.sin(ang) * rad;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawOssan(cx, cy, player) {
+  const r = player.w / 2;
+
+  // スーツの裾（下に広がる台形）
+  ctx.fillStyle = '#2b2b2b';
+  ctx.beginPath();
+  ctx.moveTo(cx - r * 0.9, cy + r * 0.2);
+  ctx.lineTo(cx - r * 1.2, cy + r * 1.5);
+  ctx.lineTo(cx + r * 1.2, cy + r * 1.5);
+  ctx.lineTo(cx + r * 0.9, cy + r * 0.2);
+  ctx.closePath();
+  ctx.fill();
+
+  // ネクタイ
+  ctx.fillStyle = player.accent;
+  ctx.beginPath();
+  ctx.moveTo(cx - 2.5, cy + r * 0.2);
+  ctx.lineTo(cx + 2.5, cy + r * 0.2);
+  ctx.lineTo(cx + 4, cy + r * 1.1);
+  ctx.lineTo(cx, cy + r * 1.35);
+  ctx.lineTo(cx - 4, cy + r * 1.1);
+  ctx.closePath();
+  ctx.fill();
+
+  // 顔（丸、肌色）
+  ctx.fillStyle = '#d9a066';
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, r * 0.92, r * 0.92, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 後頭部の髪（少し白髪交じりのグレー）
+  ctx.fillStyle = '#555';
+  ctx.beginPath();
+  ctx.arc(cx, cy - r * 0.55, r * 0.85, Math.PI * 1.05, Math.PI * 1.95);
+  ctx.fill();
+
+  // サングラス
+  ctx.fillStyle = '#111';
+  ctx.beginPath();
+  ctx.ellipse(cx - 6, cy - 2, 4.2, 3.2, 0, 0, Math.PI * 2);
+  ctx.ellipse(cx + 6, cy - 2, 4.2, 3.2, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#111';
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.moveTo(cx - 2, cy - 2);
+  ctx.lineTo(cx + 2, cy - 2);
+  ctx.stroke();
+  // サングラスの反射
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.beginPath();
+  ctx.arc(cx - 7, cy - 3, 1, 0, Math.PI * 2);
+  ctx.arc(cx + 5, cy - 3, 1, 0, Math.PI * 2);
+  ctx.fill();
+
+  // ひげ（口の上）
+  ctx.fillStyle = '#555';
+  ctx.beginPath();
+  ctx.ellipse(cx, cy + 6, 6, 2, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 口（へ字、渋い表情）
+  ctx.strokeStyle = '#5a3a20';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - 3, cy + 10);
+  ctx.quadraticCurveTo(cx, cy + 8, cx + 3, cy + 10);
+  ctx.stroke();
 }
 
 function endGame() {
