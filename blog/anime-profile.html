@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X4M05SEYCE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X4M05SEYCE');
+</script>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>あなたのアニメ履歴書｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/anime-profile.html">
+<meta name="description" content="6つの質問から、あなたの"アニメ視聴者としてのプロフィールカード"を生成。タイプ名とステータスをカード画像として保存・シェアできます。">
+<meta name="keywords" content="アニメ履歴書,診断,プロフィールカード,ANIMEDB,アニメ視聴者タイプ">
+<meta name="robots" content="index,follow">
+<meta name="author" content="ANIMEDB">
+<meta property="og:title" content="あなたのアニメ履歴書｜ANIMEDB">
+<meta property="og:description" content="6つの質問から、あなたのアニメ視聴者プロフィールカードを生成します。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anime-db.jp/anime-profile.html">
+<meta property="og:site_name" content="ANIMEDB">
+<meta property="og:locale" content="ja_JP">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
+  --accent: #e6485a; --text-main: #f1f2f6; --text-muted: #a4b0be;
+  --star-color: #d99a3d; --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+header {
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(230,72,90,0.15); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; flex-shrink: 0; }
+.logo-a { color: #fff; } .logo-db { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; border: 1px solid transparent; flex-shrink: 0; }
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: var(--accent); background: rgba(230,72,90,0.12); border-color: rgba(230,72,90,0.3); }
+@media (max-width: 768px) { header { padding: 0 12px; } .logo { font-size: 1.2rem; } .nav-item { font-size: 0.78rem; padding: 6px 10px; } }
+
+main { margin-top: var(--nav-height); padding: 24px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 24px 0 8px; text-align: center; }
+.page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; display: inline-block; margin-bottom: 12px; }
+.page-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+.page-desc { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 24px; line-height: 1.8; }
+
+.progress-wrap { background: var(--bg-card); border-radius: 20px; height: 8px; margin-bottom: 24px; overflow: hidden; }
+.progress-bar { background: var(--accent); height: 100%; width: 0%; transition: width 0.3s ease; border-radius: 20px; }
+
+#startScreen, #resultScreen { text-align: center; }
+.start-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 26px 24px; margin-bottom: 16px; }
+.start-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 700; padding: 15px 44px; cursor: pointer; font-family: inherit; }
+
+.q-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 26px 24px; margin-bottom: 16px; }
+.q-num { font-size: 0.78rem; color: var(--accent); font-weight: 700; margin-bottom: 10px; }
+.q-text { font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 20px; }
+.q-options { display: grid; gap: 10px; }
+.q-opt { background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 18px; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; text-align: left; color: var(--text-main); font-family: inherit; }
+.q-opt:hover { border-color: var(--accent); background: rgba(230,72,90,0.06); }
+
+.card-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+#profileCanvas { width: 100%; max-width: 500px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+
+.result-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.result-btn { display: inline-block; padding: 12px 26px; border-radius: 8px; font-size: 0.92rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; font-family: inherit; }
+.result-btn.primary { background: var(--accent); color: #fff; }
+.result-btn.secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; }
+.result-btn.share { background: #000; color: #fff; border: 1px solid #333; }
+
+.hidden { display: none !important; }
+
+footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 24px; text-align: center; margin-top: 30px; }
+.footer-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.82rem; }
+.copyright { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
+    <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
+    <a href="/glossary.html" class="nav-item" style="text-decoration:none;">📖 用語集</a>
+    <a href="/directory.html" class="nav-item" style="text-decoration:none;">🗂️ 名鑑</a>
+    <a href="/games.html" class="nav-item active" style="text-decoration:none;">🎮 診断・ガチャなど・ゲームも？</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <span class="page-tag">📋 履歴書診断</span>
+    <h1 class="page-title">あなたのアニメ履歴書</h1>
+    <p class="page-desc">6つの質問から、あなたの"アニメ視聴者としてのプロフィールカード"を作成します。画像として保存・シェアできます。</p>
+  </div>
+
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div id="startScreen">
+    <div class="start-card">
+      <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:22px; line-height:1.9;">あなたの視聴スタイルをステータスカードにします。所要時間は約1分です。</p>
+      <button class="start-btn" onclick="startQuiz()">作成をはじめる →</button>
+    </div>
+  </div>
+
+  <div id="quizScreen" class="hidden"></div>
+
+  <div id="resultScreen" class="hidden">
+    <div class="card-wrap"><canvas id="profileCanvas" width="600" height="750"></canvas></div>
+    <div class="result-btns">
+      <button class="result-btn primary" onclick="downloadCard()">📥 画像を保存</button>
+      <button class="result-btn share" onclick="shareCard()">𝕏 結果をシェア</button>
+      <button class="result-btn secondary" onclick="restartQuiz()">もう一度作る</button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/" class="footer-link">ホーム</a>
+    <a href="/blog/" class="footer-link">ブログ</a>
+    <a href="/games.html" class="footer-link">診断・ガチャ一覧</a>
+    <a href="/changelog.html" class="footer-link">更新履歴</a>
+  </div>
+  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+</footer>
+
+<script>
+const questions = [
+  {
+    text: "いつからアニメを見始めましたか？",
+    options: [
+      { label: "物心つく前からずっと", stats: { keiken: 4 } },
+      { label: "学生時代から", stats: { keiken: 3 } },
+      { label: "社会人になってから", stats: { keiken: 2 } },
+      { label: "ここ数年で最近ハマった", stats: { keiken: 1 } }
+    ]
+  },
+  {
+    text: "1クールに何本くらい見ますか？",
+    options: [
+      { label: "1〜2本、じっくり派", stats: { haba: 1 } },
+      { label: "3〜5本くらい", stats: { haba: 2 } },
+      { label: "6〜10本、幅広く", stats: { haba: 3 } },
+      { label: "10本以上、可能な限り追う", stats: { haba: 4 } }
+    ]
+  },
+  {
+    text: "一番泣いた・心を動かされたジャンルは？",
+    options: [
+      { label: "感動系のヒューマンドラマ", stats: { ruisen: 4 } },
+      { label: "青春もの", stats: { ruisen: 3 } },
+      { label: "バトルものの友情シーン", stats: { ruisen: 3 } },
+      { label: "あまり泣かない・熱くならないタイプ", stats: { ruisen: 1 } }
+    ]
+  },
+  {
+    text: "アニメを見るときのこだわりは？",
+    options: [
+      { label: "脚本・構成の巧さ", stats: { kodawari: 4, type: "脚本派" } },
+      { label: "作画・演出のクオリティ", stats: { kodawari: 4, type: "演出派" } },
+      { label: "キャラクター・声優の魅力", stats: { kodawari: 4, type: "キャラ萌え派" } },
+      { label: "特にこだわらず気楽に楽しむ", stats: { kodawari: 1, type: "自由派" } }
+    ]
+  },
+  {
+    text: "一番長く追っているシリーズ、何年目ですか？",
+    options: [
+      { label: "10年以上", stats: { keizoku: 4 } },
+      { label: "5〜9年", stats: { keizoku: 3 } },
+      { label: "1〜4年", stats: { keizoku: 2 } },
+      { label: "まだ日が浅い", stats: { keizoku: 1 } }
+    ]
+  },
+  {
+    text: "主にどんな時間帯にアニメを見ますか？",
+    options: [
+      { label: "深夜0時〜2時、リアルタイム勢", stats: { haba: 1, type2: "深夜アニメ探求者" } },
+      { label: "通勤・通学のスキマ時間", stats: { type2: "スキマ視聴の達人" } },
+      { label: "週末にまとめて一気見", stats: { type2: "週末一気見タイプ" } },
+      { label: "配信された分をこまめに", stats: { type2: "コツコツ追走型" } }
+    ]
+  }
+];
+
+let currentQ = 0;
+let stats = { keiken: 0, haba: 0, ruisen: 0, kodawari: 0, keizoku: 0 };
+let chosenType = "自由派";
+let chosenType2 = "コツコツ追走型";
+
+function startQuiz() {
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+  currentQ = 0;
+  stats = { keiken: 0, haba: 0, ruisen: 0, kodawari: 0, keizoku: 0 };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('progressBar').style.width = (currentQ / questions.length * 100) + '%';
+  const optsHtml = q.options.map((opt, i) =>
+    `<button class="q-opt" onclick="selectOption(${i})">${opt.label}</button>`
+  ).join('');
+  document.getElementById('quizScreen').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">Q${currentQ + 1} / ${questions.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">${optsHtml}</div>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  const opt = questions[currentQ].options[i];
+  for (const key in opt.stats) {
+    if (key === 'type') chosenType = opt.stats[key];
+    else if (key === 'type2') chosenType2 = opt.stats[key];
+    else stats[key] = (stats[key] || 0) + opt.stats[key];
+  }
+  currentQ++;
+  if (currentQ < questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('progressBar').style.width = '100%';
+  document.getElementById('quizScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+  drawCard();
+}
+
+function drawCard() {
+  const canvas = document.getElementById('profileCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  // 背景グラデーション
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#161f30');
+  grad.addColorStop(1, '#0b0f19');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // 外枠
+  ctx.strokeStyle = '#e6485a';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(16, 16, W - 32, H - 32);
+  ctx.strokeStyle = 'rgba(230,72,90,0.35)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(26, 26, W - 52, H - 52);
+
+  // ヘッダー
+  ctx.fillStyle = '#e6485a';
+  ctx.font = 'bold 18px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('🎬 ANIME PROFILE CARD', W / 2, 68);
+
+  ctx.fillStyle = '#a4b0be';
+  ctx.font = '13px sans-serif';
+  ctx.fillText('issued by ANIMEDB', W / 2, 90);
+
+  // タイプ名
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 34px sans-serif';
+  ctx.fillText(chosenType, W / 2, 150);
+  ctx.fillStyle = '#d99a3d';
+  ctx.font = 'bold 20px sans-serif';
+  ctx.fillText('× ' + chosenType2, W / 2, 182);
+
+  // ステータスバー
+  const statList = [
+    { label: '経験値', key: 'keiken', max: 4 },
+    { label: '視聴の幅', key: 'haba', max: 4 },
+    { label: '涙腺力', key: 'ruisen', max: 4 },
+    { label: 'こだわり度', key: 'kodawari', max: 4 },
+    { label: '継続力', key: 'keizoku', max: 4 }
+  ];
+
+  let barY = 230;
+  const barX = 70;
+  const barW = W - 140;
+  const barH = 22;
+
+  statList.forEach((s) => {
+    ctx.fillStyle = '#f1f2f6';
+    ctx.font = 'bold 15px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(s.label, barX, barY - 8);
+
+    // バー背景
+    ctx.fillStyle = '#0b0f19';
+    ctx.fillRect(barX, barY, barW, barH);
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.strokeRect(barX, barY, barW, barH);
+
+    // バー本体
+    const ratio = Math.min(stats[s.key] / s.max, 1);
+    const fillGrad = ctx.createLinearGradient(barX, 0, barX + barW, 0);
+    fillGrad.addColorStop(0, '#e6485a');
+    fillGrad.addColorStop(1, '#d99a3d');
+    ctx.fillStyle = fillGrad;
+    ctx.fillRect(barX, barY, barW * ratio, barH);
+
+    // 数値
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(stats[s.key] + ' / ' + s.max, barX + barW, barY - 8);
+
+    barY += 58;
+  });
+
+  // 総合スコア
+  const total = stats.keiken + stats.haba + stats.ruisen + stats.kodawari + stats.keizoku;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#a4b0be';
+  ctx.font = '14px sans-serif';
+  ctx.fillText('総合アニメ偏差値', W / 2, barY + 30);
+  ctx.fillStyle = '#e6485a';
+  ctx.font = 'bold 48px sans-serif';
+  ctx.fillText(total + ' / 20', W / 2, barY + 82);
+
+  // フッター
+  ctx.fillStyle = '#a4b0be';
+  ctx.font = '13px sans-serif';
+  ctx.fillText('anime-db.jp/anime-profile.html', W / 2, H - 40);
+}
+
+function downloadCard() {
+  const canvas = document.getElementById('profileCanvas');
+  const link = document.createElement('a');
+  link.download = 'anime-profile-card.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function shareCard() {
+  const total = stats.keiken + stats.haba + stats.ruisen + stats.kodawari + stats.keizoku;
+  const shareText = encodeURIComponent(`私のアニメタイプは「${chosenType} × ${chosenType2}」総合偏差値${total}/20でした！ #ANIMEDBアニメ履歴書`);
+  const shareUrl = encodeURIComponent('https://anime-db.jp/anime-profile.html');
+  window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank', 'noopener');
+}
+
+function restartQuiz() {
+  document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('progressBar').style.width = '0%';
+  startQuiz();
+}
+</script>
+
+</body>
+</html>
