@@ -125,6 +125,18 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
   <div class="timeline">
 
     <div class="log-entry">
+      <div class="log-date">2026年8月17日</div>
+      <div class="log-card">
+        <div class="log-tags"><span class="log-tag fix">FIX</span></div>
+        <ul class="log-list">
+          <li>TOPページの「今シーズン注目アニメ」が更新されない問題を調査。外部API（Jikan API）の取得が失敗した際に表示される保険用の固定データ（BACKUP_DATA）が、2019〜2024年の古い作品のまま放置されていたことが直接の原因と判明</li>
+          <li>BACKUP_DATAを2026年夏クールの実際の放送作品（幼女戦記II／無職転生III／ぐらんぶるSeason3／正反対な君と僕2クール目）に更新しました</li>
+          <li>API取得自体が失敗し続けている根本原因（レート制限・通信エラーなど）については、ブラウザのコンソールログでの追加確認が必要です</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="log-entry">
       <div class="log-date">2026年8月16日</div>
       <div class="log-card">
         <div class="log-tags"><span class="log-tag new">NEW</span></div>
