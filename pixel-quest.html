@@ -19,7 +19,7 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <style>
 :root {
   --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
@@ -223,7 +223,8 @@ document.getElementById('hudBest').textContent = 'BEST: ' + best;
 
 function initScene() {
   const container = document.getElementById('gameCanvasWrap');
-  const w = container.clientWidth, h = container.clientHeight;
+  let w = container.clientWidth, h = container.clientHeight;
+  if (!w || !h) { w = 640; h = 320; } // レイアウト未確定時のフォールバック
 
   scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x05070d, 0.045);
@@ -481,9 +482,20 @@ function startGame() {
   document.getElementById('charSelect').classList.remove('active');
   document.getElementById('gameWrap').classList.add('active');
   document.getElementById('gameoverBox').classList.remove('active');
-  if (!renderer) initScene();
-  resetGame();
-  animId = requestAnimationFrame(update);
+
+  if (typeof THREE === 'undefined') {
+    const container = document.getElementById('gameCanvasWrap');
+    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#e6485a;font-size:.85rem;text-align:center;padding:20px;">⚠️ 3D描画ライブラリの読み込みに失敗しました。<br>通信環境をご確認の上、ページを再読み込みしてください。</div>';
+    return;
+  }
+
+  // display:noneが解除された直後は要素の幅取得が0になることがあるため、
+  // 1フレーム待ってからシーンを初期化する
+  requestAnimationFrame(() => {
+    if (!renderer) initScene();
+    resetGame();
+    animId = requestAnimationFrame(update);
+  });
 }
 
 function retryGame() {
