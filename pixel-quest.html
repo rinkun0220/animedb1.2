@@ -115,7 +115,7 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
       <span class="hud-best" id="hudBest">BEST: 0</span>
     </div>
     <div id="gameCanvasWrap"><span class="render-badge">3D RENDER</span></div>
-    <div class="game-hint">タップ / クリック / スペースキーでジャンプ</div>
+    <div class="game-hint">タップ/スペースキーでジャンプ　・　左右スワイプ/矢印キーでレーン移動</div>
   </div>
 
   <div class="gameover-box" id="gameoverBox">
@@ -210,6 +210,9 @@ let scene, camera, renderer, playerGroup, groundMesh, lineMeshes = [];
 let obstacles = [], score, best, speed, running, animId, spawnTimer;
 let playerY = 0, playerVY = 0, jumping = false;
 const LANE_Z = 0;
+const LANE_X = [-1.7, 0, 1.7];
+let playerLane = 1;
+let playerX = 0;
 
 function loadBest() {
   try { return parseInt(localStorage.getItem('animedb_runner_best') || '0'); } catch(e) { return 0; }
@@ -361,6 +364,9 @@ function resetGame() {
   playerY = 0;
   playerVY = 0;
   jumping = false;
+  playerLane = 1;
+  playerX = LANE_X[1];
+  playerGroup.position.x = playerX;
   running = true;
   window._hardMode = isKojima;
 }
@@ -373,26 +379,35 @@ function jump() {
   }
 }
 
+function moveLane(dir) {
+  if (!running) return;
+  const next = playerLane + dir;
+  if (next < 0 || next > 2) return;
+  playerLane = next;
+}
+
 function spawnObstacle() {
   const hard = window._hardMode;
+  const lane = Math.floor(Math.random() * 3);
   const h = hard ? (0.7 + Math.random() * 0.9) : (0.55 + Math.random() * 0.6);
-  const geo = new THREE.BoxGeometry(1.1, h, 0.5);
+  const geo = new THREE.BoxGeometry(1.0, h, 0.5);
   const mat = new THREE.MeshStandardMaterial({ color: 0xe6485a, emissive: 0xe6485a, emissiveIntensity: 0.25, roughness: 0.5 });
   const mesh = new THREE.Mesh(geo, mat);
-  mesh.position.set(0, h / 2, -60);
+  mesh.position.set(LANE_X[lane], h / 2, -60);
   scene.add(mesh);
-  obstacles.push({ mesh, h, z: -60 });
+  obstacles.push({ mesh, h, z: -60, lane });
 
   const doubleChance = hard ? 0.35 : 0.22;
   if (speed > 0.19 && Math.random() < doubleChance) {
+    const lane2 = Math.floor(Math.random() * 3);
     const gap = hard ? (6 + Math.random() * 2.5) : (8 + Math.random() * 3);
     const h2 = hard ? (0.6 + Math.random() * 0.8) : (0.5 + Math.random() * 0.6);
-    const geo2 = new THREE.BoxGeometry(1.1, h2, 0.5);
+    const geo2 = new THREE.BoxGeometry(1.0, h2, 0.5);
     const mesh2 = new THREE.Mesh(geo2, mat.clone());
     const z2 = -60 - gap;
-    mesh2.position.set(0, h2 / 2, z2);
+    mesh2.position.set(LANE_X[lane2], h2 / 2, z2);
     scene.add(mesh2);
-    obstacles.push({ mesh: mesh2, h: h2, z: z2 });
+    obstacles.push({ mesh: mesh2, h: h2, z: z2, lane: lane2 });
   }
 }
 
@@ -407,8 +422,18 @@ function update() {
     playerVY = 0;
     jumping = false;
   }
+
+  // レーン移動（滑らかに目標レーンへ寄せる）
+  const targetX = LANE_X[playerLane];
+  playerX += (targetX - playerX) * 0.22;
+  playerGroup.position.x = playerX;
   playerGroup.position.y = playerY;
+  playerGroup.rotation.z = (targetX - playerX) * -0.25;
   playerGroup.rotation.y = Math.sin(score * 0.05) * 0.08;
+
+  // カメラも軽く追従（コースの見切れ防止のため控えめに）
+  camera.position.x = playerX * 0.35;
+  camera.lookAt(playerX * 0.35, 1, -10);
 
   lineMeshes.forEach(m => {
     m.position.z += speed * 1.6;
@@ -433,7 +458,8 @@ function update() {
   });
 
   for (const o of obstacles) {
-    if (Math.abs(o.z - LANE_Z) < 0.9 && playerY < o.h - 0.15) {
+    const sameLane = Math.abs(LANE_X[o.lane] - playerX) < 0.9;
+    if (Math.abs(o.z - LANE_Z) < 0.9 && sameLane && playerY < o.h - 0.15) {
       endGame();
       return;
     }
@@ -517,9 +543,34 @@ function handleResize() {
 window.addEventListener('resize', handleResize);
 
 document.getElementById('gameCanvasWrap').addEventListener('mousedown', jump);
-document.getElementById('gameCanvasWrap').addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, { passive: false });
+
+// タッチ操作：短いタップ＝ジャンプ、左右スワイプ＝レーン移動
+let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+const gameCanvasEl = document.getElementById('gameCanvasWrap');
+gameCanvasEl.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const t = e.changedTouches[0];
+  touchStartX = t.clientX;
+  touchStartY = t.clientY;
+  touchStartTime = Date.now();
+}, { passive: false });
+gameCanvasEl.addEventListener('touchend', (e) => {
+  e.preventDefault();
+  const t = e.changedTouches[0];
+  const dx = t.clientX - touchStartX;
+  const dy = t.clientY - touchStartY;
+  const dt = Date.now() - touchStartTime;
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) && dt < 500) {
+    moveLane(dx > 0 ? 1 : -1);
+  } else {
+    jump();
+  }
+}, { passive: false });
+
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); jump(); }
+  if (e.code === 'ArrowLeft' || e.code === 'KeyA') { e.preventDefault(); moveLane(-1); }
+  if (e.code === 'ArrowRight' || e.code === 'KeyD') { e.preventDefault(); moveLane(1); }
 });
 </script>
 
