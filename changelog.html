@@ -125,6 +125,17 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
   <div class="timeline">
 
     <div class="log-entry">
+      <div class="log-date">2026年9月5日（緊急修正）</div>
+      <div class="log-card">
+        <div class="log-tags"><span class="log-tag fix">FIX</span></div>
+        <ul class="log-list">
+          <li>隠しミニゲーム「スタジオランナー」の3D画面が真っ黒になり起動しない重大な不具合を修正しました</li>
+          <li>原因はThree.jsライブラリの読み込みURLが存在しないバージョン（r150）を指定していたことでした。cdnjsで実在する正しいバージョン（r128）に修正しました</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="log-entry">
       <div class="log-date">2026年9月5日（続報4）</div>
       <div class="log-card">
         <div class="log-tags"><span class="log-tag improve">IMPROVE</span></div>
