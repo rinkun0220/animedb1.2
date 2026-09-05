@@ -14,11 +14,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>スタジオランナー【隠しゲーム】｜ANIMEDB</title>
 <link rel="canonical" href="https://anime-db.jp/pixel-quest.html">
-<meta name="description" content="ANIMEDBの隠しミニゲーム「スタジオランナー」。制作会社を擬人化したキャラクターで横スクロールを駆け抜けよう。">
+<meta name="description" content="ANIMEDBの隠しミニゲーム「スタジオランナー」。制作会社を擬人化したキャラクターで3Dコースを駆け抜けよう。">
 <meta name="robots" content="noindex,follow">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
 <style>
 :root {
   --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
@@ -63,8 +64,10 @@ main { margin-top: var(--nav-height); padding: 20px; max-width: 640px; margin-le
 .game-hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 0 4px; }
 .hud-score { font-size: 0.95rem; font-weight: 800; color: #fff; }
 .hud-best { font-size: 0.78rem; color: var(--text-muted); }
-#gameCanvas { width: 100%; display: block; border-radius: 10px; background: linear-gradient(180deg, #1a2138, #0f1424); touch-action: manipulation; }
+#gameCanvasWrap { width: 100%; aspect-ratio: 2 / 1; display: block; border-radius: 10px; overflow: hidden; touch-action: manipulation; position: relative; background: #05070d; }
+#gameCanvasWrap canvas { display: block; width: 100% !important; height: 100% !important; }
 .game-hint { text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 10px; }
+.render-badge { position: absolute; top: 8px; right: 10px; font-size: 0.62rem; font-weight: 700; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.35); padding: 2px 8px; border-radius: 10px; pointer-events: none; }
 
 .gameover-box { display: none; background: var(--bg-card); border: 2px solid var(--accent); border-radius: 16px; padding: 28px 24px; text-align: center; margin-bottom: 16px; }
 .gameover-box.active { display: block; }
@@ -95,8 +98,8 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
 <main>
   <div class="page-head">
     <span class="page-tag">🥚 隠しゲーム発見</span>
-    <h1 class="page-title">スタジオランナー</h1>
-    <p class="page-desc">制作会社を擬人化したキャラクターで、障害物を飛び越えながらどこまでも走ろう。タップ／スペースキーでジャンプ。</p>
+    <h1 class="page-title">スタジオランナー <span style="font-size:.6em;color:var(--star-color);">3D</span></h1>
+    <p class="page-desc">制作会社を擬人化したキャラクターで、3Dコースを駆け抜けよう。タップ／スペースキーでジャンプ。</p>
   </div>
 
   <div class="char-select active" id="charSelect">
@@ -111,7 +114,7 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
       <span class="hud-score" id="hudScore">SCORE: 0</span>
       <span class="hud-best" id="hudBest">BEST: 0</span>
     </div>
-    <canvas id="gameCanvas" width="600" height="300"></canvas>
+    <div id="gameCanvasWrap"><span class="render-badge">3D RENDER</span></div>
     <div class="game-hint">タップ / クリック / スペースキーでジャンプ</div>
   </div>
 
@@ -137,15 +140,15 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
 
 <script>
 const characters = [
-  { name: "P.A.WORKS", color: "#e07a35", accent: "#fff" },
-  { name: "京都アニメーション", color: "#5a9fd6", accent: "#fff" },
-  { name: "CloverWorks", color: "#4ec9b0", accent: "#fff" },
-  { name: "A-1 Pictures", color: "#e6485a", accent: "#fff" },
-  { name: "wit studio", color: "#7a7a8c", accent: "#fff" },
-  { name: "MAPPA", color: "#d99a3d", accent: "#111" },
-  { name: "TRIGGER", color: "#c94ed6", accent: "#fff" },
-  { name: "サイエンスSARU", color: "#5cc95c", accent: "#fff" },
-  { name: "コジマプロダクション", color: "#1a1a1a", accent: "#e6485a", special: true, url: "https://www.kojimaproductions.jp/ja" }
+  { name: "P.A.WORKS", color: 0xe07a35, accent: 0xffffff },
+  { name: "京都アニメーション", color: 0x5a9fd6, accent: 0xffffff },
+  { name: "CloverWorks", color: 0x4ec9b0, accent: 0xffffff },
+  { name: "A-1 Pictures", color: 0xe6485a, accent: 0xffffff },
+  { name: "wit studio", color: 0x7a7a8c, accent: 0xffffff },
+  { name: "MAPPA", color: 0xd99a3d, accent: 0x111111 },
+  { name: "TRIGGER", color: 0xc94ed6, accent: 0xffffff },
+  { name: "サイエンスSARU", color: 0x5cc95c, accent: 0xffffff },
+  { name: "コジマプロダクション", color: 0x1a1a1a, accent: 0xe6485a, special: true, url: "https://www.kojimaproductions.jp/ja" }
 ];
 
 let selectedChar = 0;
@@ -153,9 +156,10 @@ const charGrid = document.getElementById('charGrid');
 characters.forEach((c, i) => {
   const el = document.createElement('div');
   el.className = 'char-option' + (i === 0 ? ' selected' : '');
+  const hex = '#' + c.color.toString(16).padStart(6, '0');
   const badge = c.special ? '<div style="font-size:.55rem;color:#e6485a;font-weight:800;margin-bottom:2px;">🎬 特別出演</div>' : '';
   const emoji = c.special ? '🕴️' : '✨';
-  el.innerHTML = `${badge}<div class="char-avatar" style="background:${c.color}${c.special ? ';border:2px solid #e6485a' : ''};display:flex;align-items:center;justify-content:center;font-size:18px;">${emoji}</div><div class="char-name">${c.name}</div>`;
+  el.innerHTML = `${badge}<div class="char-avatar" style="background:${hex}${c.special ? ';border:2px solid #e6485a' : ''};display:flex;align-items:center;justify-content:center;font-size:18px;">${emoji}</div><div class="char-name">${c.name}</div>`;
   el.onclick = () => {
     document.querySelectorAll('.char-option').forEach(x => x.classList.remove('selected'));
     el.classList.add('selected');
@@ -178,8 +182,6 @@ const kojimaLines = [
   "Metal Gear? いいえ、Metal Jump です。"
 ];
 function showKojimaIntro() {
-  const toast = document.getElementById('hudBest');
-  // 一瞬だけ演出テキストを表示（ゲーム開始前の小さな小ネタ）
   const line = kojimaLines[Math.floor(Math.random() * kojimaLines.length)];
   const introEl = document.getElementById('kojimaIntro');
   if (introEl) {
@@ -203,10 +205,11 @@ const kojimaGameOverLines = [
   "プレビュー版よりさらに難しくしておきました。文句は監督へ（管理人へ）。"
 ];
 
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const GROUND_Y = 240;
-let player, obstacles, score, best, speed, running, animId, spawnTimer;
+/* ===================== 3D エンジン（Three.js） ===================== */
+let scene, camera, renderer, playerGroup, groundMesh, lineMeshes = [];
+let obstacles = [], score, best, speed, running, animId, spawnTimer;
+let playerY = 0, playerVY = 0, jumping = false;
+const LANE_Z = 0;
 
 function loadBest() {
   try { return parseInt(localStorage.getItem('animedb_runner_best') || '0'); } catch(e) { return 0; }
@@ -214,274 +217,235 @@ function loadBest() {
 function saveBest(v) {
   try { localStorage.setItem('animedb_runner_best', v); } catch(e) {}
 }
-best = 0; // in-memory only fallback if storage unavailable
+best = 0;
 try { best = loadBest(); } catch(e) { best = 0; }
 document.getElementById('hudBest').textContent = 'BEST: ' + best;
+
+function initScene() {
+  const container = document.getElementById('gameCanvasWrap');
+  const w = container.clientWidth, h = container.clientHeight;
+
+  scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x05070d, 0.045);
+
+  camera = new THREE.PerspectiveCamera(62, w / h, 0.1, 200);
+  camera.position.set(0, 3.2, 6.5);
+  camera.lookAt(0, 1, -10);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(w, h);
+  renderer.setClearColor(0x05070d, 1);
+  container.innerHTML = '<span class="render-badge">3D RENDER</span>';
+  container.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0x8899cc, 0.55));
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+  dirLight.position.set(3, 8, 4);
+  scene.add(dirLight);
+  const accentLight = new THREE.PointLight(0xe6485a, 1.2, 25);
+  accentLight.position.set(0, 3, 2);
+  scene.add(accentLight);
+
+  const groundGeo = new THREE.PlaneGeometry(6, 400, 1, 40);
+  const groundMat = new THREE.MeshStandardMaterial({ color: 0x1a2138, roughness: 0.85, metalness: 0.1 });
+  groundMesh = new THREE.Mesh(groundGeo, groundMat);
+  groundMesh.rotation.x = -Math.PI / 2;
+  groundMesh.position.z = -180;
+  scene.add(groundMesh);
+
+  const lineMat = new THREE.MeshBasicMaterial({ color: 0xe6485a });
+  for (const xPos of [-2.6, 2.6]) {
+    const lineGeo = new THREE.BoxGeometry(0.08, 0.05, 400);
+    const line = new THREE.Mesh(lineGeo, lineMat);
+    line.position.set(xPos, 0.03, -180);
+    scene.add(line);
+  }
+
+  for (let i = 0; i < 20; i++) {
+    const dashGeo = new THREE.BoxGeometry(0.15, 0.04, 1.2);
+    const dashMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 });
+    const dash = new THREE.Mesh(dashGeo, dashMat);
+    dash.position.set(0, 0.02, -i * 4);
+    scene.add(dash);
+    lineMeshes.push(dash);
+  }
+}
+
+function buildPlayer(charDef) {
+  const group = new THREE.Group();
+  const isOssan = !!charDef.special;
+  const bodyColor = charDef.color;
+  const accentColor = charDef.accent;
+
+  if (isOssan) {
+    const bodyGeo = new THREE.SphereGeometry(0.5, 16, 16);
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0xd9a066, roughness: 0.6 });
+    const head = new THREE.Mesh(bodyGeo, bodyMat);
+    head.position.y = 0.9;
+    group.add(head);
+
+    const suitGeo = new THREE.ConeGeometry(0.55, 1.1, 8);
+    const suitMat = new THREE.MeshStandardMaterial({ color: 0x2b2b2b, roughness: 0.7 });
+    const suit = new THREE.Mesh(suitGeo, suitMat);
+    suit.position.y = 0.15;
+    group.add(suit);
+
+    const glassGeo = new THREE.BoxGeometry(0.55, 0.15, 0.1);
+    const glassMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.2, metalness: 0.6 });
+    const glasses = new THREE.Mesh(glassGeo, glassMat);
+    glasses.position.set(0, 0.95, 0.42);
+    group.add(glasses);
+
+    const tieGeo = new THREE.ConeGeometry(0.08, 0.5, 6);
+    const tieMat = new THREE.MeshStandardMaterial({ color: accentColor });
+    const tie = new THREE.Mesh(tieGeo, tieMat);
+    tie.position.set(0, 0.4, 0.5);
+    tie.rotation.x = Math.PI;
+    group.add(tie);
+  } else {
+    const bodyGeo = new THREE.SphereGeometry(0.55, 20, 20);
+    const bodyMat = new THREE.MeshStandardMaterial({ color: bodyColor, roughness: 0.4, metalness: 0.1, emissive: bodyColor, emissiveIntensity: 0.15 });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    body.position.y = 0.75;
+    group.add(body);
+
+    const capeGeo = new THREE.ConeGeometry(0.75, 1.0, 6, 1, true);
+    const capeMat = new THREE.MeshStandardMaterial({ color: bodyColor, roughness: 0.6, side: THREE.DoubleSide });
+    const cape = new THREE.Mesh(capeGeo, capeMat);
+    cape.position.y = 0.15;
+    group.add(cape);
+
+    const ribbonMat = new THREE.MeshStandardMaterial({ color: accentColor, emissive: accentColor, emissiveIntensity: 0.3 });
+    const ribbonGeo = new THREE.ConeGeometry(0.18, 0.3, 4);
+    const ribbonL = new THREE.Mesh(ribbonGeo, ribbonMat);
+    ribbonL.position.set(-0.2, 1.25, 0);
+    ribbonL.rotation.z = 0.6;
+    group.add(ribbonL);
+    const ribbonR = new THREE.Mesh(ribbonGeo, ribbonMat);
+    ribbonR.position.set(0.2, 1.25, 0);
+    ribbonR.rotation.z = -0.6;
+    group.add(ribbonR);
+
+    const stickGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.9, 6);
+    const stickMat = new THREE.MeshStandardMaterial({ color: accentColor });
+    const stick = new THREE.Mesh(stickGeo, stickMat);
+    stick.position.set(0.6, 0.8, 0);
+    stick.rotation.z = 0.4;
+    group.add(stick);
+    const starGeo = new THREE.OctahedronGeometry(0.13, 0);
+    const starMat = new THREE.MeshStandardMaterial({ color: 0xfff8dc, emissive: 0xfff8dc, emissiveIntensity: 0.6 });
+    const star = new THREE.Mesh(starGeo, starMat);
+    star.position.set(0.85, 1.2, 0);
+    group.add(star);
+  }
+
+  group.position.set(0, 0, LANE_Z);
+  return group;
+}
 
 function resetGame() {
   const c = characters[selectedChar];
   const isKojima = !!c.special;
-  player = { x: 60, y: GROUND_Y - 30, w: 30, h: 30, vy: 0, jumping: false, color: c.color, accent: c.accent };
+
+  if (playerGroup) scene.remove(playerGroup);
+  playerGroup = buildPlayer(c);
+  scene.add(playerGroup);
+
+  obstacles.forEach(o => scene.remove(o.mesh));
   obstacles = [];
   score = 0;
-  speed = isKojima ? 6.2 : 5.8;
+  speed = isKojima ? 0.155 : 0.145;
   spawnTimer = 0;
+  playerY = 0;
+  playerVY = 0;
+  jumping = false;
   running = true;
   window._hardMode = isKojima;
 }
 
 function jump() {
   if (!running) return;
-  if (!player.jumping) {
-    player.vy = -11.5;
-    player.jumping = true;
+  if (!jumping) {
+    playerVY = 0.28;
+    jumping = true;
   }
 }
 
 function spawnObstacle() {
   const hard = window._hardMode;
-  const h = hard ? (30 + Math.random() * 34) : (26 + Math.random() * 26);
-  obstacles.push({ x: canvas.width + 10, y: GROUND_Y - h, w: hard ? 22 : 18, h: h });
-  // 二連続障害物（ダブルジャンプ判断が必要な配置）。難易度が上がるほど出現しやすい
+  const h = hard ? (0.7 + Math.random() * 0.9) : (0.55 + Math.random() * 0.6);
+  const geo = new THREE.BoxGeometry(1.1, h, 0.5);
+  const mat = new THREE.MeshStandardMaterial({ color: 0xe6485a, emissive: 0xe6485a, emissiveIntensity: 0.25, roughness: 0.5 });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(0, h / 2, -60);
+  scene.add(mesh);
+  obstacles.push({ mesh, h, z: -60 });
+
   const doubleChance = hard ? 0.35 : 0.22;
-  if (speed > 7 && Math.random() < doubleChance) {
-    const gap = hard ? (60 + Math.random() * 20) : (75 + Math.random() * 25);
-    const h2 = hard ? (26 + Math.random() * 30) : (24 + Math.random() * 22);
-    obstacles.push({ x: canvas.width + 10 + (hard ? 22 : 18) + gap, y: GROUND_Y - h2, w: hard ? 22 : 18, h: h2 });
+  if (speed > 0.19 && Math.random() < doubleChance) {
+    const gap = hard ? (6 + Math.random() * 2.5) : (8 + Math.random() * 3);
+    const h2 = hard ? (0.6 + Math.random() * 0.8) : (0.5 + Math.random() * 0.6);
+    const geo2 = new THREE.BoxGeometry(1.1, h2, 0.5);
+    const mesh2 = new THREE.Mesh(geo2, mat.clone());
+    const z2 = -60 - gap;
+    mesh2.position.set(0, h2 / 2, z2);
+    scene.add(mesh2);
+    obstacles.push({ mesh: mesh2, h: h2, z: z2 });
   }
 }
 
 function update() {
   if (!running) return;
-
-  // physics
-  player.vy += 0.58;
-  player.y += player.vy;
-  if (player.y >= GROUND_Y - player.h) {
-    player.y = GROUND_Y - player.h;
-    player.vy = 0;
-    player.jumping = false;
-  }
-
   const hard = window._hardMode;
+
+  playerVY -= 0.017;
+  playerY += playerVY;
+  if (playerY <= 0) {
+    playerY = 0;
+    playerVY = 0;
+    jumping = false;
+  }
+  playerGroup.position.y = playerY;
+  playerGroup.rotation.y = Math.sin(score * 0.05) * 0.08;
+
+  lineMeshes.forEach(m => {
+    m.position.z += speed * 1.6;
+    if (m.position.z > 6) m.position.z -= 80;
+  });
+
   spawnTimer -= 1;
   if (spawnTimer <= 0) {
     spawnObstacle();
-    const baseMin = hard ? 34 : 42;
-    const baseRand = hard ? 34 : 42;
-    spawnTimer = baseMin + Math.random() * baseRand - Math.min(speed * (hard ? 3.6 : 3.0), hard ? 30 : 34);
+    const baseMin = hard ? 22 : 28;
+    const baseRand = hard ? 20 : 24;
+    spawnTimer = baseMin + Math.random() * baseRand - Math.min(speed * 60, hard ? 16 : 18);
   }
 
-  obstacles.forEach(o => o.x -= speed);
-  obstacles = obstacles.filter(o => o.x + o.w > -10);
-
-  // collision
   for (const o of obstacles) {
-    if (player.x < o.x + o.w && player.x + player.w > o.x &&
-        player.y < o.y + o.h && player.y + player.h > o.y) {
+    o.z += speed * 1.6;
+    o.mesh.position.z = o.z;
+  }
+  obstacles = obstacles.filter(o => {
+    if (o.z > 8) { scene.remove(o.mesh); return false; }
+    return true;
+  });
+
+  for (const o of obstacles) {
+    if (Math.abs(o.z - LANE_Z) < 0.9 && playerY < o.h - 0.15) {
       endGame();
       return;
     }
   }
 
   score += 1;
-  speed += hard ? 0.0055 : 0.0042;
+  speed += hard ? 0.00016 : 0.00012;
 
-  draw();
-  animId = requestAnimationFrame(update);
-}
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // ground
-  ctx.fillStyle = '#252d45';
-  ctx.fillRect(0, GROUND_Y, canvas.width, canvas.height - GROUND_Y);
-  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-  ctx.beginPath();
-  ctx.moveTo(0, GROUND_Y);
-  ctx.lineTo(canvas.width, GROUND_Y);
-  ctx.stroke();
-
-  // obstacles
-  ctx.fillStyle = '#e6485a';
-  obstacles.forEach(o => {
-    ctx.fillRect(o.x, o.y, o.w, o.h);
-  });
-
-  // player
-  const cx = player.x + player.w / 2;
-  const cy = player.y + player.h / 2;
-  const isOssan = characters[selectedChar] && characters[selectedChar].special;
-
-  if (isOssan) {
-    drawOssan(cx, cy, player);
-  } else {
-    drawMagicalGirl(cx, cy, player);
-  }
-
+  camera.position.y = 3.2 + Math.sin(score * 0.03) * 0.03;
   document.getElementById('hudScore').textContent = 'SCORE: ' + Math.floor(score / 5);
-}
 
-function drawMagicalGirl(cx, cy, player) {
-  const r = player.w / 2;
-
-  // 後ろに広がる魔法陣っぽい星（背景アクセント）
-  ctx.save();
-  ctx.globalAlpha = 0.35;
-  ctx.fillStyle = player.color;
-  drawStar(cx, cy - 2, r * 1.5, 5);
-  ctx.restore();
-
-  // ケープ／スカートの裾（体の下に広がる三角）
-  ctx.fillStyle = player.color;
-  ctx.beginPath();
-  ctx.moveTo(cx - r * 0.9, cy + r * 0.3);
-  ctx.lineTo(cx - r * 1.4, cy + r * 1.6);
-  ctx.lineTo(cx, cy + r * 0.9);
-  ctx.lineTo(cx + r * 1.4, cy + r * 1.6);
-  ctx.lineTo(cx + r * 0.9, cy + r * 0.3);
-  ctx.closePath();
-  ctx.fill();
-
-  // 顔・体（丸）
-  ctx.fillStyle = player.color;
-  ctx.beginPath();
-  ctx.ellipse(cx, cy, r, r, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // 頬のハイライト
-  ctx.fillStyle = 'rgba(255,255,255,0.25)';
-  ctx.beginPath();
-  ctx.ellipse(cx - r * 0.4, cy - r * 0.3, r * 0.35, r * 0.3, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // 頭のリボン
-  ctx.fillStyle = player.accent;
-  ctx.beginPath();
-  ctx.moveTo(cx - 3, cy - r - 2);
-  ctx.lineTo(cx - r * 0.7, cy - r - 8);
-  ctx.lineTo(cx - r * 0.15, cy - r + 1);
-  ctx.closePath();
-  ctx.moveTo(cx + 3, cy - r - 2);
-  ctx.lineTo(cx + r * 0.7, cy - r - 8);
-  ctx.lineTo(cx + r * 0.15, cy - r + 1);
-  ctx.closePath();
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(cx, cy - r - 1, 3, 0, Math.PI * 2);
-  ctx.fill();
-
-  // 目
-  ctx.fillStyle = player.accent;
-  ctx.beginPath();
-  ctx.ellipse(cx - 6, cy - 2, 3.2, 4.2, 0, 0, Math.PI * 2);
-  ctx.ellipse(cx + 6, cy - 2, 3.2, 4.2, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = '#111';
-  ctx.beginPath();
-  ctx.arc(cx - 6, cy - 1, 1.6, 0, Math.PI * 2);
-  ctx.arc(cx + 6, cy - 1, 1.6, 0, Math.PI * 2);
-  ctx.fill();
-  // きらっとハイライト
-  ctx.fillStyle = '#fff';
-  ctx.beginPath();
-  ctx.arc(cx - 5, cy - 3, 0.8, 0, Math.PI * 2);
-  ctx.arc(cx + 7, cy - 3, 0.8, 0, Math.PI * 2);
-  ctx.fill();
-
-  // ステッキ（キャラの横に小さく）
-  ctx.strokeStyle = player.accent;
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(cx + r + 2, cy + 4);
-  ctx.lineTo(cx + r + 8, cy - 10);
-  ctx.stroke();
-  ctx.fillStyle = '#fff8dc';
-  drawStar(cx + r + 8, cy - 12, 4, 5);
-}
-
-function drawStar(cx, cy, r, points) {
-  ctx.beginPath();
-  for (let i = 0; i < points * 2; i++) {
-    const rad = (i % 2 === 0) ? r : r * 0.45;
-    const ang = (Math.PI / points) * i - Math.PI / 2;
-    const x = cx + Math.cos(ang) * rad;
-    const y = cy + Math.sin(ang) * rad;
-    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-  }
-  ctx.closePath();
-  ctx.fill();
-}
-
-function drawOssan(cx, cy, player) {
-  const r = player.w / 2;
-
-  // スーツの裾（下に広がる台形）
-  ctx.fillStyle = '#2b2b2b';
-  ctx.beginPath();
-  ctx.moveTo(cx - r * 0.9, cy + r * 0.2);
-  ctx.lineTo(cx - r * 1.2, cy + r * 1.5);
-  ctx.lineTo(cx + r * 1.2, cy + r * 1.5);
-  ctx.lineTo(cx + r * 0.9, cy + r * 0.2);
-  ctx.closePath();
-  ctx.fill();
-
-  // ネクタイ
-  ctx.fillStyle = player.accent;
-  ctx.beginPath();
-  ctx.moveTo(cx - 2.5, cy + r * 0.2);
-  ctx.lineTo(cx + 2.5, cy + r * 0.2);
-  ctx.lineTo(cx + 4, cy + r * 1.1);
-  ctx.lineTo(cx, cy + r * 1.35);
-  ctx.lineTo(cx - 4, cy + r * 1.1);
-  ctx.closePath();
-  ctx.fill();
-
-  // 顔（丸、肌色）
-  ctx.fillStyle = '#d9a066';
-  ctx.beginPath();
-  ctx.ellipse(cx, cy, r * 0.92, r * 0.92, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // 後頭部の髪（少し白髪交じりのグレー）
-  ctx.fillStyle = '#555';
-  ctx.beginPath();
-  ctx.arc(cx, cy - r * 0.55, r * 0.85, Math.PI * 1.05, Math.PI * 1.95);
-  ctx.fill();
-
-  // サングラス
-  ctx.fillStyle = '#111';
-  ctx.beginPath();
-  ctx.ellipse(cx - 6, cy - 2, 4.2, 3.2, 0, 0, Math.PI * 2);
-  ctx.ellipse(cx + 6, cy - 2, 4.2, 3.2, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.strokeStyle = '#111';
-  ctx.lineWidth = 1.4;
-  ctx.beginPath();
-  ctx.moveTo(cx - 2, cy - 2);
-  ctx.lineTo(cx + 2, cy - 2);
-  ctx.stroke();
-  // サングラスの反射
-  ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.beginPath();
-  ctx.arc(cx - 7, cy - 3, 1, 0, Math.PI * 2);
-  ctx.arc(cx + 5, cy - 3, 1, 0, Math.PI * 2);
-  ctx.fill();
-
-  // ひげ（口の上）
-  ctx.fillStyle = '#555';
-  ctx.beginPath();
-  ctx.ellipse(cx, cy + 6, 6, 2, 0, 0, Math.PI * 2);
-  ctx.fill();
-
-  // 口（へ字、渋い表情）
-  ctx.strokeStyle = '#5a3a20';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(cx - 3, cy + 10);
-  ctx.quadraticCurveTo(cx, cy + 8, cx + 3, cy + 10);
-  ctx.stroke();
+  renderer.render(scene, camera);
+  animId = requestAnimationFrame(update);
 }
 
 function endGame() {
@@ -517,6 +481,7 @@ function startGame() {
   document.getElementById('charSelect').classList.remove('active');
   document.getElementById('gameWrap').classList.add('active');
   document.getElementById('gameoverBox').classList.remove('active');
+  if (!renderer) initScene();
   resetGame();
   animId = requestAnimationFrame(update);
 }
@@ -528,8 +493,19 @@ function retryGame() {
   animId = requestAnimationFrame(update);
 }
 
-canvas.addEventListener('mousedown', jump);
-canvas.addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, { passive: false });
+function handleResize() {
+  if (!renderer) return;
+  const container = document.getElementById('gameCanvasWrap');
+  const w = container.clientWidth, h = container.clientHeight;
+  if (w === 0 || h === 0) return;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+window.addEventListener('resize', handleResize);
+
+document.getElementById('gameCanvasWrap').addEventListener('mousedown', jump);
+document.getElementById('gameCanvasWrap').addEventListener('touchstart', (e) => { e.preventDefault(); jump(); }, { passive: false });
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space' || e.code === 'ArrowUp') { e.preventDefault(); jump(); }
 });
