@@ -125,6 +125,20 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
   <div class="timeline">
 
     <div class="log-entry">
+      <div class="log-date">2026年9月5日（緊急修正2）</div>
+      <div class="log-card">
+        <div class="log-tags"><span class="log-tag fix">FIX</span></div>
+        <ul class="log-list">
+          <li>「スタジオランナー」が引き続き起動しない件について、複数の対策を追加しました</li>
+          <li>Three.js読み込み元をより安定したCDN（jsDelivr）に変更</li>
+          <li>画面表示直後は要素のサイズが正しく取得できないことがあるため、1フレーム待ってから3D初期化するよう修正</li>
+          <li>サイズ取得に失敗した場合の固定サイズフォールバックを追加</li>
+          <li>ライブラリ読み込み自体に失敗した場合、真っ黒画面ではなくエラーメッセージを表示するよう変更</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="log-entry">
       <div class="log-date">2026年9月5日（緊急修正）</div>
       <div class="log-card">
         <div class="log-tags"><span class="log-tag fix">FIX</span></div>
