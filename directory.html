@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X4M05SEYCE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-X4M05SEYCE');
+</script>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-4858195974765934">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>声優・スタッフ名鑑｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/directory.html">
+<meta name="description" content="ANIMEDBで紹介している声優・脚本家・監督・制作会社・アーティストを横断的にまとめた名鑑ページ。名前をクリックすると代表作の解説へジャンプできます。">
+<meta name="keywords" content="声優名鑑,脚本家,監督,制作会社,アーティスト,ANIMEDB,横断検索">
+<meta name="robots" content="index,follow">
+<meta name="author" content="ANIMEDB">
+<meta property="og:title" content="声優・スタッフ名鑑｜ANIMEDB">
+<meta property="og:description" content="ANIMEDBで紹介している声優・脚本家・監督・制作会社・アーティストを横断的にまとめた名鑑ページ。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anime-db.jp/directory.html">
+<meta property="og:site_name" content="ANIMEDB">
+<meta property="og:locale" content="ja_JP">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-main: #0b0f19;
+  --bg-card: #161f30;
+  --bg-darker: #070a10;
+  --accent: #e6485a;
+  --accent-hover: #ff6b81;
+  --text-main: #f1f2f6;
+  --text-muted: #a4b0be;
+  --star-color: #d99a3d;
+  --border-color: rgba(255,255,255,0.08);
+  --nav-height: 64px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+header {
+  height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,71,87,0.15); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
+  box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
+}
+.logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; text-decoration: none; flex-shrink: 0; }
+.logo-a { color: #fff; } .logo-db { color: var(--accent); }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-item {
+  color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px;
+  white-space: nowrap; display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid transparent; flex-shrink: 0;
+}
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+.nav-item.active { color: #fff; background: rgba(255,71,87,0.15); border-color: rgba(255,71,87,0.35); color: var(--accent); }
+@media (max-width: 768px) {
+  header { padding: 0 12px; }
+  .logo { font-size: 1.2rem; }
+  .nav-item { font-size: 0.78rem; padding: 6px 10px; }
+}
+main { margin-top: var(--nav-height); padding: 24px; max-width: 960px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 32px 0 8px; }
+.page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 14px; }
+.page-title { font-size: 1.9rem; font-weight: 800; margin-bottom: 10px; line-height: 1.4; }
+.page-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.8; }
+
+.search-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px 18px; margin-bottom: 36px; display: flex; align-items: center; gap: 10px; }
+.search-box input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 1rem; font-family: inherit; }
+.search-box input::placeholder { color: var(--text-muted); }
+
+.cat-block { margin-bottom: 40px; }
+.cat-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; padding-left: 12px; border-left: 4px solid var(--accent); display: flex; align-items: center; gap: 8px; }
+.cat-link { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; margin-left: 14px; padding-left: 12px; }
+.cat-link:hover { color: var(--accent); }
+.name-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+.name-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 16px; text-decoration: none; color: var(--text-main); transition: border-color 0.2s, transform 0.2s; display: block; }
+.name-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.name-card .n-name { font-size: 0.92rem; font-weight: 700; color: #fff; }
+.name-card .n-role { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
+.name-card.hidden { display: none; }
+
+.link-row { margin-top: 20px; padding: 20px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; text-align: center; font-size: 0.9rem; color: var(--text-muted); }
+.link-row a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.link-row a:hover { text-decoration: underline; }
+
+footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 40px; }
+.footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+.footer-link { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+.footer-link:hover { color: #fff; }
+.copyright { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><span class="logo-a">ANIME</span><span class="logo-db">DB</span></a>
+  <div class="nav-links">
+    <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
+    <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
+    <a href="/glossary.html" class="nav-item" style="text-decoration:none;">📖 用語集</a>
+    <a href="/directory.html" class="nav-item active" style="text-decoration:none;">🗂️ 名鑑</a>
+    <a href="/games.html" class="nav-item" style="text-decoration:none;">🎮 診断・ガチャなど・ゲームも？</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <span class="page-tag">🗂️ 横断検索</span>
+    <h1 class="page-title">声優・スタッフ名鑑</h1>
+    <p class="page-desc">ANIMEDBのブログで紹介している声優・脚本家・監督・制作会社・アーティストを一覧にまとめました。名前をクリックすると、その方の代表作の解説ページへジャンプします。「この人、前にも見た気がする」というときに使ってください。</p>
+  </div>
+
+  <div class="search-box">
+    <span>🔍</span>
+    <input type="text" id="nameSearch" placeholder="名前で検索（例：中村、京都アニメ）" oninput="filterNames()">
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🎙️ 男性声優 <a href="/blog/male-seiyuu-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/male-seiyuu-favorites.html#nakamura" class="name-card" data-name="中村悠一 なかむらゆういち"><div class="n-name">中村悠一</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#sugita" class="name-card" data-name="杉田智和 すぎたともかず"><div class="n-name">杉田智和</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#tsuda" class="name-card" data-name="津田健次郎 つだけんじろう"><div class="n-name">津田健次郎</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#kaji" class="name-card" data-name="梶裕貴 かじゆうき"><div class="n-name">梶裕貴</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#matsuoka" class="name-card" data-name="松岡禎丞 まつおかよしつぐ"><div class="n-name">松岡禎丞</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#uchida" class="name-card" data-name="内田雄馬 うちだゆうま"><div class="n-name">内田雄馬</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#hanae" class="name-card" data-name="花江夏樹 はなえなつき"><div class="n-name">花江夏樹</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#kamiya" class="name-card" data-name="神谷浩史 かみやひろし"><div class="n-name">神谷浩史</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#shimono" class="name-card" data-name="下野紘 しものひろ"><div class="n-name">下野紘</div><div class="n-role">声優</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🎙️ 女性声優 <a href="/blog/female-seiyuu-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/female-seiyuu-favorites.html#hanazawa" class="name-card" data-name="花澤香菜 はなざわかな"><div class="n-name">花澤香菜</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#hayami" class="name-card" data-name="早見沙織 はやみさおり"><div class="n-name">早見沙織</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#sakura" class="name-card" data-name="佐倉綾音 さくらあやね"><div class="n-name">佐倉綾音</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#tanezaki" class="name-card" data-name="種﨑敦美 たねざきあつみ"><div class="n-name">種﨑敦美</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#minase" class="name-card" data-name="水瀬いのり みなせいのり"><div class="n-name">水瀬いのり</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#ishikawa" class="name-card" data-name="石川由依 いしかわゆい"><div class="n-name">石川由依</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#taketatsu" class="name-card" data-name="竹達彩奈 たけたつあやな"><div class="n-name">竹達彩奈</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#higashiyama" class="name-card" data-name="東山奈央 ひがしやまなお"><div class="n-name">東山奈央</div><div class="n-role">声優</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🎭 名バイプレイヤー声優 <a href="/blog/legend-seiyuu-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/legend-seiyuu-favorites.html#otsuka" class="name-card" data-name="大塚芳忠 おおつかほうちゅう"><div class="n-name">大塚芳忠</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#ishida" class="name-card" data-name="石田彰 いしだあきら"><div class="n-name">石田彰</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#miki" class="name-card" data-name="三木眞一郎 みきしんいちろう"><div class="n-name">三木眞一郎</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#inoue" class="name-card" data-name="井上喜久子 いのうえきくこ"><div class="n-name">井上喜久子</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#hayashibara" class="name-card" data-name="林原めぐみ はやしばらめぐみ"><div class="n-name">林原めぐみ</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#sawashiro" class="name-card" data-name="沢城みゆき さわしろみゆき"><div class="n-name">沢城みゆき</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#yamadera" class="name-card" data-name="山寺宏一 やまでらこういち"><div class="n-name">山寺宏一</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#otsukaakio" class="name-card" data-name="大塚明夫 おおつかあきお"><div class="n-name">大塚明夫</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#nakai" class="name-card" data-name="中井和哉 なかいかずや"><div class="n-name">中井和哉</div><div class="n-role">声優</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">✨ 次世代の主役級声優 <a href="/blog/nextgen-seiyuu-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/nextgen-seiyuu-favorites.html#yuki" class="name-card" data-name="悠木碧 ゆうきあおい"><div class="n-name">悠木碧 ★別格</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#youmiya" class="name-card" data-name="羊宮妃那 ひつじみやひな"><div class="n-name">羊宮妃那</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#suzushiro" class="name-card" data-name="鈴代紗弓 すずしろさゆみ"><div class="n-name">鈴代紗弓</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#natsuyoshi" class="name-card" data-name="夏吉ゆうこ なつよしゆうこ"><div class="n-name">夏吉ゆうこ</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#otsuka" class="name-card" data-name="大塚剛央 おおつかごう"><div class="n-name">大塚剛央</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#sekine" class="name-card" data-name="関根明良 せきねあきら"><div class="n-name">関根明良</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#chiba" class="name-card" data-name="千葉翔也 ちばしょうや"><div class="n-name">千葉翔也</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#takahashi" class="name-card" data-name="高橋李依 たかはしりえ"><div class="n-name">高橋李依</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#itomiku" class="name-card" data-name="伊藤美来 いとうみく"><div class="n-name">伊藤美来</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#iwami" class="name-card" data-name="石見舞菜香 いわみまなか"><div class="n-name">石見舞菜香</div><div class="n-role">声優</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">✍️ 脚本家 <a href="/blog/scriptwriter-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/scriptwriter-favorites.html#yoshida" class="name-card" data-name="吉田玲子 よしだれいこ"><div class="n-name">吉田玲子</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#okada" class="name-card" data-name="岡田麿里 おかだまり"><div class="n-name">岡田麿里</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#hanada" class="name-card" data-name="花田十輝 はなだじゅっき"><div class="n-name">花田十輝</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#yokote" class="name-card" data-name="横手美智子 よこてみちこ"><div class="n-name">横手美智子</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#aoshima" class="name-card" data-name="あおしまたかし"><div class="n-name">あおしまたかし</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#urobuchi" class="name-card" data-name="虚淵玄 うろぶちげん"><div class="n-name">虚淵玄</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#okouchi" class="name-card" data-name="大河内一楼 おおこうちいちろう"><div class="n-name">大河内一楼</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#uezu" class="name-card" data-name="上江洲誠 うえずまこと"><div class="n-name">上江洲誠</div><div class="n-role">脚本家</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🎬 監督 <a href="/blog/director-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/director-favorites.html#nagai" class="name-card" data-name="長井龍雪 ながいたつゆき"><div class="n-name">長井龍雪</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#ishihara" class="name-card" data-name="石原立也 いしはらたつや"><div class="n-name">石原立也</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#ishidate" class="name-card" data-name="石立太一 いしだてたいち"><div class="n-name">石立太一</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#mizushima" class="name-card" data-name="水島努 みずしまつとむ"><div class="n-name">水島努</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#shinkai" class="name-card" data-name="新海誠 しんかいまこと"><div class="n-name">新海誠</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#yamada" class="name-card" data-name="山田尚子 やまだなおこ"><div class="n-name">山田尚子</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#ikuhara" class="name-card" data-name="幾原邦彦 いくはらくにひこ"><div class="n-name">幾原邦彦</div><div class="n-role">監督</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🏢 制作会社 <a href="/blog/studio-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/studio-favorites.html#pawoks" class="name-card" data-name="P.A.WORKS ぴーえーわーくす"><div class="n-name">P.A.WORKS</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#kyoani" class="name-card" data-name="京都アニメーション きょうとあにめーしょん"><div class="n-name">京都アニメーション</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#cloverworks" class="name-card" data-name="CloverWorks くろーばーわーくす"><div class="n-name">CloverWorks</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#a1" class="name-card" data-name="A-1 Pictures えーわんぴくちゃーず"><div class="n-name">A-1 Pictures</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#wit" class="name-card" data-name="wit studio うぃっとすたじお"><div class="n-name">wit studio</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#mappa" class="name-card" data-name="MAPPA まっぱ"><div class="n-name">MAPPA</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#ghibli" class="name-card" data-name="スタジオジブリ すたじおじぶり"><div class="n-name">スタジオジブリ</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#toei" class="name-card" data-name="東映アニメーション とうえいあにめーしょん"><div class="n-name">東映アニメーション</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#ufotable" class="name-card" data-name="ufotable ゆーふぉーてーぶる"><div class="n-name">ufotable</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#sunrise" class="name-card" data-name="バンダイナムコフィルムワークス さんらいず"><div class="n-name">バンダイナムコフィルムワークス</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#bones" class="name-card" data-name="BONES ぼんず"><div class="n-name">BONES</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#madhouse" class="name-card" data-name="MADHOUSE まっどはうす"><div class="n-name">MADHOUSE</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#trigger" class="name-card" data-name="TRIGGER とりがー"><div class="n-name">TRIGGER</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#saru" class="name-card" data-name="サイエンスSARU さいえんすさる"><div class="n-name">サイエンスSARU</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#kai" class="name-card" data-name="スタジオKAI すたじおかい"><div class="n-name">スタジオKAI</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#bind" class="name-card" data-name="スタジオバインド すたじおばいんど"><div class="n-name">スタジオバインド</div><div class="n-role">制作会社</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🎵 主題歌アーティスト <a href="/blog/artist-anime-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/artist-anime-favorites.html#yonezu" class="name-card" data-name="米津玄師 よねづけんし"><div class="n-name">米津玄師</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#nakashima" class="name-card" data-name="中島美嘉 なかしまみか"><div class="n-name">中島美嘉</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#mrsgreenapple" class="name-card" data-name="Mrs. GREEN APPLE ミセスグリーンアップル"><div class="n-name">Mrs. GREEN APPLE</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#higedan" class="name-card" data-name="Official髭男dism オフィシャルヒゲダンディズム"><div class="n-name">Official髭男dism</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#yoasobi" class="name-card" data-name="YOASOBI ヨアソビ"><div class="n-name">YOASOBI</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#aimer" class="name-card" data-name="Aimer エメ"><div class="n-name">Aimer</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#lisa" class="name-card" data-name="LiSA リサ"><div class="n-name">LiSA</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#kinggnu" class="name-card" data-name="King Gnu キングヌー"><div class="n-name">King Gnu</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#ryokushaka" class="name-card" data-name="緑黄色社会 りょくおうしょくしゃかい"><div class="n-name">緑黄色社会</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#zutomayo" class="name-card" data-name="ずっと真夜中でいいのに。ずとまよ"><div class="n-name">ずっと真夜中でいいのに。</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#bump" class="name-card" data-name="BUMP OF CHICKEN ばんぷおぶちきん"><div class="n-name">BUMP OF CHICKEN</div><div class="n-role">アーティスト</div></a>
+    </div>
+  </div>
+
+  <div class="link-row" id="noResult" style="display:none;">
+    該当する名前が見つかりませんでした。別のキーワードで検索してみてください。
+  </div>
+
+  <div class="link-row">
+    このページに載っていない声優・スタッフの記事もあります。<a href="/blog/">ブログ一覧</a>から探してみてください。
+  </div>
+</main>
+
+<footer>
+  <div class="footer-links">
+    <a href="/" class="footer-link">ホーム</a>
+    <a href="/blog/" class="footer-link">ブログ</a>
+    <a href="/privacy.html" class="footer-link">プライバシーポリシー</a>
+    <a href="/contact.html" class="footer-link">お問い合わせ</a>
+    <a href="/changelog.html" class="footer-link">更新履歴</a>
+  </div>
+  <p class="copyright">© 2026 ANIMEDB. All rights reserved.</p>
+</footer>
+
+<script>
+function filterNames() {
+  const q = document.getElementById('nameSearch').value.trim().toLowerCase();
+  const cards = document.querySelectorAll('.name-card');
+  let visibleCount = 0;
+  cards.forEach(card => {
+    const name = card.getAttribute('data-name').toLowerCase();
+    if (q === '' || name.includes(q)) {
+      card.classList.remove('hidden');
+      visibleCount++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  document.querySelectorAll('.cat-block').forEach(block => {
+    const visible = block.querySelectorAll('.name-card:not(.hidden)').length;
+    block.style.display = (q !== '' && visible === 0) ? 'none' : '';
+  });
+  document.getElementById('noResult').style.display = (q !== '' && visibleCount === 0) ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>
