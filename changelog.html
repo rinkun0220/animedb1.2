@@ -141,6 +141,17 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
   <div class="timeline">
 
     <div class="log-entry">
+      <div class="log-date">2026年9月7日（緊急修正）</div>
+      <div class="log-card">
+        <div class="log-tags"><span class="log-tag fix">FIX</span></div>
+        <ul class="log-list">
+          <li>「<a href="/blog/spring2026-recommend.html">2026年夏アニメ作品を見た感想まとめ</a>」「<a href="/blog/2026-spring-all.html">2026年春アニメ作品を見た感想まとめ</a>」内の配信バッジ（dアニメ・Amazon・Netflix）が、クリックしても反応しない不具合を修正しました</li>
+          <li>原因はバッジが`&lt;span&gt;`要素（リンク機能なし）になっていたことでした。全51箇所を正しい`&lt;a href&gt;`リンクに修正しました</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="log-entry">
       <div class="log-date">2026年9月7日（続報3）</div>
       <div class="log-card">
         <div class="log-tags"><span class="log-tag improve">IMPROVE</span></div>
