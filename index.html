@@ -800,8 +800,6 @@ function generateStreamBadgesHTML(title) {
       <a href="${danimeUrl}" target="_blank" rel="noopener noreferrer" class="badge danime">dアニメ</a>
       <a href="${amazonUrl}" target="_blank" rel="noopener noreferrer" class="badge amazon">Amazon</a>
       <a href="${netflixBadgeUrl}" target="_blank" rel="noopener noreferrer" class="badge netflix">Netflix</a>
-      <a href="${A8_COLLEIZE_URL}" target="_blank" rel="noopener nofollow" class="badge colleize">🎁 公式グッズ</a>
-      <a href="${A8_AMNIBUS_URL}" target="_blank" rel="noopener nofollow" class="badge amnibus">🛍️ コラボグッズ</a>
     </div>
   `;
 }
@@ -997,9 +995,7 @@ function appendStreamLinks(container, title) {
   const networks = [
     { name: "dアニメストア", url: `https://animestore.docomo.ne.jp/animestore/sch_pc?searchKey=${encoded}`, cls: "danime" },
     { name: "Amazon Prime", url: `https://www.amazon.co.jp/s?k=${encoded}&i=instant-video`, cls: "amazon" },
-    { name: "Netflix", url: netflixUrl, cls: "netflix" },
-    { name: "🎁 公式グッズ", url: A8_COLLEIZE_URL, cls: "colleize" },
-    { name: "🛍️ コラボグッズ", url: A8_AMNIBUS_URL, cls: "amnibus" }
+    { name: "Netflix", url: netflixUrl, cls: "netflix" }
   ];
   
   networks.forEach(net => {
@@ -1085,11 +1081,5 @@ async function fetchWithCache(url, retries = 2) {
 }
 </script>
 
-<img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B3VR9+BK60MQ+4EKC+5ZEMP" alt="" style="display:none;">
-
-<!-- A8.net colleize 計測タグ -->
-<img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4B7U0V+35PTBM+4RNG+5YJRM" alt="">
-<!-- A8.net AMNIBUS 計測タグ -->
-<img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4B7WD8+7KOJUA+41ZK+60WN6" alt="">
 </body>
 </html>
