@@ -12,16 +12,16 @@
 <meta charset="UTF-8">
 <meta name="google-adsense-account" content="ca-pub-4858195974765934">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>あなたに合う監督診断｜ANIMEDB</title>
-<link rel="canonical" href="https://anime-db.jp/director-diagnosis.html">
-<meta name="description" content="5つの質問に答えるだけで、あなたの好みに近いアニメ監督を診断。長井龍雪・石原立也・石立太一・水島努の中から結果が出ます。">
-<meta name="keywords" content="監督診断,アニメ診断,長井龍雪,石原立也,石立太一,水島努">
+<title>声優・スタッフ名鑑｜ANIMEDB</title>
+<link rel="canonical" href="https://anime-db.jp/directory.html">
+<meta name="description" content="ANIMEDBで紹介している声優・脚本家・監督・制作会社・アーティストを横断的にまとめた名鑑ページ。名前をクリックすると代表作の解説へジャンプできます。">
+<meta name="keywords" content="声優名鑑,脚本家,監督,制作会社,アーティスト,ANIMEDB,横断検索">
 <meta name="robots" content="index,follow">
 <meta name="author" content="ANIMEDB">
-<meta property="og:title" content="あなたに合う監督診断｜ANIMEDB">
-<meta property="og:description" content="5つの質問に答えるだけで、あなたの好みに近いアニメ監督がわかります。">
+<meta property="og:title" content="声優・スタッフ名鑑｜ANIMEDB">
+<meta property="og:description" content="ANIMEDBで紹介している声優・脚本家・監督・制作会社・アーティストを横断的にまとめた名鑑ページ。">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://anime-db.jp/director-diagnosis.html">
+<meta property="og:url" content="https://anime-db.jp/directory.html">
 <meta property="og:site_name" content="ANIMEDB">
 <meta property="og:locale" content="ja_JP">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4858195974765934" crossorigin="anonymous"></script>
@@ -30,15 +30,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg-main: #0b0f19; --bg-card: #161f30; --bg-darker: #070a10;
-  --accent: #e6485a; --text-main: #f1f2f6; --text-muted: #a4b0be;
-  --star-color: #d99a3d; --border-color: rgba(255,255,255,0.08); --nav-height: 64px;
+  --bg-main: #0b0f19;
+  --bg-card: #161f30;
+  --bg-darker: #070a10;
+  --accent: #e6485a;
+  --accent-hover: #ff6b81;
+  --text-main: #f1f2f6;
+  --text-muted: #a4b0be;
+  --star-color: #d99a3d;
+  --border-color: rgba(255,255,255,0.08);
+  --nav-height: 64px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', 'Noto Sans JP', sans-serif; background-color: var(--bg-main); color: var(--text-main); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
 header {
   height: var(--nav-height); background: rgba(11,15,25,0.95); backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(230,72,90,0.15); display: flex; align-items: center;
+  border-bottom: 1px solid rgba(255,71,87,0.15); display: flex; align-items: center;
   justify-content: space-between; padding: 0 24px; position: fixed; top: 0; width: 100%; z-index: 100;
   box-shadow: 0 1px 20px rgba(0,0,0,0.4); gap: 12px;
 }
@@ -46,50 +59,43 @@ header {
 .logo-a { color: #fff; } .logo-db { color: var(--accent); }
 .nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
 .nav-links::-webkit-scrollbar { display: none; }
-.nav-item { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; border: 1px solid transparent; flex-shrink: 0; }
+.nav-item {
+  color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; padding: 7px 14px; border-radius: 8px;
+  white-space: nowrap; display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid transparent; flex-shrink: 0;
+}
 .nav-item:hover { color: #fff; background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
-.nav-item.active { color: var(--accent); background: rgba(230,72,90,0.12); border-color: rgba(230,72,90,0.3); }
-@media (max-width: 768px) { header { padding: 0 12px; } .logo { font-size: 1.2rem; } .nav-item { font-size: 0.78rem; padding: 6px 10px; } }
-
-main { margin-top: var(--nav-height); padding: 24px; max-width: 680px; margin-left: auto; margin-right: auto; }
-.page-head { padding: 32px 0 8px; text-align: center; }
+.nav-item.active { color: #fff; background: rgba(255,71,87,0.15); border-color: rgba(255,71,87,0.35); color: var(--accent); }
+@media (max-width: 768px) {
+  header { padding: 0 12px; }
+  .logo { font-size: 1.2rem; }
+  .nav-item { font-size: 0.78rem; padding: 6px 10px; }
+}
+main { margin-top: var(--nav-height); padding: 24px; max-width: 960px; margin-left: auto; margin-right: auto; }
+.page-head { padding: 32px 0 8px; }
 .page-tag { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; display: inline-block; margin-bottom: 14px; }
-.page-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 10px; }
-.page-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 32px; line-height: 1.8; }
+.page-title { font-size: 1.9rem; font-weight: 800; margin-bottom: 10px; line-height: 1.4; }
+.page-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.8; }
 
-.progress-wrap { background: var(--bg-card); border-radius: 20px; height: 8px; margin-bottom: 32px; overflow: hidden; }
-.progress-bar { background: var(--accent); height: 100%; width: 0%; transition: width 0.4s ease; border-radius: 20px; }
+.search-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px 18px; margin-bottom: 36px; display: flex; align-items: center; gap: 10px; }
+.search-box input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 1rem; font-family: inherit; }
+.search-box input::placeholder { color: var(--text-muted); }
 
-.q-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px 24px; margin-bottom: 20px; }
-.q-num { font-size: 0.78rem; color: var(--accent); font-weight: 700; margin-bottom: 8px; }
-.q-text { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 22px; line-height: 1.6; }
-.q-options { display: grid; gap: 10px; }
-.q-opt { background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 18px; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; text-align: left; color: var(--text-main); font-family: inherit; }
-.q-opt:hover { border-color: var(--accent); background: rgba(230,72,90,0.06); }
+.cat-block { margin-bottom: 40px; }
+.cat-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; padding-left: 12px; border-left: 4px solid var(--accent); display: flex; align-items: center; gap: 8px; }
+.cat-link { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; margin-left: 14px; padding-left: 12px; }
+.cat-link:hover { color: var(--accent); }
+.name-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 16px; }
+.name-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 16px; text-decoration: none; color: var(--text-main); transition: border-color 0.2s, transform 0.2s; display: block; }
+.name-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.name-card .n-name { font-size: 0.92rem; font-weight: 700; color: #fff; }
+.name-card .n-role { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
+.name-card.hidden { display: none; }
 
-#startScreen, #resultScreen { text-align: center; }
-.start-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 1.05rem; font-weight: 700; padding: 16px 44px; cursor: pointer; transition: background 0.2s; font-family: inherit; }
-
-.result-card { background: var(--bg-card); border: 2px solid var(--accent); border-radius: 18px; padding: 36px 28px; margin-bottom: 24px; }
-.result-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
-.result-name { font-size: 1.7rem; font-weight: 800; color: #fff; margin-bottom: 16px; }
-.result-desc { font-size: 0.94rem; color: var(--text-main); line-height: 1.9; margin-bottom: 20px; text-align: left; }
-.result-works { font-size: 0.82rem; color: var(--text-muted); background: var(--bg-darker); border-radius: 8px; padding: 12px 16px; text-align: left; margin-bottom: 20px; }
-.result-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-.result-btn { display: inline-block; padding: 12px 26px; border-radius: 8px; font-size: 0.92rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; font-family: inherit; }
-.result-btn.primary { background: var(--accent); color: #fff; }
-.result-btn.secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); cursor: pointer; }
-.result-btn.share { background: #000; color: #fff; border: 1px solid #333; }
-
-.other-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; text-align: left; }
-.other-title { font-size: 0.92rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
-.other-list { display: grid; gap: 8px; }
-.other-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-darker); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 16px; text-decoration: none; transition: border-color 0.2s; }
-.other-item:hover { border-color: var(--star-color); }
-.other-name { font-size: 0.9rem; font-weight: 700; color: var(--text-main); }
-.other-arrow { font-size: 0.78rem; color: var(--star-color); font-weight: 600; }
-
-.hidden { display: none !important; }
+.link-row { margin-top: 20px; padding: 20px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; text-align: center; font-size: 0.9rem; color: var(--text-muted); }
+.link-row a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.link-row a:hover { text-decoration: underline; }
 
 footer { background: var(--bg-darker); border-top: 1px solid var(--border-color); padding: 30px 24px; text-align: center; margin-top: 40px; }
 .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
@@ -106,30 +112,156 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
     <a href="/" class="nav-item" style="text-decoration:none;">🏠 ホーム</a>
     <a href="/blog/" class="nav-item" style="text-decoration:none;">📝 ブログ</a>
     <a href="/glossary.html" class="nav-item" style="text-decoration:none;">📖 用語集</a>
-    <a href="/directory.html" class="nav-item" style="text-decoration:none;">🗂️ 名鑑</a>
-    <a href="/games.html" class="nav-item active" style="text-decoration:none;">🎮 診断・ガチャなど・ゲームも？</a>
+    <a href="/directory.html" class="nav-item active" style="text-decoration:none;">🗂️ 名鑑</a>
+    <a href="/games.html" class="nav-item" style="text-decoration:none;">🎮 診断・ガチャなど・ゲームも？</a>
   </div>
 </header>
 
 <main>
   <div class="page-head">
-    <span class="page-tag">🎬 診断コンテンツ</span>
-    <h1 class="page-title">あなたに合う監督診断</h1>
-    <p class="page-desc">5つの質問に答えるだけで、あなたの好みに一番近いアニメ監督がわかります。所要時間は約1分です。</p>
+    <span class="page-tag">🗂️ 横断検索</span>
+    <h1 class="page-title">声優・スタッフ名鑑</h1>
+    <p class="page-desc">ANIMEDBのブログで紹介している声優・脚本家・監督・制作会社・アーティストを一覧にまとめました。名前をクリックすると、その方の代表作の解説ページへジャンプします。「この人、前にも見た気がする」というときに使ってください。</p>
   </div>
 
-  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="search-box">
+    <span>🔍</span>
+    <input type="text" id="nameSearch" placeholder="名前で検索（例：中村、京都アニメ）" oninput="filterNames()">
+  </div>
 
-  <div id="startScreen">
-    <div class="q-card">
-      <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:24px; line-height:1.9;">感情を爆発させる演出、日常芝居の緻密さ、音楽と美術の調和、ジャンルを超えた振れ幅。監督ごとの"画面の作り方"は驚くほど違います。あなたの"好き"はどの監督に近いでしょうか？</p>
-      <button class="start-btn" onclick="startQuiz()">診断をはじめる →</button>
+  <div class="cat-block">
+    <div class="cat-title">🎙️ 男性声優 <a href="/blog/male-seiyuu-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/male-seiyuu-favorites.html#nakamura" class="name-card" data-name="中村悠一 なかむらゆういち"><div class="n-name">中村悠一</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#sugita" class="name-card" data-name="杉田智和 すぎたともかず"><div class="n-name">杉田智和</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#tsuda" class="name-card" data-name="津田健次郎 つだけんじろう"><div class="n-name">津田健次郎</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#kaji" class="name-card" data-name="梶裕貴 かじゆうき"><div class="n-name">梶裕貴</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#matsuoka" class="name-card" data-name="松岡禎丞 まつおかよしつぐ"><div class="n-name">松岡禎丞</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#uchida" class="name-card" data-name="内田雄馬 うちだゆうま"><div class="n-name">内田雄馬</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#hanae" class="name-card" data-name="花江夏樹 はなえなつき"><div class="n-name">花江夏樹</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#kamiya" class="name-card" data-name="神谷浩史 かみやひろし"><div class="n-name">神谷浩史</div><div class="n-role">声優</div></a>
+      <a href="/blog/male-seiyuu-favorites.html#shimono" class="name-card" data-name="下野紘 しものひろ"><div class="n-name">下野紘</div><div class="n-role">声優</div></a>
     </div>
   </div>
 
-  <div id="quizScreen" class="hidden"></div>
+  <div class="cat-block">
+    <div class="cat-title">🎙️ 女性声優 <a href="/blog/female-seiyuu-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/female-seiyuu-favorites.html#hanazawa" class="name-card" data-name="花澤香菜 はなざわかな"><div class="n-name">花澤香菜</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#hayami" class="name-card" data-name="早見沙織 はやみさおり"><div class="n-name">早見沙織</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#sakura" class="name-card" data-name="佐倉綾音 さくらあやね"><div class="n-name">佐倉綾音</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#tanezaki" class="name-card" data-name="種﨑敦美 たねざきあつみ"><div class="n-name">種﨑敦美</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#minase" class="name-card" data-name="水瀬いのり みなせいのり"><div class="n-name">水瀬いのり</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#ishikawa" class="name-card" data-name="石川由依 いしかわゆい"><div class="n-name">石川由依</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#taketatsu" class="name-card" data-name="竹達彩奈 たけたつあやな"><div class="n-name">竹達彩奈</div><div class="n-role">声優</div></a>
+      <a href="/blog/female-seiyuu-favorites.html#higashiyama" class="name-card" data-name="東山奈央 ひがしやまなお"><div class="n-name">東山奈央</div><div class="n-role">声優</div></a>
+    </div>
+  </div>
 
-  <div id="resultScreen" class="hidden"></div>
+  <div class="cat-block">
+    <div class="cat-title">🎭 名バイプレイヤー声優 <a href="/blog/legend-seiyuu-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/legend-seiyuu-favorites.html#otsuka" class="name-card" data-name="大塚芳忠 おおつかほうちゅう"><div class="n-name">大塚芳忠</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#ishida" class="name-card" data-name="石田彰 いしだあきら"><div class="n-name">石田彰</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#miki" class="name-card" data-name="三木眞一郎 みきしんいちろう"><div class="n-name">三木眞一郎</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#inoue" class="name-card" data-name="井上喜久子 いのうえきくこ"><div class="n-name">井上喜久子</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#hayashibara" class="name-card" data-name="林原めぐみ はやしばらめぐみ"><div class="n-name">林原めぐみ</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#sawashiro" class="name-card" data-name="沢城みゆき さわしろみゆき"><div class="n-name">沢城みゆき</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#yamadera" class="name-card" data-name="山寺宏一 やまでらこういち"><div class="n-name">山寺宏一</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#otsukaakio" class="name-card" data-name="大塚明夫 おおつかあきお"><div class="n-name">大塚明夫</div><div class="n-role">声優</div></a>
+      <a href="/blog/legend-seiyuu-favorites.html#nakai" class="name-card" data-name="中井和哉 なかいかずや"><div class="n-name">中井和哉</div><div class="n-role">声優</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">✨ 次世代の主役級声優 <a href="/blog/nextgen-seiyuu-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/nextgen-seiyuu-favorites.html#yuki" class="name-card" data-name="悠木碧 ゆうきあおい"><div class="n-name">悠木碧 ★別格</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#youmiya" class="name-card" data-name="羊宮妃那 ひつじみやひな"><div class="n-name">羊宮妃那</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#suzushiro" class="name-card" data-name="鈴代紗弓 すずしろさゆみ"><div class="n-name">鈴代紗弓</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#natsuyoshi" class="name-card" data-name="夏吉ゆうこ なつよしゆうこ"><div class="n-name">夏吉ゆうこ</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#otsuka" class="name-card" data-name="大塚剛央 おおつかごう"><div class="n-name">大塚剛央</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#sekine" class="name-card" data-name="関根明良 せきねあきら"><div class="n-name">関根明良</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#chiba" class="name-card" data-name="千葉翔也 ちばしょうや"><div class="n-name">千葉翔也</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#takahashi" class="name-card" data-name="高橋李依 たかはしりえ"><div class="n-name">高橋李依</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#itomiku" class="name-card" data-name="伊藤美来 いとうみく"><div class="n-name">伊藤美来</div><div class="n-role">声優</div></a>
+      <a href="/blog/nextgen-seiyuu-favorites.html#iwami" class="name-card" data-name="石見舞菜香 いわみまなか"><div class="n-name">石見舞菜香</div><div class="n-role">声優</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">✍️ 脚本家 <a href="/blog/scriptwriter-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/scriptwriter-favorites.html#yoshida" class="name-card" data-name="吉田玲子 よしだれいこ"><div class="n-name">吉田玲子</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#okada" class="name-card" data-name="岡田麿里 おかだまり"><div class="n-name">岡田麿里</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#hanada" class="name-card" data-name="花田十輝 はなだじゅっき"><div class="n-name">花田十輝</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#yokote" class="name-card" data-name="横手美智子 よこてみちこ"><div class="n-name">横手美智子</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#aoshima" class="name-card" data-name="あおしまたかし"><div class="n-name">あおしまたかし</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#urobuchi" class="name-card" data-name="虚淵玄 うろぶちげん"><div class="n-name">虚淵玄</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#okouchi" class="name-card" data-name="大河内一楼 おおこうちいちろう"><div class="n-name">大河内一楼</div><div class="n-role">脚本家</div></a>
+      <a href="/blog/scriptwriter-favorites.html#uezu" class="name-card" data-name="上江洲誠 うえずまこと"><div class="n-name">上江洲誠</div><div class="n-role">脚本家</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🎬 監督 <a href="/blog/director-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/director-favorites.html#nagai" class="name-card" data-name="長井龍雪 ながいたつゆき"><div class="n-name">長井龍雪</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#ishihara" class="name-card" data-name="石原立也 いしはらたつや"><div class="n-name">石原立也</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#ishidate" class="name-card" data-name="石立太一 いしだてたいち"><div class="n-name">石立太一</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#mizushima" class="name-card" data-name="水島努 みずしまつとむ"><div class="n-name">水島努</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#shinkai" class="name-card" data-name="新海誠 しんかいまこと"><div class="n-name">新海誠</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#yamada" class="name-card" data-name="山田尚子 やまだなおこ"><div class="n-name">山田尚子</div><div class="n-role">監督</div></a>
+      <a href="/blog/director-favorites.html#ikuhara" class="name-card" data-name="幾原邦彦 いくはらくにひこ"><div class="n-name">幾原邦彦</div><div class="n-role">監督</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🏢 制作会社 <a href="/blog/studio-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/studio-favorites.html#pawoks" class="name-card" data-name="P.A.WORKS ぴーえーわーくす"><div class="n-name">P.A.WORKS</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#kyoani" class="name-card" data-name="京都アニメーション きょうとあにめーしょん"><div class="n-name">京都アニメーション</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#cloverworks" class="name-card" data-name="CloverWorks くろーばーわーくす"><div class="n-name">CloverWorks</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#a1" class="name-card" data-name="A-1 Pictures えーわんぴくちゃーず"><div class="n-name">A-1 Pictures</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#wit" class="name-card" data-name="wit studio うぃっとすたじお"><div class="n-name">wit studio</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#mappa" class="name-card" data-name="MAPPA まっぱ"><div class="n-name">MAPPA</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#ghibli" class="name-card" data-name="スタジオジブリ すたじおじぶり"><div class="n-name">スタジオジブリ</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#toei" class="name-card" data-name="東映アニメーション とうえいあにめーしょん"><div class="n-name">東映アニメーション</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#ufotable" class="name-card" data-name="ufotable ゆーふぉーてーぶる"><div class="n-name">ufotable</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#sunrise" class="name-card" data-name="バンダイナムコフィルムワークス さんらいず"><div class="n-name">バンダイナムコフィルムワークス</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#bones" class="name-card" data-name="BONES ぼんず"><div class="n-name">BONES</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#madhouse" class="name-card" data-name="MADHOUSE まっどはうす"><div class="n-name">MADHOUSE</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#trigger" class="name-card" data-name="TRIGGER とりがー"><div class="n-name">TRIGGER</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#saru" class="name-card" data-name="サイエンスSARU さいえんすさる"><div class="n-name">サイエンスSARU</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#kai" class="name-card" data-name="スタジオKAI すたじおかい"><div class="n-name">スタジオKAI</div><div class="n-role">制作会社</div></a>
+      <a href="/blog/studio-favorites.html#bind" class="name-card" data-name="スタジオバインド すたじおばいんど"><div class="n-name">スタジオバインド</div><div class="n-role">制作会社</div></a>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-title">🎵 主題歌アーティスト <a href="/blog/artist-anime-favorites.html" class="cat-link">→ 特集記事を見る</a></div>
+    <div class="name-grid">
+      <a href="/blog/artist-anime-favorites.html#yonezu" class="name-card" data-name="米津玄師 よねづけんし"><div class="n-name">米津玄師</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#nakashima" class="name-card" data-name="中島美嘉 なかしまみか"><div class="n-name">中島美嘉</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#mrsgreenapple" class="name-card" data-name="Mrs. GREEN APPLE ミセスグリーンアップル"><div class="n-name">Mrs. GREEN APPLE</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#higedan" class="name-card" data-name="Official髭男dism オフィシャルヒゲダンディズム"><div class="n-name">Official髭男dism</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#yoasobi" class="name-card" data-name="YOASOBI ヨアソビ"><div class="n-name">YOASOBI</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#aimer" class="name-card" data-name="Aimer エメ"><div class="n-name">Aimer</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#lisa" class="name-card" data-name="LiSA リサ"><div class="n-name">LiSA</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#kinggnu" class="name-card" data-name="King Gnu キングヌー"><div class="n-name">King Gnu</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#ryokushaka" class="name-card" data-name="緑黄色社会 りょくおうしょくしゃかい"><div class="n-name">緑黄色社会</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#zutomayo" class="name-card" data-name="ずっと真夜中でいいのに。ずとまよ"><div class="n-name">ずっと真夜中でいいのに。</div><div class="n-role">アーティスト</div></a>
+      <a href="/blog/artist-anime-favorites.html#bump" class="name-card" data-name="BUMP OF CHICKEN ばんぷおぶちきん"><div class="n-name">BUMP OF CHICKEN</div><div class="n-role">アーティスト</div></a>
+    </div>
+  </div>
+
+  <div class="link-row" id="noResult" style="display:none;">
+    該当する名前が見つかりませんでした。別のキーワードで検索してみてください。
+  </div>
+
+  <div class="link-row">
+    このページに載っていない声優・スタッフの記事もあります。<a href="/blog/">ブログ一覧</a>から探してみてください。
+  </div>
 </main>
 
 <footer>
@@ -144,163 +276,24 @@ footer { background: var(--bg-darker); border-top: 1px solid var(--border-color)
 </footer>
 
 <script>
-const questions = [
-  {
-    text: "好きな演出は？",
-    options: [
-      { label: "感情が爆発するシーンの強い演出", scores: { nagai: 3 } },
-      { label: "日常芝居の緻密さ、笑いとシリアスのバランス", scores: { ishihara: 3 } },
-      { label: "音楽・美術を活かした繊細な画作り", scores: { ishidate: 3 } },
-      { label: "ジャンルを問わないテンポの良さ", scores: { mizushima: 3 } }
-    ]
-  },
-  {
-    text: "好きなジャンルは？",
-    options: [
-      { label: "青春の痛みを描く作品", scores: { nagai: 3 } },
-      { label: "日常系・京都アニメーション系の作品", scores: { ishihara: 3 } },
-      { label: "音楽もの・映像美が際立つ作品", scores: { ishidate: 3 } },
-      { label: "コメディからミリタリー、業界ものまで幅広く", scores: { mizushima: 3 } }
-    ]
-  },
-  {
-    text: "一番刺さる瞬間は？",
-    options: [
-      { label: "感情が爆発する瞬間の演出", scores: { nagai: 3 } },
-      { label: "笑いとシリアスの絶妙なバランス", scores: { ishihara: 3 } },
-      { label: "繊細な感情表現の積み重ね", scores: { ishidate: 3 } },
-      { label: "テンポよく物語が転がっていく瞬間", scores: { mizushima: 3 } }
-    ]
-  },
-  {
-    text: "監督に求めるものは？",
-    options: [
-      { label: "脚本と一体化した感情の演出力", scores: { nagai: 3 } },
-      { label: "緻密な日常芝居の積み上げ", scores: { ishihara: 3 } },
-      { label: "音楽・美術との調和", scores: { ishidate: 3 } },
-      { label: "ジャンルを超えた振れ幅の広さ", scores: { mizushima: 3 } }
-    ]
-  },
-  {
-    text: "好きな画作りは？",
-    options: [
-      { label: "感情を爆発させる強いカット割り", scores: { nagai: 3 } },
-      { label: "笑いとシリアスの緩急がついた画面", scores: { ishihara: 3 } },
-      { label: "音楽・美術が引き立つ美しい画面", scores: { ishidate: 3 } },
-      { label: "テンポよく展開する軽快な画面", scores: { mizushima: 3 } }
-    ]
-  }
-];
-
-const results = {
-  nagai: {
-    name: "長井龍雪",
-    desc: "あなたに一番近いのは長井龍雪です。脚本の岡田麿里とのタッグ作品を中心に、青春の痛みを真正面から描く監督。感情の爆発シーンの演出に強く惹かれるタイプです。",
-    works: "代表作：あの日見た花の名前を僕達はまだ知らない。　など",
-    anchor: "nagai"
-  },
-  ishihara: {
-    name: "石原立也",
-    desc: "あなたに一番近いのは石原立也です。京都アニメーションの土台を作った世代の監督。日常芝居の緻密さと、笑いとシリアスのバランス感覚に長けている作風に惹かれるタイプです。",
-    works: "代表作：涼宮ハルヒの憂鬱　など",
-    anchor: "ishihara"
-  },
-  ishidate: {
-    name: "石立太一",
-    desc: "あなたに一番近いのは石立太一です。京都アニメーションの次世代を担う監督。繊細な感情表現と、音楽・美術を活かした画作りの美しさに強く惹かれるタイプです。",
-    works: "代表作：ヴァイオレット・エヴァーガーデン　など",
-    anchor: "ishidate"
-  },
-  mizushima: {
-    name: "水島努",
-    desc: "あなたに一番近いのは水島努です。ジャンルを問わない振れ幅の広さが持ち味。コメディからミリタリー、業界ものまで幅広く手掛け、どの作品もテンポの良さが光る作風に惹かれるタイプです。",
-    works: "代表作：SHIROBAKO　など",
-    anchor: "mizushima",
-    official: "https://x.com/tsuki_akari"
-  }
-};
-
-let currentQ = 0;
-let scores = { nagai: 0, ishihara: 0, ishidate: 0, mizushima: 0 };
-
-function startQuiz() {
-  document.getElementById('startScreen').classList.add('hidden');
-  document.getElementById('quizScreen').classList.remove('hidden');
-  currentQ = 0;
-  scores = { nagai: 0, ishihara: 0, ishidate: 0, mizushima: 0 };
-  renderQuestion();
-}
-
-function renderQuestion() {
-  const q = questions[currentQ];
-  document.getElementById('progressBar').style.width = ((currentQ) / questions.length * 100) + '%';
-  const optsHtml = q.options.map((opt, i) =>
-    `<button class="q-opt" onclick="selectOption(${i})">${opt.label}</button>`
-  ).join('');
-  document.getElementById('quizScreen').innerHTML = `
-    <div class="q-card">
-      <div class="q-num">Q${currentQ + 1} / ${questions.length}</div>
-      <div class="q-text">${q.text}</div>
-      <div class="q-options">${optsHtml}</div>
-    </div>
-  `;
-}
-
-function selectOption(i) {
-  const opt = questions[currentQ].options[i];
-  for (const key in opt.scores) {
-    scores[key] += opt.scores[key];
-  }
-  currentQ++;
-  if (currentQ < questions.length) {
-    renderQuestion();
-  } else {
-    showResult();
-  }
-}
-
-function showResult() {
-  document.getElementById('progressBar').style.width = '100%';
-  document.getElementById('quizScreen').classList.add('hidden');
-  const ranked = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
-  const topKey = ranked[0];
-  const otherKeys = ranked.slice(1);
-  const r = results[topKey];
-  const othersHtml = otherKeys.map(k => {
-    const o = results[k];
-    return `<a href="/blog/director-favorites.html#${o.anchor}" class="other-item">
-      <span class="other-name">${o.name}</span>
-      <span class="other-arrow">代表作を見る →</span>
-    </a>`;
-  }).join('');
-
-  const shareText = encodeURIComponent(`私に合う監督は「${r.name}」でした！ #ANIMEDB監督診断`);
-  const shareUrl = encodeURIComponent('https://anime-db.jp/director-diagnosis.html');
-
-  document.getElementById('resultScreen').innerHTML = `
-    <div class="result-card">
-      <div class="result-label">あなたに合う監督は…</div>
-      <div class="result-name">${r.name}</div>
-      <div class="result-desc">${r.desc}</div>
-      <div class="result-works">${r.works}</div>
-      <div class="result-btns">
-        <a href="/blog/director-favorites.html#${r.anchor}" class="result-btn primary">代表作をもっと見る →</a>
-        <a href="https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}" target="_blank" rel="noopener" class="result-btn share">𝕏 結果をシェア</a>
-        <button class="result-btn secondary" onclick="restartQuiz()">もう一度診断する</button>
-      </div>
-    </div>
-    <div class="other-card">
-      <div class="other-title">🎬 この監督を選んだあなたには、こちらもおすすめ</div>
-      <div class="other-list">${othersHtml}</div>
-    </div>
-  `;
-  document.getElementById('resultScreen').classList.remove('hidden');
-}
-
-function restartQuiz() {
-  document.getElementById('resultScreen').classList.add('hidden');
-  document.getElementById('progressBar').style.width = '0%';
-  startQuiz();
+function filterNames() {
+  const q = document.getElementById('nameSearch').value.trim().toLowerCase();
+  const cards = document.querySelectorAll('.name-card');
+  let visibleCount = 0;
+  cards.forEach(card => {
+    const name = card.getAttribute('data-name').toLowerCase();
+    if (q === '' || name.includes(q)) {
+      card.classList.remove('hidden');
+      visibleCount++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  document.querySelectorAll('.cat-block').forEach(block => {
+    const visible = block.querySelectorAll('.name-card:not(.hidden)').length;
+    block.style.display = (q !== '' && visible === 0) ? 'none' : '';
+  });
+  document.getElementById('noResult').style.display = (q !== '' && visibleCount === 0) ? 'block' : 'none';
 }
 </script>
 
